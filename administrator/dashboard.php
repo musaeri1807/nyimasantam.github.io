@@ -10,13 +10,10 @@ if(!isset($_SESSION['administrator_login'])) {
     header("location: ../index.php");
 }
 
-
-
 $id = $_SESSION['administrator_id'];                               
 $select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin JOIN tbldepartment ON tblemployeeslogin.field_role=tbldepartment.field_department_id WHERE field_user_id=:uid");
 $select_stmt->execute(array(":uid"=>$id));  
-$row=$select_stmt->fetch(PDO::FETCH_ASSOC);
-       
+$row=$select_stmt->fetch(PDO::FETCH_ASSOC);       
 
 
 ?>
@@ -132,7 +129,7 @@ $row=$select_stmt->fetch(PDO::FETCH_ASSOC);
 
            <li>
             <a href="setting.php">
-            <i class="fa fa-gears"></i> PAssword</a>
+            <i class="fa fa-gears"></i> Password</a>
           </li>
 
           <li>
