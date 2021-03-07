@@ -1,8 +1,10 @@
 <?php
 
-// echo $_SERVER['SERVER_PORT'];
+if (!$_SERVER['SERVER_NAME']=='localhost') {
+               
+  header("location: index.php");
+}
 
-// die();
 ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("config/koneksi.php");
