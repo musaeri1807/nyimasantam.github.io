@@ -1,8 +1,8 @@
 <?php 
 // // ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
-require_once("../connectionuser.php");
-require_once("../function.php");
+require_once("../config/connection.php");
+require_once("../php/function.php");
 
 if(!isset($_SESSION['administrator_login'])) {
     header("location: ../index.php");

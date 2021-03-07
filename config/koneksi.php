@@ -14,6 +14,8 @@ catch(PDOException $e)
 {
     //show error
     die("Terjadi masalah: " . $e->getMessage());
+    // $msg="Connection Failed ";
+    // header('location:index.php');
 }
 
 ?>

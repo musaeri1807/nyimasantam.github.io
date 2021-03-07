@@ -1,12 +1,10 @@
 <?php
+// // ini_set('display_errors', 0);
+date_default_timezone_set('Asia/Jakarta');
+require_once("../config/connection.php");
+require_once("../php/function.php");
 
-require_once '../connectionuser.php';
 
-function password_generate($chars) 
-{
-  $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
-  return substr(str_shuffle($data), 0, $chars);
-}
 
 // $tokenn		= hash('sha256', md5(date('Y-m-d h:i:s')));
 // echo $tokenn;

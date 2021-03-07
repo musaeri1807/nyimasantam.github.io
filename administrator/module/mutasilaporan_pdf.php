@@ -1,9 +1,9 @@
 <?php
-
 // // ini_set('display_errors', 0);
-
 date_default_timezone_set('Asia/Jakarta');
-require_once("../connectionuser.php");
+require_once("../config/connection.php");
+require_once("../php/function.php");
+
 // memanggil library FPDF
 require('../library/fpdf181/fpdf.php');
       

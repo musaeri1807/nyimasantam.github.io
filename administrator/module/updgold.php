@@ -1,23 +1,14 @@
 <?php
+// // ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
-require_once '../connectionuser.php';
+require_once("../config/connection.php");
+require_once("../php/function.php");
 
 
 if(!isset($_SESSION['administrator_login'])) {
-    header("location: ../index.php");
-}
+    header("location: ../index.php");}
 
-function encrypt( $q ) {
-        $cryptKey  = 'd8578edf8458ce06fbc5bb76a58c5ca4';
-        $qEncoded      = base64_encode( mcrypt_encrypt( MCRYPT_RIJNDAEL_256, md5( $cryptKey ), $q, MCRYPT_MODE_CBC, md5( md5( $cryptKey ) ) ) );
-        return( $qEncoded );
-    }
 
-function decrypt( $q ) {
-        $cryptKey  = 'd8578edf8458ce06fbc5bb76a58c5ca4';
-        $qDecoded      = rtrim( mcrypt_decrypt( MCRYPT_RIJNDAEL_256, md5( $cryptKey ), base64_decode( $q ), MCRYPT_MODE_CBC, md5( md5( $cryptKey ) ) ), "\0");
-        return( $qDecoded );
-    }
 
 
 if(isset($_REQUEST['id']))
@@ -106,7 +97,7 @@ if(isset($_REQUEST['btn_update']))
 
 
 					$insertMsg="Insert Successfully"; //execute query success message
-					echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard.php?module=gold">';
+					echo '<META HTTP-EQUIV="Refresh" Content="1;">';
 				}
 			}
 		}

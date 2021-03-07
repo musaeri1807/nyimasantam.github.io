@@ -1,9 +1,8 @@
 <?php 
 // // ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
-require_once("../connectionuser.php");
-require_once("../config/dataconnection.php");
-require_once("../function.php");
+require_once("../config/connection.php");
+require_once("../php/function.php");
 
 
 if(!isset($_SESSION['administrator_login'])) {
@@ -61,7 +60,7 @@ if (isset($_REQUEST['btn_backup'])) {
 
         //save file
 
-        $handle = fopen("../backupdatabase/".$db_name.date("d_m_Y").".sql","w+");
+        $handle = fopen("../database/".$db_name.date("d_m_Y").".sql","w+");
         // $handle = fopen('./pages/backup-restore/backup/'.$nama_file,'w+');
         fwrite($handle,$return);
         fclose($handle);
@@ -88,7 +87,7 @@ if (isset($_REQUEST['btn_backup'])) {
               $insert_stmt->execute();
               
         echo "Successfully backed up";
-        echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard.php?module=backupdatabase">';
+        echo '<META HTTP-EQUIV="Refresh" Content="1;">';
         }else{
           echo " INSERTDATA";
               $filenamedatabase=$db_name.date("d_m_Y").".sql";       
@@ -100,7 +99,7 @@ if (isset($_REQUEST['btn_backup'])) {
               $insert_stmt->execute();
         
         echo "Successfully backed up";
-        echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard.php?module=backupdatabase">';
+        echo '<META HTTP-EQUIV="Refresh" Content="1;">';
         }
     
 
@@ -111,7 +110,7 @@ if (isset($_REQUEST['btn_backup'])) {
 if (isset($_GET['file'])) {
     $filename    = $_GET['file'];
 
-    $back_dir    =".../../backupdatabase/";
+    $back_dir    =".../../database/";
     $file = $back_dir.$_GET['file'];
      
         if (file_exists($file)) {

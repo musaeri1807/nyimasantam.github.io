@@ -1,5 +1,8 @@
 <?php
-
+// // ini_set('display_errors', 0);
+date_default_timezone_set('Asia/Jakarta');
+require_once("../config/connection.php");
+require_once("../php/function.php");
 
 
   ?>

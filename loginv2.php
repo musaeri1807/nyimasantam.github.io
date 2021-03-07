@@ -211,10 +211,10 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
     <!-- <link rel="stylesheet" href="css/owl.carousel.min.css"> -->
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="assetlogin/css/bootstrap.min.css">
+    <link rel="stylesheet" href="view/assetlogin/css/bootstrap.min.css">
     
     <!-- Style -->
-    <link rel="stylesheet" href="assetlogin/css/style.css">
+    <link rel="stylesheet" href="view/assetlogin/css/style.css">
 
     <title>NYIMASANTAM</title>
   </head>
@@ -314,9 +314,9 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
     
     
 <script src='https://www.google.com/recaptcha/api.js'></script> 
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="view/assetlogin/js/jquery-3.3.1.min.js"></script>
+    <script src="view/assetlogin/js/popper.min.js"></script>
+    <script src="view/assetlogin/js/bootstrap.min.js"></script>
+    <script src="view/assetlogin/js/main.js"></script>
   </body>
 </html>

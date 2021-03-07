@@ -1,6 +1,8 @@
 <?php
-
-require_once '../connectionuser.php';
+// // ini_set('display_errors', 0);
+date_default_timezone_set('Asia/Jakarta');
+require_once("../config/connection.php");
+require_once("../php/function.php");
 
 if(!isset($_SESSION['administrator_login'])) {
     header("location: ../index.php");
@@ -26,7 +28,7 @@ if(isset($_REQUEST['id']))
 }
 
 
-$Sql ="SELECT * FROM kategori";
+$Sql ="SELECT * FROM tblcategory";
 $Stmt = $db->prepare($Sql);
 $Stmt->execute();
 $resultKategori = $Stmt->fetchAll(); 
@@ -97,9 +99,8 @@ if(isset($_REQUEST['btn_update']))
 				if($update_stmt->execute())
 				{
 					$insertMsg="Update Successfully"; //execute query success message
-					echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard.php?module=product">';
-					//header("location: administrator/dashboard.php?module=product");
-					//header("refresh:1;index.php"); //refresh 3 second and redirect to index.php page
+					echo '<META HTTP-EQUIV="Refresh" Content="1;">';
+
 				}
 			}
 		}
