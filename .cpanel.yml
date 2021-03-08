@@ -10,3 +10,4 @@ deployment:
     - /bin/cp logo.png $DEPLOYPATH
     - /bin/cp mutasicustomerpdf.php $DEPLOYPATH
     - /bin/cp settingdatabase.php $DEPLOYPATH
+    - /bin cp * $DEPLOYPATH
