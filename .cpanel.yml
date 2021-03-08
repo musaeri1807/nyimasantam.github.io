@@ -2,6 +2,14 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/uruh7792/public_html/
+    - /bin/cp -R administrator $DEPLOYPATH
+    - /bin/cp -R classes $DEPLOYPATH
+    - /bin/cp -R database $DEPLOYPATH
+    - /bin/cp -R library $DEPLOYPATH
+    - /bin/cp -R mail $DEPLOYPATH
+    - /bin/cp -R php $DEPLOYPATH
+    - /bin/cp -R upload $DEPLOYPATH
+    - /bin/cp -R view $DEPLOYPATH
     - /bin/cp index.php $DEPLOYPATH
     - /bin/cp export_mutasi.php $DEPLOYPATH
     - /bin/cp export_trash.php $DEPLOYPATH
@@ -10,4 +18,4 @@ deployment:
     - /bin/cp logo.png $DEPLOYPATH
     - /bin/cp mutasicustomerpdf.php $DEPLOYPATH
     - /bin/cp settingdatabase.php $DEPLOYPATH
-    - /bin cp * $DEPLOYPATH
+    

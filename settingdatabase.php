@@ -12,7 +12,7 @@ if(isset($_POST['submit'])){
   file_put_contents("config/users.txt",$UserName);
   file_put_contents("config/password.txt",$Password);
   file_put_contents("config/database.txt",$DatabaseName);
-  header("Location: index.php");
+  header("Location: loginv2.php");
 }
 ?>
 
@@ -89,7 +89,7 @@ if(isset($_POST['submit'])){
             <input type="text" class="form-control" name="UserName" value="uruh7792_musaeri"  placeholder="UserName" required>
           </div>                    
           <div class="form-group">       
-          <input type="text" class="form-control" name="Password" value="P@ssw0rd" placeholder="Password">
+          <input type="password" class="form-control" name="Password" value="P@ssw0rd" placeholder="Password">
           </div>
           <div class="form-group">
           <input type="text" class="form-control" name="DatabaseName" value="uruh7792_VPS01NA" placeholder="DatabaseName" required>
