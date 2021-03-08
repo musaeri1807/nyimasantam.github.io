@@ -35,11 +35,11 @@ if (isset($_REQUEST['id'])) {
                 $insert->bindParam(':waktu',$date);
                 $insert->execute();
                 $insertMsg="Delete Successfully"; //execute query success message
-                echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=customer">';
+                echo '<META HTTP-EQUIV="Refresh" Content="1;">';
             }
       }else{
         //echo "FALSE"; 
-        echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=customer">';
+        echo '<META HTTP-EQUIV="Refresh" Content="1;">';
       }      
 
 
@@ -66,10 +66,7 @@ $result = $Stmt->fetchAll();
 // $resultT = $stmtT->fetchAll();
 
 $no=1;
-function rupiah($angka){
-  $hasil_rupiah = "Rp. " . number_format($angka,0,',','.');
-  return $hasil_rupiah; 
-}
+
 
 
 ?>

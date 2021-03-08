@@ -123,7 +123,7 @@ if(isset($_REQUEST['btn_update']))
 				if($update_stmt->execute())
 				{
 					$insertMsg="Update Successfully"; //execute query success message
-					echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard.php?module=activation">';
+					echo '<META HTTP-EQUIV="Refresh" Content="1;">';
 					
 				}
 			}

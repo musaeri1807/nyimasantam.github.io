@@ -72,16 +72,58 @@
               <div class="table-responsive mailbox-messages">
                 <table class="table table-hover table-striped">
                   <tbody>
+                    <?php
+                                    $usermail = 'nyimasantam@gmail.com';
+                                    $password = 'P@55w.rdnyimasantam';
+                                    $hostname = '{imap.gmail.com:993/imap/ssl/novalidate-cert}INBOX';
+
+                                    // if(strpos($usermail, "@yahoo")==true || strpos($usermail, "@ymail")==true){
+                                    //     $hostname = '{imap.mail.yahoo.com:993/imap/ssl/novalidate-cert}INBOX';
+                                    //   }elseif(strpos($usermail, "@aol")==true){
+                                    //     $hostname = '{imap.aol.com:993/imap/ssl}INBOX';
+                                    //   }else{
+                                    //     $hostname = '{imap.gmail.com:993/imap/ssl/novalidate-cert}INBOX';
+                                    //   }
+
+                                    $mbox = imap_open($hostname,$usermail,$password) or die('Cannot connect to mail server: ' . imap_last_error());
+                                     // var_dump($mbox);
+                                    $MC=imap_check($mbox);
+                                    $MN=$MC->Nmsgs;
+                                    $overview=imap_fetch_overview($mbox,"1:$MN",0);
+                                    $size=sizeof($overview);
+                                    echo "";
+
+                                    // var_dump($MC);
+                                    //$no=0;
+                                    for($i=$size-1;$i>=0;$i--){
+                                        $val=$overview[$i];
+                                      $msg=$val->msgno;
+                                      $date=date('Y-m-d H:i:s', strtotime($val->date));
+                                      $subj=isset($val->subject)?$val->subject:"(no subject)";
+                                      $header = imap_header($mbox, $msg);
+                                      $from = $header->from;
+                                      $email_size = $val->size;
+                                      $size2 = number_format ($email_size/1024);
+                                      foreach ($from as $id => $object){
+                                          $fromname = isset($object->personal)?$object->personal:$object->mailbox;
+                                          $fromaddress = $object->mailbox . "@" . $object->host;
+                                      }//$no++;
+                              ?>
                   <tr>
+                   <!--  <td> <?php //echo $msg; ?> </td>
+                    <td> <?php //echo $fromaddress; ?> </td>
+                    <td> <?php //echo $date; ?> </td>
+                    <td> <?php //echo substr($subj, 0,15)."..."; ?> </td>
+                    <td> <?php //echo $size2; ?> KB</td> -->
                     <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a><?php echo $msg; ?></td>
+                    <td class="mailbox-name"><a href="read-mail.html"><?php echo $fromaddress; ?></a></td>
+                    <td class="mailbox-subject"><b><?php echo substr($subj, 0,15); ?> </b>
                     </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">5 mins ago</td>
+                    <td class="mailbox-attachment"><?php echo $size2; ?> KB</td>
+                    <td class="mailbox-date"><?php echo $date; ?></td>
                   </tr>
-               
+                <?php } imap_close($mbox); ?>
                   </tbody>
                 </table>
                 <!-- /.table -->

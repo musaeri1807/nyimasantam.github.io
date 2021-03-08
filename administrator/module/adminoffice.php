@@ -63,10 +63,6 @@ $result = $Stmt->fetchAll();
 
 
 $no=1;
-function rupiah($angka){
-  $hasil_rupiah = "Rp. " . number_format($angka,0,',','.');
-  return $hasil_rupiah; 
-}
 
 
 ?>
