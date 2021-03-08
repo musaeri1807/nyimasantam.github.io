@@ -118,7 +118,7 @@
                     <td><input type="checkbox"></td>
                     <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a><?php echo $msg; ?></td>
                     <td class="mailbox-name"><a href="read-mail.html"><?php echo $fromaddress; ?></a></td>
-                    <td class="mailbox-subject"><b><?php echo substr($subj, 0,15); ?> </b>
+                    <td class="mailbox-subject"><b><?php echo substr($subj, 0,50); ?> </b>
                     </td>
                     <td class="mailbox-attachment"><?php echo $size2; ?> KB</td>
                     <td class="mailbox-date"><?php echo $date; ?></td>
