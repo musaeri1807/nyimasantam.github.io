@@ -110,11 +110,7 @@
                                       }//$no++;
                               ?>
                   <tr>
-                   <!--  <td> <?php //echo $msg; ?> </td>
-                    <td> <?php //echo $fromaddress; ?> </td>
-                    <td> <?php //echo $date; ?> </td>
-                    <td> <?php //echo substr($subj, 0,15)."..."; ?> </td>
-                    <td> <?php //echo $size2; ?> KB</td> -->
+                  
                     <td><input type="checkbox"></td>
                     <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a><?php echo $msg; ?></td>
                     <td class="mailbox-name"><a href="read-mail.html"><?php echo $fromaddress; ?></a></td>

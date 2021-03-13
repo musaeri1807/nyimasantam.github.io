@@ -1,377 +1,227 @@
-  <section class="content">
-    <div class="row">
-      <section class="col-lg-12">       
-        <div class="box box-info">
-          <div class="box-body" style="padding: 20px">
-            <form action="penjualan_act.php" method="post" >
-            <div class="row">
-            <input type="hidden" name="pelayanan" value="<?php echo $_SESSION['id']; ?>">
-            <input type="hidden" class="form-control" required="required" value="<?php echo $_SESSION['nama']; ?>" readonly>
-            <div class="col-lg-2">
-            <div class="form-group">
-            <label>No. Reff</label>
-            <input type="text" class="form-control" name="nomor" required="required" placeholder="Masukkan Nomor Invoice" value="<?php echo $noReff; ?>" readonly>
-            <textarea  readonly="readonly" placeholder="Rp 1.000.000,-" > Rp 1.000.000,-</textarea>
-            </div>
-            </div>
-            <div class="col-lg-2">
-            <div class="form-group">
-            <label>Tanggal</label>
-            <input type="date" class="form-control" name="tanggal" required="required" placeholder="Masukkan Tanggal Pembelian .. (Wajib)" value="<?php echo date('Y-m-d') ?>" readonly>
-             </div>
+
+
+
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-3">         
+
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <!-- <h3 class="box-title"></h3> -->
+              <a href="" class="btn btn-success btn-block margin-bottom">Search Product</a>
+              <div class="box-tools">
 
               </div>
-
-               <div class="col-lg-2">
-
-                <div class="form-group">
-                  <label>Sumber Dana</label>
-                  <SELECT class="form-control" name="sumber_dana">                  
-                  <option value="Investasi">---Investasi---</option>
-                  <option value="Gaji">---Gaji---</option>
-                  <option value="Sampah">---Sampah---</option>
-                  <option value="lain">---Lainnya---</option>
-                  
-                  </SELECT>
-                </div>
-                </div>
-
-                <div class="col-lg-2">
-                <div class="form-group">
-                  <label>Nama Nasabah</label>
-                  <input type="hidden" class="form-control" id="member_id" name="member_id" required="required" placeholder="Masukkan member_id" readonly>
-                  <input type="text" class="form-control" id="tambahkan_nama_nasabah" name="nama_nasabah" required="required" placeholder="Masukkan Nama Nasabah" readonly>
-                </div>
-                </div>
-                <div class="col-lg-2">
-                <div class="form-group">
-                  <label>Rekening Nasabah</label>
-                  <input type="text" class="form-control" max="100" id="tambahkan_kode_nasabah" name="nasabah" required="required" placeholder="Masukkan Rekening">
-                </div>
-                </div>
-
-                <div class="col-lg-2">
-                <div class="form-group">
-                  
-                  <!-- <button style="margin-top: 25px" type="button" class="btn btn-info" data-toggle="modal" data-target="#myModalNasabah"><b>Cari</b> <span class="glyphicon glyphicon-search"></span></button> -->
-
-                  <button style="margin-top: 27px" type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#myModalNasabah">
-                    <i class="fa fa-search"></i> &nbsp Cari nasabah
-                  </button>
-                </div>
-
-                </div>            
-<!-- in A -->
             </div>
-
-<!-- ............................................................................ -->
-<!-- modal nasabah -->
-                  <div class="modal fade" id="myModalNasabah" tabindex="-1" role="dialog" aria-labelledby="cariNasabahLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                          Pilih Nasabah
-                        </div>
-                        <div class="modal-body">
-
-
-                          <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover" id="table-datatable-nasabah">
-                              <thead>
-                                <tr>
-                                  <th class="text-center">No</th>
-                                  <th style="text-align: center">Rekening</th>
-                                  <th style="text-align: center">Member Id</th>
-                                  <th style="text-align: center">Nama</th>                               
-                                  <th style="text-align: center">Pilih</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                           <!--      <?php 
-                                $no=1;
-                                $data = mysqli_query($koneksi,"SELECT * FROM tblnasabah ");
-                                while($d = mysqli_fetch_array($data)){
-                                  ?> -->
-                                  <tr>
-                                  <td width="1%" class="text-center"><?php echo $no++; ?></td>
-                                  <td width="10%" class="text-center"><?php echo $d['field_rekening']; ?></td>
-                                  <td width="10%"class="text-center" ><?php echo $d['field_handphone']; ?></td>
-                                  <td width="10%" class="text-center"><?php echo $d['field_nama']; ?></td>
-                                  <td width="1%">                                                  
-                                  <?php                                 
-                                      if($d['field_nasabah_id'] > 0){
-                                  ?> 
-                                  <!-- javascrip          -->
-                                  <input type="hidden" id="kode_<?php echo $d['field_nasabah_id']; ?>" value="<?php echo $d['field_rekening']; ?>">
-                                  <input type="hidden" id="nama_<?php echo $d['field_nasabah_id']; ?>" value="<?php echo $d['field_nama']; ?>">
-                                  <input type="hidden" id="member_<?php echo $d['field_nasabah_id']; ?>" value="<?php echo $d['field_member_id']; ?>">
-                                  <button type="button" class="btn btn-success btn-sm modal-pilih-nasabah" id="<?php echo $d['field_nasabah_id']; ?>" data-dismiss="modal">Pilih Nasabah</button>
-
-                                       <!--    <?php 
-                                        }
-                                        ?> -->
-
-                                    </td>
-                                  </tr>
-
-                              <!--   <?php 
-                                }
-                                ?> -->
-                              </tbody>
-                            </table>
-
-                            </div>
-                          </div>
-                          </div>
-                          </div>
-                          </div>
-<hr>
-
-<!-- ......................................................................................... -->
-
-
-            <div class="row">
-
-              <div class="col-lg-3">
-                
-                <div class="form-group">
-                <span class="btn btn-sm btn-primary pull-right btn-block" id="tombol-tambahkan">TAMBAHKAN*</span>
-              </div>
-
-                <div class="row">
-
-                 <div class="form-group col-lg-7">
-                  <label></label>
-                  <input type="hidden" class="form-control" id="tambahkan_id">
-                  <input type="text" class="form-control" id="tambahkan_kode" placeholder="Masukkan Kode Produk ..">
-                </div>
-
-                <div class="col-lg-5">
-
-                  <button style="margin-top: 24px" type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#cariProduk">
-                    <i class="fa fa-search"></i> &nbsp Cari
-                  </button>
-
-                  <!-- Modal -->
-                  <div class="modal fade" id="cariProduk" tabindex="-1" role="dialog" aria-labelledby="cariProdukLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                          Pilih Pembelian produk
-                        </div>
-                        <div class="modal-body">
-
-
-                          <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover" id="table-datatable-produk">
-                              <thead>
-                                <tr>
-                                  <th class="text-center">NO</th>
-                                  <th>KODE</th>
-                                  <th>PRODUK</th>
-                                  <th class="text-center">SATUAN</th>
-                                  <!-- <th class="text-center">STOK</th> -->
-                                  <th class="text-center">HARGA JUAL</th>
-                                  <th>KETERANGAN</th>
-                                  <th></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-
-                               <!--  <?php 
-                                $no=1;
-                                $data = mysqli_query($koneksi,"SELECT * FROM produk, kategori where produk_kategori=kategori_id order by produk_id desc");
-                                while($d = mysqli_fetch_array($data)){
-                                  ?> -->
-                                  <tr>
-                                    <td width="1%" class="text-center"><?php echo $no++; ?></td>
-                                    <td width="1%"><?php echo $d['produk_kode']; ?></td>
-                                    <td>
-                                      <?php echo $d['produk_nama']; ?>
-                                      <br>
-                                      <small class="text-muted"><?php echo $d['kategori']; ?></small>
-                                    </td>
-                                    <td width="1%" class="text-center"><?php echo $d['produk_satuan']; ?></td>
-                                    <!-- <td width="1%" class="text-center"><?php //echo $d['produk_stok']; ?></td> -->
-                                    <td width="20%" class="text-center"><?php echo "Rp.".number_format($d['produk_harga_jual']).",-"; ?></td>
-                                    <td width="15%"><?php echo $d['produk_keterangan']; ?></td>
-                                    <td width="1%">
-                                                  
-                                      <?php 
-                                      // if($d['produk_stok'] > 0){
-                                      if($d['produk_id'] > 0){
-                                        ?> 
-              <!-- javascrip          -->
-<input type="hidden" id="kode_<?php echo $d['produk_id']; ?>" value="<?php echo $d['produk_kode']; ?>">
-<input type="hidden" id="nama_<?php echo $d['produk_id']; ?>" value="<?php echo $d['produk_nama']; ?>">
-<input type="hidden" id="harga_<?php echo $d['produk_id']; ?>" value="<?php echo $d['produk_harga_jual']; ?>">
-<button type="button" class="btn btn-success btn-sm modal-pilih-produk" id="<?php echo $d['produk_id']; ?>" data-dismiss="modal">Pilih</button>
-
-
-                                    <!--     <?php 
-                                      }
-                                      ?> -->
-                                    </td>
-                                  </tr>
-
-                              <!--     <?php 
-                                }
-                                ?> -->
-                              </tbody>
-                            </table>
-                          </div>
-
-                        </div>
+            <div class="box-body no-padding">
+             
+              <ul class="nav nav-pills nav-stacked">        
+                <li><a><input type="hidden" name="" class="form-control" placeholder="Code Product"></a></li>
+                <li><a href="#"><input type="" name="" class="form-control" placeholder="Name Product" readonly></a></li>
+                <li><a href="#"><input type="" name="" class="form-control" placeholder="Price" readonly></a></li>
+                <li><a href="#"><input type="number" name="" class="form-control" placeholder="Qty"></a></li>
+                <li><a href="#"><input type="" name="" class="form-control" placeholder="Total" readonly></a></li>
+              </ul>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <a href="#" class="btn btn-primary btn-block margin-bottom">Add Trash</a>
+          <!-- /.box -->
+        </div>
+        <!-- /.col transaksi-->
+        <div class="col-md-9"> 
+          <div class="box box-primary">
+            <div class="box-header with-border">              
+                    <!-- title row -->
+              <div class="row">
+                <div class="col-xs-12">
+                  <h3 class="page-header">
+                   <!--  <i class="fa fa-globe"></i> AdminLTE, Inc. -->
+                   <div class="row">
+                    <form>
+                      <div class="col-xs-3">                      
+                      <select class="form-control">
+                        <option value="">--Pilih--</option>
+                        <option value="Investasi">Investasi</option>
+                        <option value="Investasi">Sampah</option>
+                        <option value="Gaji">Gaji</option>
+                        
+                      </select>
                       </div>
-                    </div>
-                  </div>
-
+                      <div class="col-xs-3">
+                      <input type="text" name="txt_rekening" class="form-control" placeholder="Rekening">
+                      </div>
+                      <div class="col-xs-3">
+                      <input type="text" name="txt_customer" class="form-control" placeholder="Customer">
+                      </div>
+                      <div class="col-xs-3">
+                      <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                      <i class="fa fa-users"></i> Customer
+                      </button>
+                      </div>
+                    </form>
+                   </div>
+                    <!-- <small class="pull-right">Date: 2/10/2014</small> -->
+                  </h3>
                 </div>
-
+                <!-- /.col -->
               </div>
+              <!-- info row -->
+          <!--     <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                  From
+                  <address>
+                    <strong>Admin, Inc.</strong><br>
+                    795 Folsom Ave, Suite 600<br>
+                    San Francisco, CA 94107<br>
+                    Phone: (804) 123-5432<br>
+                    Email: info@almasaeedstudio.com
+                  </address>
+                </div> -->
+                <!-- /.col -->
+         <!--        <div class="col-sm-4 invoice-col">
+                  To
+                  <address>
+                    <strong>John Doe</strong><br>
+                    795 Folsom Ave, Suite 600<br>
+                    San Francisco, CA 94107<br>
+                    Phone: (555) 539-1037<br>
+                    Email: john.doe@example.com
+                  </address>
+                </div> -->
+                <!-- /.col -->
+       <!--          <div class="col-sm-4 invoice-col">
+                  <b>Invoice #007612</b><br>
+                  <br>
+                  <b>Order ID:</b> 4F3S8J<br>
+                  <b>Payment Due:</b> 2/22/2014<br>
+                  <b>Account:</b> 968-34567
+                </div> -->
+                <!-- /.col -->
+              <!-- </div> -->
+              <!-- /.row -->
 
-
-              <div class="form-group">
-                <label>Produk</label>
-                <input type="text" class="form-control" id="tambahkan_nama" disabled>
-              </div>
-
-              <div class="form-group">
-                <label>Harga*</label>
-                <input type="text" class="form-control" id="tambahkan_harga" disabled>
-              </div>
-
-              <div class="form-group">
-                <label>Jumlah</label>
-                <input type="number" class="form-control" id="tambahkan_jumlah" min="1">
-              </div>
-
-              <div class="form-group">
-                <label>Total*</label>
-                <input type="text" class="form-control" id="tambahkan_total" disabled>
-              </div>
-
-              
-
-            </div>
-<!-- ..................................................... -->
-
-            <div class="col-lg-9">
-
-              <!-- <h3>Daftar</h3> -->
-
-              <table class="table table-bordered table-striped table-hover" id="table-pembelian">
-                <thead>
-                  <tr>
-                    <th>Kode Produk</th>
-                    <th>Nama Produk</th>
-                    <th style="text-align: center;">Harga**</th>
-                    <th style="text-align: center;">Jumlah</th>
-                    <th style="text-align: center;">Total** </th>
-                    <th style="text-align: center;" width="1%">OPSI</th>
-                  </tr>
-                </thead>
-                <tbody> 
-                </tbody>
-                <tfoot>
-                  <tr class="bg-info">
-                    <td style="text-align: right;" colspan="2"><b>**Total**</b></td>
-                    <td style="text-align: center;"><span class="pembelian_harga" id="0">Rp.0,-</span></td>
-                    <td style="text-align: center;"><span class="pembelian_jumlah" id="0">0</span></td>
-                    <td style="text-align: center;"><span class="pembelian_total" id="0">Rp.0,-</span></td>
-                    <td style="text-align: center;">****</td>
-                  </tr>
-                </tfoot>
-              </table>
-
-                  <div class="row">
-                  <div class="col-lg-6">
-                  <table class="table table-bordered table-striped">
-                  <tr>
-                  <th width="40%">Sub Total</th>
-                  <td>
-                  <input type="hidden" name="sub_total" class="sub_total_form" value="0">
-                  <span class="sub_total_pembelian" id="0">Rp.0,-</span>
-                  </td>
-                  </tr>
-                  <tr>
-                  <th>Operation Fee</th>
-                  <td>
-                  <div class="row">
-                  <div class="col-lg-7">
-                  <input class="form-control operation_free" type="number" min="0" max="100" id="0" name="operation_free" placeholder="Wajib di Input" required="required">
-                            <!-- <span class="operation_free_2"  id="operation_free_2" ></span> -->
-                  </div>
-                          <br>
-                          <div class="col-1" >%
-                            <input type="hidden" name="operation_free_rp" id="operation_free_rp"></div>
-                        </div>
-                      </td>
+              <!-- Table row -->
+              <div class="row">
+                <div class="col-xs-12 table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>Qty</th>
+                      <th>Product</th>
+                      <th>Serial #</th>
+                      <th>Description</th>
+                      <th>Subtotal</th>
                     </tr>
-                <tr>
-                <th>Total</th>
-                <td>
-                <input type="hidden" name="total" class="total_form" value="0">
-                <span class="total_pembelian" id="0">Rp.0,-</span>
-                </td>
-                </tr>
-                </table>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Call of Duty</td>
+                      <td>455-981-221</td>
+                      <td>El snort testosterone trophy driving gloves handsome</td>
+                      <td>$64.50</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>Need for Speed IV</td>
+                      <td>247-925-726</td>
+                      <td>Wes Anderson umami biodiesel</td>
+                      <td>$50.00</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>Monsters DVD</td>
+                      <td>735-845-642</td>
+                      <td>Terry Richardson helvetica tousled street art master</td>
+                      <td>$10.70</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>Grown Ups Blue Ray</td>
+                      <td>422-568-642</td>
+                      <td>Tousled lomo letterpress</td>
+                      <td>$25.99</td>
+                    </tr>
+                    </tbody>
+                  </table>
                 </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
 
- <!-- ..................................................  -->
-                <div class="row">
-                <div class="col-lg-6">
-                <table class="table table-bordered table-striped">
-                <tr>
-                <th width="50%">Sub Total</th>
-                <td>
-                <input type="hidden" name="sub_total" class="sub_total_form" value="0">
-                <span class="sub_total_pembelian" id="0">Rp.0,-</span>
-                </td>
-                </tr>
-                <tr>
-                <th>Harga hari ini** 
-                <span>
-                <br> <b></b> 
-                </span></th>
-                <td>
-                <div class="row">
-                <div class="col-lg-10">
-                <input type="hidden" class="form-control harga_emas" id="harga_emas" name="harga_emas" value="" readonly>
-                <span></span>
-                </div>
-                <div>**</div>
-                </div>
-                </td>
-                </tr>
-                <tr>
-                <th>Emas Anda</th>
-                <td>
-                <input style="border-style: none;" type="number" name="emas_anda" class="emas_anda" id="emas_anda"  placeholder="Emas Anda" readonly>
-                <span class="emas_anda" name="emas_anda" readonly> </span>
-                </td>
-                </tr>
-                </table>
-                </div>
-                </div>  
-                <div class="form-group">
-                <a href="penjualan_tambah.php" class="btn btn-danger"><i class="fa fa-close"></i> Batalkan Transaksi</a>
-                <button class="btn btn-success pull-right"><i class="fa fa-check"></i> Buat Transaksi</button>
-                </div>  
-                </div>
-                </div>
-                </div>
-                </form>
-                </div>
+              <div class="row">
+                <!-- accepted payments column -->
+                <div class="col-xs-6">
+                  <p class="lead">Gold Price</p>
 
-    </div>
-  </section>
-</div>
-</section>
 
+                  <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                    Rp 990.000,00
+                  </p>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-6">
+                  <!-- <p class="lead">Amount Due 2/22/2014</p> -->
+
+                  <div class="table-responsive">
+                    <table class="table">
+                      <tr>
+                        <th style="width:50%">Subtotal:</th>
+                        <td>$250.30</td>
+                      </tr>
+                      <tr>
+                        <th id="txt_persen">Oprasional free (5%)</th>
+                        <td>$10.34</td>
+                      </tr>
+                      <tr>
+                        <th>Total</th>
+                        <td>$5.80</td>
+                      </tr>
+                      <tr>
+                        <th>Gold Customer</th>
+                        <td>$265.24</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <!-- this row will not appear when printing -->
+              <div class="row no-print">
+                <div class="col-xs-12">
+                  <a href="invoice-print.html" target="_blank" class="btn btn-danger"><i class="fa fa-reply "></i> Cancel</a>
+                  <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment
+                  </button>
+<!--                   <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                    <i class="fa fa-download"></i> Generate PDF
+                  </button> -->
+                </div>
+              </div>
+              <!-- ....batas   -->
+            </div>
+              <!-- /. transaksi -->
+
+          </div>
+          <!-- /. box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+
+
+
+
+    <!-- Main content -->
+ <!--    <section class="invoice"> -->
+
+ <!--    </section> -->
+    <!-- /.content -->
+<!--     <div class="clearfix"></div> -->
+
+  

@@ -1,5 +1,5 @@
 <?php 
-// // ini_set('display_errors', 0);
+//ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
 require_once("../php/function.php");
@@ -116,22 +116,22 @@ $SldT=$result100['field_total_saldo'];
 $Rupiah= $HrgJ*$SldT;
 
 
-function rupiah($angka){
-  $hasil_rupiah = "Rp. " . number_format($angka,0,',','.');
-  return $hasil_rupiah; 
-}
+// function rupiah($angka){
+//   $hasil_rupiah = "Rp. " . number_format($angka,0,',','.');
+//   return $hasil_rupiah; 
+// }
 
-function encrypt( $q ) {
-        $cryptKey  = 'MUSAERIMUSAERIMUSAERIMUSAERIMUSAERIMUSAERIMUSAERI';
-        $qEncoded      = base64_encode( mcrypt_encrypt( MCRYPT_RIJNDAEL_256, md5( $cryptKey ), $q, MCRYPT_MODE_CBC, md5( md5( $cryptKey ) ) ) );
-        return( $qEncoded );
-    }
+// function encrypt( $q ) {
+//         $cryptKey  = 'MUSAERIMUSAERIMUSAERIMUSAERIMUSAERIMUSAERIMUSAERI';
+//         $qEncoded      = base64_encode( mcrypt_encrypt( MCRYPT_RIJNDAEL_256, md5( $cryptKey ), $q, MCRYPT_MODE_CBC, md5( md5( $cryptKey ) ) ) );
+//         return( $qEncoded );
+//     }
 
-function decrypt( $q ) {
-        $cryptKey  = 'MUSAERIMUSAERIMUSAERIMUSAERIMUSAERIMUSAERIMUSAERI';
-        $qDecoded      = rtrim( mcrypt_decrypt( MCRYPT_RIJNDAEL_256, md5( $cryptKey ), base64_decode( $q ), MCRYPT_MODE_CBC, md5( md5( $cryptKey ) ) ), "\0");
-        return( $qDecoded );
-    }
+// function decrypt( $q ) {
+//         $cryptKey  = 'MUSAERIMUSAERIMUSAERIMUSAERIMUSAERIMUSAERIMUSAERI';
+//         $qDecoded      = rtrim( mcrypt_decrypt( MCRYPT_RIJNDAEL_256, md5( $cryptKey ), base64_decode( $q ), MCRYPT_MODE_CBC, md5( md5( $cryptKey ) ) ), "\0");
+//         return( $qDecoded );
+//     }
 
 
 
