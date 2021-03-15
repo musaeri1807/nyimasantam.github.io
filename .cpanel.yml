@@ -11,13 +11,15 @@ deployment:
     - /bin/cp -R php $DEPLOYPATH
     - /bin/cp -R uploads $DEPLOYPATH
     - /bin/cp -R view $DEPLOYPATH
-    - /bin/cp index.php $DEPLOYPATH
+    - /bin/cp .cpanel.yml $DEPLOYPATH    
+    - /bin/cp .htaccess $DEPLOYPATH
     - /bin/cp export_mutasi.php $DEPLOYPATH
     - /bin/cp export_trash.php $DEPLOYPATH
+    - /bin/cp index.php $DEPLOYPATH
     - /bin/cp loginv2.php $DEPLOYPATH
     - /bin/cp logo.jpg $DEPLOYPATH
     - /bin/cp logo.png $DEPLOYPATH
+    - /bin/cp logon.jpg $DEPLOYPATH
+    - /bin/cp logout.php $DEPLOYPATH
     - /bin/cp mutasicustomerpdf.php $DEPLOYPATH
-    - /bin/cp settingdatabase.php $DEPLOYPATH
-    - /bin/cp .htaccess $DEPLOYPATH
-    - /bin/cp .cpanel.yml $DEPLOYPATH    
+    - /bin/cp settingdatabase.php $DEPLOYPATH 

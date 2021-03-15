@@ -28,7 +28,7 @@ if (isset($_REQUEST['btn_insert2'])) {
 				if($insert_stmt->execute())
 				{
 					$insertMsg="Insert Successfully"; //execute query success message
-					echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard.php?module=addproduct">';
+					echo '<META HTTP-EQUIV="Refresh" Content="1">';
 					
 				}
 			}
@@ -134,7 +134,7 @@ if(isset($_REQUEST['btn_insert']))
 				if($insert_stmt->execute())
 				{
 					$insertMsg="Insert Successfully"; //execute query success message
-					echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard.php?module=product">';
+					echo '<META HTTP-EQUIV="Refresh" Content="1;">';
 					//header("location: administrator/dashboard.php?module=product");
 					//header("refresh:1;index.php"); //refresh 3 second and redirect to index.php page
 				}
