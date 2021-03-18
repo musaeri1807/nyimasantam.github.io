@@ -11,10 +11,12 @@ if(!isset($_SESSION['userlogin'])) {
 }
 
 $id = $_SESSION['idlogin'];                               
-$select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin JOIN tbldepartment ON tblemployeeslogin.field_role=tbldepartment.field_department_id WHERE field_user_id=:uid");
+$select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin E JOIN tbldepartment D
+                                                                ON E.field_role=D.field_department_id 
+                                                                WHERE field_user_id=:uid");
 $select_stmt->execute(array(":uid"=>$id));  
-$row=$select_stmt->fetch(PDO::FETCH_ASSOC);       
-
+$rows=$select_stmt->fetch(PDO::FETCH_ASSOC);
+$branchid=$rows['field_branch'];  
 
 ?>
 
@@ -134,7 +136,7 @@ $row=$select_stmt->fetch(PDO::FETCH_ASSOC);
 
           <li>
             <a href="#"> 
-            <i class="fa fa-user"></i> <?php echo $row["field_username"]; ?></a>
+            <i class="fa fa-user"></i> <?php echo $rows["field_name_officer"]; ?></a>
           </li>   
        
           <li>
@@ -152,7 +154,13 @@ $row=$select_stmt->fetch(PDO::FETCH_ASSOC);
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="../uploads/<?php echo $row["field_photo"]; ?>" class="img-circle" alt="User Image">
+          <?php 
+            if ($rows['field_gender']=='L') {
+              echo'<img src="../uploads/avatar5.png" class="img-circle" alt="User Image">';
+            }elseif ($rows['field_gender']=='P') {
+              echo'<img src="../uploads/avatar2.png" class="img-circle" alt="User Image">';              
+            }
+           ?>
         </div>
         <div class="pull-left info">
           <!-- <p>Muhammad Gavin Alhanan</p> -->
@@ -165,7 +173,7 @@ $row=$select_stmt->fetch(PDO::FETCH_ASSOC);
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header"><center>Menu <?php echo $row["field_department_name"] ?></center></li>
+        <li class="header"><center>Menu <?php echo $rows["field_department_name"] ?></center></li>
        <!--  <li class="active treeview">--- -->
         <li>
           <a href="?module=home">

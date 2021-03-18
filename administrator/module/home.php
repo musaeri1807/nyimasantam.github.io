@@ -12,8 +12,8 @@ require_once("../php/function.php");
 <div style="margin-right:10%;margin-left:15%" class="alert alert-danger alert-dismissable">
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 <p><i class="icon fa fa-info"></i>
-Welcome ! <?php echo $row["field_username"]; ?> &nbsp;&nbsp;
-Anda berada di halaman ""
+Welcome ! <?php echo $rows["field_name_officer"]; ?> &nbsp;&nbsp;
+Anda berada di halaman "<?php echo $rows["field_department_name"]; ?>"
 </p>
 </div> 
 <div class="box box-solid box-danger">

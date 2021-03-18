@@ -23,18 +23,22 @@ if (isset($_REQUEST['id'])) {
 }
 
 
-$id = $_SESSION['idlogin'];                               
-$select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin WHERE field_user_id=:uid");
-$select_stmt->execute(array(":uid"=>$id));  
-$rows=$select_stmt->fetch(PDO::FETCH_ASSOC);
+if ($_SESSION['rolelogin']=='ADM' OR $_SESSION['rolelogin']=='MGR') {
+    $Sql = "SELECT * FROM tblproduct P JOIN tblcategory C ON P.field_category=C.field_category_id 
+                                       JOIN tblbranch B ON P.field_branch=B.field_branch_id 
+                                       ORDER BY field_product_id DESC";
+    $Stmt = $db->prepare($Sql);
+    $Stmt->execute();
+    $result = $Stmt->fetchAll();
+}else{
+    $Sql = "SELECT * FROM tblproduct P JOIN tblcategory C ON P.field_category=C.field_category_id 
+                                       JOIN tblbranch B ON P.field_branch=B.field_branch_id 
+                                       WHERE field_branch=:idbranch ORDER BY field_product_id DESC";
+    $Stmt = $db->prepare($Sql);
+    $Stmt->execute(array(":idbranch"=>$branchid));
+    $result = $Stmt->fetchAll();
+}
 
-echo $rows['field_branch'];
-
-$Sql = "SELECT * FROM tblproduct P JOIN tblcategory C ON P.field_category=C.field_category_id 
-                                   JOIN tblbranch B ON P.field_branch=B.field_branch_id ORDER BY field_product_id DESC";
-$Stmt = $db->prepare($Sql);
-$Stmt->execute();
-$result = $Stmt->fetchAll();
 
 $no=1;
 
@@ -79,7 +83,7 @@ $no=1;
                                 
                   
                   <td data-title="Trx Id"><?php echo $row["field_category"]; ?>|<?php echo $row["field_product_code"];?><br><strong><?php echo $row["field_product_name"];?></strong></td>
-                  <td data-title="Trx Id"><?php echo $row["field_note"] ?>/<?php echo $row["field_unit"];?><br><strong><?php echo rupiah($row["field_price"]);?></strong> <br><small> Harga Update <?php echo date("d F Y",strtotime($row["field_date"]));  ?></small></td>
+                  <td data-title="Trx Id"><?php echo $row["field_note"] ?>/<?php echo $row["field_unit"];?><br><strong><?php echo rupiah($row["field_price"]);?></strong> <br><small> Harga Update <?php echo date("d F Y",strtotime($row["field_date_price"]));  ?></small></td>
                   <td ><?php echo $row["field_branch_name"]; ?></td>
                   <td ata-title="Trx Id" >                   
 
@@ -90,9 +94,9 @@ $no=1;
                       echo '<a href="#" data-toggle="modal" data-target="#modal-default'.$row["field_product_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';                    
                      
                     }elseif ($rows["field_role"]=="MGR") {
-                     echo '<a href="?module=updproduct&id='.$row["field_product_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';                      
+                      echo '<a href="?module=updproduct&id='.$row["field_product_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';                      
                     }elseif ($rows["field_role"]=="SPV") {
-                      echo "";
+                      echo '<a href="?module=updproduct&id='.$row["field_product_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
                     }elseif ($rows["field_role"]=="BCO") {
                       echo "Proses";
                     }

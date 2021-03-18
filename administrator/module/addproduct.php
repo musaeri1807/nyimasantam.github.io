@@ -71,10 +71,19 @@ $Stmt = $db->prepare($Sql);
 $Stmt->execute();
 $resultKategori = $Stmt->fetchAll(); 
 
-$Sql ="SELECT * FROM tblbranch";
-$Stmt = $db->prepare($Sql);
-$Stmt->execute();
-$result = $Stmt->fetchAll();
+
+if ($_SESSION['rolelogin']=='ADM' OR $_SESSION['rolelogin']=='MGR') {
+	$Sql ="SELECT * FROM tblbranch";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute();
+	$result = $Stmt->fetchAll();
+	
+}else{
+	$Sql ="SELECT * FROM tblbranch WHERE field_branch_id=:idbranch";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute(array(":idbranch"=>$branchid));
+	$result = $Stmt->fetchAll();
+}
 //extract($row);                
 
 if(isset($_REQUEST['btn_insert']))
@@ -181,21 +190,21 @@ if(isset($_REQUEST['btn_insert']))
 			<form method="post" class="form-horizontal">
 					
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Kode Produk</label>
+				<label class="col-sm-3 control-label">Code Product</label>
 				<div class="col-sm-3">
 				<input type="text" name="txt_kodeproduk" class="form-control" value="<?php echo $kodeProduk; ?>" readonly />
 				</div>
 				</div>
 						
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Nama Produk sampah</label>
+				<label class="col-sm-3 control-label">Name Product</label>
 				<div class="col-sm-6">
 				<input type="text" name="txt_nama" class="form-control" placeholder="Masukkan Nama Produk" />
 				</div>
 				</div>
 
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Harga Sampah</label>
+				<label class="col-sm-3 control-label">Price</label>
 				<div class="row">
 				<div class="col-sm-3">
 				<input type="text" name="txt_harga" class="form-control" placeholder="Masukkan Harga" />
@@ -215,7 +224,7 @@ if(isset($_REQUEST['btn_insert']))
 				</div>
 
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Kategori Sampah</label>
+				<label class="col-sm-3 control-label">Category</label>
 				<div class="col-sm-2">
 					<select class="form-control" type="text" name="txt_kategori">
 						<option>Pilih</option>
@@ -224,18 +233,18 @@ if(isset($_REQUEST['btn_insert']))
 						<?php } ?>
 					</select>
 				</div>
-				<a href="#" class="btn btn-info" data-toggle="modal" data-target="#modal-default"><i class="fa fa-plus"></i> Kategori</a>
+				<a href="#" class="btn btn-info" data-toggle="modal" data-target="#modal-default"><i class="fa fa-plus"></i> Category</a>
 				<!-- <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-default"> -->
 				</div>
 
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Keterangan</label>
+				<label class="col-sm-3 control-label">Note</label>
 				<div class="col-sm-6">
 				<textarea class="form-control" name="txt_keterangan" placeholder="Masukkan Keterangan Produk."></textarea>
 				</div>
 				</div>
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Cabang Kantor</label>
+				<label class="col-sm-3 control-label">Branch Office</label>
 				<div class="col-sm-6">
 				<select class="form-control" type="text" name="txt_cabang">
 						<option>Pilih</option>

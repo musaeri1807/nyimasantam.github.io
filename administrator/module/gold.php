@@ -99,8 +99,8 @@ if ($Selisi > 1) {
                 <tr>
                   <th >No</th>
                   <th >Ratio</th>                               
-                  <th>Name Product</th>                 
-                  <th>Amount Price</th>
+                  <th >Name Gold</th>                 
+                  <th >Amount Price</th>
                  
                   <th>Action</th>                   
                   
