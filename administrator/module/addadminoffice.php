@@ -10,7 +10,7 @@ require_once("../php/function.php");
 // echo $tokenn;
 // die();
 
-if(!isset($_SESSION['administrator_login'])) {
+if(!isset($_SESSION['userlogin'])) {
     header("location: ../index.php");
 }
 

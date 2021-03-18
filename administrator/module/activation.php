@@ -5,8 +5,8 @@ require_once("../config/connection.php");
 require_once("../php/function.php");
 
 
-if(!isset($_SESSION['administrator_login'])) {
-    header("location: ../index.php");
+if(!isset($_SESSION['userlogin'])) {
+  header("location: ../index.php");
 }
 
 
@@ -199,7 +199,7 @@ if (isset($_REQUEST['id'])) {
 
 //delete
 
-$id = $_SESSION['administrator_id'];                               
+$id = $_SESSION['idlogin'];                               
 $select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin WHERE field_user_id=:uid");
 $select_stmt->execute(array(":uid"=>$id));  
 $rows=$select_stmt->fetch(PDO::FETCH_ASSOC);

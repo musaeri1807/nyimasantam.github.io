@@ -6,11 +6,11 @@ require_once("../config/connection.php");
 
 session_start();
 
-if(!isset($_SESSION['administrator_login'])) {
+if(!isset($_SESSION['userlogin'])) {
     header("location: ../index.php");
 }
 
-$id = $_SESSION['administrator_id'];                               
+$id = $_SESSION['idlogin'];                               
 $select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin JOIN tbldepartment ON tblemployeeslogin.field_role=tbldepartment.field_department_id WHERE field_user_id=:uid");
 $select_stmt->execute(array(":uid"=>$id));  
 $row=$select_stmt->fetch(PDO::FETCH_ASSOC);       

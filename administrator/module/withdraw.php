@@ -4,28 +4,10 @@ date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
 require_once("../php/function.php");
 
-if(!isset($_SESSION['administrator_login'])) {
-    header("location: ../index.php");
-}    
+if(!isset($_SESSION['userlogin'])) {
+  header("location: ../index.php");
+}   
         
-        // session_start();
-
-        // if(!isset($_SESSION['user_login'])) //check unauthorize user not access in "welcome.php" page
-        // {
-        //   header("location: home");
-        // }
-        
-        // $id = $_SESSION['user_login'];        
-        // $select_stmt = $db->prepare("SELECT * FROM tbluserlogin WHERE field_user_id=:uid");
-        // $select_stmt->execute(array(":uid"=>$id));  
-        // $row=$select_stmt->fetch(PDO::FETCH_ASSOC);
-        
-        //       if(isset($_SESSION['user_login'])){              
-             
-        //         #code
-        //       }
-
-
 $SqlEmas2="SELECT * FROM tblgoldprice ORDER BY field_gold_id DESC LIMIT 1,1";
 $StmtEmas2 = $db->prepare($SqlEmas2);
 $StmtEmas2->execute();

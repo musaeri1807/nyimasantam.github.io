@@ -4,8 +4,7 @@ date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
 require_once("../php/function.php");
 
-
-  ?>
+?>
 
 
 

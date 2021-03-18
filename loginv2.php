@@ -10,18 +10,18 @@ date_default_timezone_set('Asia/Jakarta');
 require_once("config/koneksi.php");
 //require_once 'connection.php';
 session_start();
-if(isset($_SESSION["administrator_login"])) //admin_login//check condition user login not direct back to index.php page
+if(isset($_SESSION["userlogin"])) //admin_login//check condition user login not direct back to index.php page
 {
   header("location: administrator/dashboard?module=home");
 }
-if(isset($_SESSION["supervisor_login"]))  //admin_login//check condition user login not direct back to index.php page
-{
-  header("location: supervisor/dashboard.php?module=home");
-}
-if(isset($_SESSION["officer_login"])) //admin_login//check condition user login not direct back to index.php page
-{
-  header("location: officer/officer_home.php");
-}
+// if(isset($_SESSION["manager_login"]))  //admin_login//check condition user login not direct back to index.php page
+// {
+//   header("location: administrator/dashboard?module=home");
+// }
+// if(isset($_SESSION["officer_login"])) //admin_login//check condition user login not direct back to index.php page
+// {
+//   header("location: administrator/dashboard?module=home");
+// }
 
 if(isset($_REQUEST['btn_login'])) //button name is "btn_login" 
 {
@@ -48,11 +48,11 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
     $url = "https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$responseKey&remoteip=$userIP";
     $response1 = file_get_contents($url);
     $response = json_decode($response1);
-  if ($responseKey==0) {
-      $errorMsg[]="Harap Periksa reCAPTCHA";
-    }
+    if ($responseKey==0) {
+        $errorMsg[]="Harap Periksa reCAPTCHA";
+      }
 
-    if ($response->success) {   
+  if ($response->success) {   
 
   if(empty($username)){
     $errorMsg[]="Silakan Memasukan Akun Username Or Email"; //check "username/email" textbox not empty 
@@ -98,34 +98,55 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
             switch ($row["field_role"]) 
             {
             case 'ADM':
-              $_SESSION["administrator"]=$row["field_role"];
-              $_SESSION["administrator_id"]=$row["field_user_id"];
-              $_SESSION["administrator_login"]=$row["field_email"];
+              $_SESSION["rolelogin"]  =$row["field_role"];
+              $_SESSION["idlogin"]    =$row["field_user_id"];
+              $_SESSION["userlogin"]  =$row["field_email"];
               $loginMsg="Administrator..Successfully Login";
               //header("refresh:1;../../superadmin/superadmin_home.php");
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
                       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=home">';
-                    }else{
+                      }else{
                       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/administrator/dashboard?module=home">';
-                    }
+                      }
+              break;
+            case 'MGR':
+              $_SESSION["rolelogin"]  =$row["field_role"];
+              $_SESSION["idlogin"]    =$row["field_user_id"];
+              $_SESSION["userlogin"]  =$row["field_email"];
+              $loginMsg="Manager..Successfully Login";
+              //header("refresh:1;../../superadmin/superadmin_home.php");
+                    if ($_SERVER['SERVER_NAME']=='localhost') {                     
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=home">';
+                      }else{
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/administrator/dashboard?module=home">';
+                      }
               break;
             case 'SPV':
-              $_SESSION["supervisor"]=$row["field_role"];
-              $_SESSION["supervisor_id"]=$row["field_user_id"];
-              $_SESSION["supervisor_login"]=$row["field_email"];
-              $_SESSION["supervisor_cabang"]=$row["field_branch"];
+              $_SESSION["rolelogin"]          =$row["field_role"];
+              $_SESSION["idlogin"]            =$row["field_user_id"];
+              $_SESSION["userlogin"]          =$row["field_email"];
+              $_SESSION["branchlogin"]        =$row["field_branch"];
               $loginMsg="Supervisor..Successfully Login";
               //header("refresh:1;../../admin/admin_home.php");
-              echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/supervisor/dashboard.php?module=home">';
+                    if ($_SERVER['SERVER_NAME']=='localhost') {                     
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=home">';
+                      }else{
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/administrator/dashboard?module=home">';
+                      }
 
               break;
             case 'CSM':
-              $_SESSION["officer_id"]=$row["field_user_id"];
-              $_SESSION["officer_login"]=$row["field_email"];
-              $_SESSION["officer_cabang"]=$row["field_branch"];
+              $_SESSION["rolelogin"]          =$row["field_role"];
+              $_SESSION["idlogin"]            =$row["field_user_id"];
+              $_SESSION["userlogin"]          =$row["field_email"];
+              $_SESSION["branchlogin"]        =$row["field_branch"];
               $loginMsg="Officer..Successfully Login";
               //header("refresh:1;../../officer/officer_home.php");
-              echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/officer/officer_home.php">';
+                    if ($_SERVER['SERVER_NAME']=='localhost') {                     
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=home">';
+                      }else{
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/administrator/dashboard?module=home">';
+                      }
                 
               break;
                       
@@ -143,7 +164,9 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
             $_SESSION['lock']=$_SESSION['lock']+$NLock;
             if ($_SESSION['lock']>=3) {   
 
-              $update_stmt=$db->prepare("UPDATE tblemployeeslogin SET field_status_aktif=:status, field_blokir_status=:blokir WHERE field_email=:uemail OR field_username=:uname ");
+              $update_stmt=$db->prepare("UPDATE tblemployeeslogin SET field_status_aktif=:status, 
+                                                                      field_blokir_status=:blokir 
+                                                                  WHERE field_email=:uemail OR field_username=:uname ");
                 // execute the query
               $update_stmt->execute(array(':uname'  =>  $username,
                             ':uemail' =>  $email,

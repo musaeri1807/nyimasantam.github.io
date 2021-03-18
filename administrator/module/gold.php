@@ -4,8 +4,8 @@ date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
 require_once("../php/function.php");
 
-if(!isset($_SESSION['administrator_login'])) {
-    header("location: ../index.php");
+if(!isset($_SESSION['userlogin'])) {
+  header("location: ../index.php");
 }
 
 
@@ -27,7 +27,7 @@ if (isset($_REQUEST['id'])) {
 // echo $id;
 // echo "<br>";
 
-$id = $_SESSION['administrator_id'];                               
+$id = $_SESSION['idlogin'];                               
 $select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin WHERE field_user_id=:uid");
 $select_stmt->execute(array(":uid"=>$id));  
 $rows=$select_stmt->fetch(PDO::FETCH_ASSOC);
@@ -141,12 +141,14 @@ if ($Selisi > 1) {
                       // echo '<a href="?module=product&id='.$row["produk_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
                       echo '<a href="#" data-toggle="modal" data-target="#modal-default'.$row["field_gold_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';                    
                      
+                    }elseif ($rows["field_role"]=="MGR") {
+                      echo '<a href="?module=updgold&id='.$row["field_gold_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';                     
                     }elseif ($rows["field_role"]=="SPV") {
-                      echo '<a href="detail.php?trx_id='.$rows["field_role"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';                      
-                    }elseif ($rows["field_role"]=="Officer") {
-                      echo "";
-                    }elseif ($rows["field_role"]=="Superadmin") {
-                      echo "Proses";
+                      echo '<a href="?module=updgold&id='.$row["field_gold_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
+                    }elseif ($rows["field_role"]=="BCO") {
+                      echo '<a href="?module=updgold&id='.$row["field_gold_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
+                    }elseif ($rows["field_role"]=="CMS") {
+                      echo '';
                     }
                      ?>                    
                   

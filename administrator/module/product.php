@@ -4,8 +4,8 @@ date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
 require_once("../php/function.php");
 
-if(!isset($_SESSION['administrator_login'])) {
-    header("location: ../index.php");
+if(!isset($_SESSION['userlogin'])) {
+  header("location: ../index.php");
 }
 
 if (isset($_REQUEST['id'])) {
@@ -23,25 +23,18 @@ if (isset($_REQUEST['id'])) {
 }
 
 
-// $id=$_GET['id'];
-// echo $id;
-
-$id = $_SESSION['administrator_id'];                               
+$id = $_SESSION['idlogin'];                               
 $select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin WHERE field_user_id=:uid");
 $select_stmt->execute(array(":uid"=>$id));  
 $rows=$select_stmt->fetch(PDO::FETCH_ASSOC);
 
-//$Sql = "SELECT * FROM tblorder WHERE field_member_id=$trx_id_member AND field_status='Success' ORDER BY field_order_id DESC LIMIT 5";
+echo $rows['field_branch'];
+
 $Sql = "SELECT * FROM tblproduct P JOIN tblcategory C ON P.field_category=C.field_category_id 
                                    JOIN tblbranch B ON P.field_branch=B.field_branch_id ORDER BY field_product_id DESC";
 $Stmt = $db->prepare($Sql);
 $Stmt->execute();
 $result = $Stmt->fetchAll();
-
-// $sqlT = "SELECT * FROM tbltrxmutasisaldo WHERE field_member_id=$trx_id_member";
-// $stmtT = $db->prepare($sqlT);
-// $stmtT->execute();
-// $resultT = $stmtT->fetchAll();
 
 $no=1;
 

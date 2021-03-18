@@ -7,8 +7,8 @@ require_once("../php/function.php");
 // memanggil library FPDF
 require('../library/fpdf181/fpdf.php');
       
-if(!isset($_SESSION['administrator_login'])) {
-    header("location: ../index.php");
+if(!isset($_SESSION['userlogin'])) {
+  header("location: ../index.php");
 }
         
         // $id = $_SESSION['user_login'];        
