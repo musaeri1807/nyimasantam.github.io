@@ -45,20 +45,21 @@ if (isset($_REQUEST['id'])) {
 
 }
 
+if ($_SESSION['rolelogin']=='ADM' OR $_SESSION['rolelogin']=='MGR' ) {
+  # code...
+  $Sql = 'SELECT * FROM tbluserlogin WHERE field_status_aktif!="1" ORDER BY field_user_id DESC';
+  $Stmt = $db->prepare($Sql);
+  $Stmt->execute();
+  $result = $Stmt->fetchAll();
+}elseif ($_SESSION['rolelogin']=='SPV' OR $_SESSION['rolelogin']=='BCO' OR $_SESSION['rolelogin']=='CMS') {
+  # code...
+  $Sql = 'SELECT * FROM tbluserlogin WHERE field_status_aktif!="1" AND field_branch=:idbranch ORDER BY field_user_id DESC';
+  $Stmt = $db->prepare($Sql);
+  // $Stmt->execute();
+  $Stmt->execute(array(":idbranch"=>$branchid));
+  $result = $Stmt->fetchAll();
+}
 
-// $id=$_GET['id'];
-// echo $id;
-
-$id = $_SESSION['administrator_id'];                               
-$select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin WHERE field_user_id=:uid");
-$select_stmt->execute(array(":uid"=>$id));  
-$rows=$select_stmt->fetch(PDO::FETCH_ASSOC);
-
-$Sql = 'SELECT * FROM tbluserlogin WHERE field_status_aktif!="1" ORDER BY field_user_id DESC';
-//$Sql ="SELECT * FROM tbluserlogin u JOIN tblnasabah n ON u.field_member_id=n.field_member_id ORDER BY field_user_id DESC ";
-$Stmt = $db->prepare($Sql);
-$Stmt->execute();
-$result = $Stmt->fetchAll();
 
 // $sqlT = "SELECT * FROM tbltrxmutasisaldo WHERE field_member_id=$trx_id_member";
 // $stmtT = $db->prepare($sqlT);

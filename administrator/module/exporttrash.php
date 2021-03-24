@@ -115,29 +115,59 @@ if(!isset($_SESSION['userlogin'])) {
                     <?php                 
                       $sumP=0;
                       $sumT=0;
+
+                      if ($_SESSION['rolelogin']=='ADM' OR $_SESSION['rolelogin']=='MGR' ) {
+                          $sqlT = "SELECT T.field_deposit_id,
+                                          P.field_product_name,
+                                          I.field_date_deposit,
+                                          I.field_no_referensi,
+                                          I.field_rekening_deposit,
+                                          C.field_nama_customer,
+                                          B.field_branch_name,
+                                          T.field_price_product,
+                                          T.field_quantity,
+                                          T.field_total_price,
+                                          E.field_name_officer,
+                                          E.field_role
+                                          FROM tbldepositdetail T JOIN tblproduct P ON  T.field_product=P.field_product_id
+                                          JOIN tbldeposit I ON T.field_trx_deposit=I.field_trx_deposit 
+                                          JOIN tblcustomer C ON I.field_rekening_deposit=C.field_rekening 
+                                          JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id
+                                          JOIN tblbranch B ON E.field_branch=B.field_branch_id 
+                                          WHERE  date(I.field_date_deposit) >=:tgl_dari AND date(I.field_date_deposit) <= :tgl_sampai 
+                                          ORDER BY T.field_deposit_id ASC";
+                          $stmtT = $db->prepare($sqlT);
+                          $stmtT->execute(array(':tgl_dari'=> $tgl_dari,':tgl_sampai'=>$tgl_sampai));
+                          $resultT = $stmtT->fetchAll(); 
+                        # code...
+                      }elseif ($_SESSION['rolelogin']=='SVP' OR $_SESSION['rolelogin']=='BCO' OR $_SESSION['rolelogin']=='CMS' ) {
+                        # code...
+                          $sqlT = "SELECT   T.field_deposit_id,
+                                            P.field_product_name,
+                                            I.field_date_deposit,
+                                            I.field_no_referensi,
+                                            I.field_rekening_deposit,
+                                            C.field_nama_customer,
+                                            B.field_branch_name,
+                                            T.field_price_product,
+                                            T.field_quantity,
+                                            T.field_total_price,
+                                            E.field_name_officer,
+                                            E.field_role
+                                            FROM tbldepositdetail T JOIN tblproduct P ON  T.field_product=P.field_product_id
+                                            JOIN tbldeposit I ON T.field_trx_deposit=I.field_trx_deposit 
+                                            JOIN tblcustomer C ON I.field_rekening_deposit=C.field_rekening 
+                                            JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id
+                                            JOIN tblbranch B ON E.field_branch=B.field_branch_id 
+                                            WHERE  date(I.field_date_deposit) >=:tgl_dari AND date(I.field_date_deposit) <= :tgl_sampai AND
+                                            P.field_branch=:idbranch
+                                            ORDER BY T.field_deposit_id ASC";
+                            $stmtT = $db->prepare($sqlT);
+                            $stmtT->execute(array(':tgl_dari'=> $tgl_dari,':tgl_sampai'=>$tgl_sampai,":idbranch"=>$branchid));
+                            
+                            $resultT = $stmtT->fetchAll(); 
+                      }
                       
-                      $sqlT = "SELECT field_deposit_id,
-                                      field_product_name,
-                                      field_date_deposit,
-                                      field_no_referensi,
-                                      field_rekening_deposit,
-                                      field_nama_customer,
-                                      field_branch_name,
-                                      field_price_product,
-                                      field_quantity,
-                                      field_total_price,
-                                      field_name_officer,
-                                      field_role
-                                      FROM tbldepositdetail T JOIN tblproduct P ON  T.field_product=P.field_product_id
-                                      JOIN tbldeposit I ON T.field_trx_deposit=I.field_trx_deposit 
-                                      JOIN tblcustomer C ON I.field_rekening_deposit=C.field_rekening 
-                                      JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id
-                                      JOIN tblbranch B ON E.field_branch=B.field_branch_id 
-                                      WHERE  date(field_date_deposit) >=:tgl_dari AND date(field_date_deposit) <= :tgl_sampai 
-                                      ORDER BY field_deposit_id ASC";
-                      $stmtT = $db->prepare($sqlT);
-                      $stmtT->execute(array(':tgl_dari'=> $tgl_dari,':tgl_sampai'=>$tgl_sampai));
-                      $resultT = $stmtT->fetchAll(); 
 
                       foreach($resultT as $row) {
                     // $status = $row["field_status"];

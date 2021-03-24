@@ -116,7 +116,8 @@ if(!isset($_SESSION['userlogin'])) {
                       $sqlT = "SELECT * FROM tbltrxmutasisaldo M JOIN tbluserlogin U ON M.field_member_id=U.field_member_id
                                                                  JOIN tblgoldprice G ON M.field_tanggal_saldo=G.field_date_gold
                                                                  JOIN tblbranch B ON U.field_branch=B.field_branch_id
-                                                                 WHERE  date(field_tanggal_saldo) >= '$tgl_dari' AND date(field_tanggal_saldo) <= '$tgl_sampai'  ORDER BY field_id_saldo DESC";
+                                                                 WHERE  date(field_tanggal_saldo) >= '$tgl_dari' AND date(field_tanggal_saldo) <= '$tgl_sampai'
+                                                                 ORDER BY field_id_saldo DESC";
                       $stmtT = $db->prepare($sqlT);
                       $stmtT->execute(array(':tgl_dari'=> $tgl_dari,':tgl_sampai'=>$tgl_sampai));
                       $resultT = $stmtT->fetchAll(); 

@@ -24,16 +24,21 @@ if (isset($_REQUEST['id'])) {
 
 
 if ($_SESSION['rolelogin']=='ADM' OR $_SESSION['rolelogin']=='MGR') {
-    $Sql = "SELECT * FROM tblproduct P JOIN tblcategory C ON P.field_category=C.field_category_id 
-                                       JOIN tblbranch B ON P.field_branch=B.field_branch_id 
-                                       ORDER BY field_product_id DESC";
+    $Sql = "SELECT P.*,E.field_name_officer,C.field_name_category,B.field_branch_name FROM tblproduct P 
+                                                                JOIN tblcategory C ON P.field_category=C.field_category_id 
+                                                                JOIN tblbranch B ON P.field_branch=B.field_branch_id
+                                                                JOIN tblemployeeslogin E ON P.field_officer=E.field_user_id 
+                                                                ORDER BY field_product_id DESC";
     $Stmt = $db->prepare($Sql);
     $Stmt->execute();
     $result = $Stmt->fetchAll();
 }else{
-    $Sql = "SELECT * FROM tblproduct P JOIN tblcategory C ON P.field_category=C.field_category_id 
-                                       JOIN tblbranch B ON P.field_branch=B.field_branch_id 
-                                       WHERE field_branch=:idbranch ORDER BY field_product_id DESC";
+    $Sql = "SELECT P.*,E.field_name_officer,C.field_name_category,B.field_branch_name FROM tblproduct P 
+                                                                JOIN tblcategory C ON P.field_category=C.field_category_id 
+                                                                JOIN tblbranch B ON P.field_branch=B.field_branch_id 
+                                                                JOIN tblemployeeslogin E ON P.field_officer=E.field_user_id 
+                                                                WHERE P.field_branch=:idbranch 
+                                                                ORDER BY P.field_product_id DESC";
     $Stmt = $db->prepare($Sql);
     $Stmt->execute(array(":idbranch"=>$branchid));
     $result = $Stmt->fetchAll();
@@ -82,9 +87,9 @@ $no=1;
                   <td ><?php echo $no++?></td>
                                 
                   
-                  <td data-title="Trx Id"><?php echo $row["field_category"]; ?>|<?php echo $row["field_product_code"];?><br><strong><?php echo $row["field_product_name"];?></strong></td>
+                  <td data-title="Trx Id"><?php echo $row["field_name_category"]; ?>|<?php echo $row["field_product_code"];?><br><strong><?php echo $row["field_product_name"];?></strong></td>
                   <td data-title="Trx Id"><?php echo $row["field_note"] ?>/<?php echo $row["field_unit"];?><br><strong><?php echo rupiah($row["field_price"]);?></strong> <br><small> Harga Update <?php echo date("d F Y",strtotime($row["field_date_price"]));  ?></small></td>
-                  <td ><?php echo $row["field_branch_name"]; ?></td>
+                  <td ><?php echo $row["field_branch_name"]; ?><br>Create <strong><?php echo $row["field_name_officer"]; ?></strong></td>
                   <td ata-title="Trx Id" >                   
 
                     <?php 

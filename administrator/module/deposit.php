@@ -27,7 +27,7 @@
             </div>
             <!-- /.box-body -->
           </div>
-          <a href="#" class="btn btn-primary btn-block margin-bottom">Add Trash</a>
+          <a href="#" class="btn btn-primary btn-block margin-bottom">Add </a>
           <!-- /.box -->
         </div>
         <!-- /.col transaksi-->
@@ -51,10 +51,10 @@
                       </select>
                       </div>
                       <div class="col-xs-3">
-                      <input type="text" name="txt_rekening" class="form-control" placeholder="Rekening">
+                      <input type="text" name="txt_rekening" class="form-control" placeholder="Rekening" readonly>
                       </div>
                       <div class="col-xs-3">
-                      <input type="text" name="txt_customer" class="form-control" placeholder="Customer">
+                      <input type="text" name="txt_customer" class="form-control" placeholder="Customer" readonly>
                       </div>
                       <div class="col-xs-3">
                       <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
@@ -109,40 +109,45 @@
                   <table class="table table-striped">
                     <thead>
                     <tr>
-                      <th>Qty</th>
+                      <th>Action</th>
+                      <th>Code</th>
                       <th>Product</th>
-                      <th>Serial #</th>
-                      <th>Description</th>
-                      <th>Subtotal</th>
+                      <th>Price</th>
+                      <th>Qty</th>
+                      <th>Total</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                      <td>1</td>
+                      <td class="btn-danger">Delete</td>
+                      <td>Prod01</td>
                       <td>Call of Duty</td>
-                      <td>455-981-221</td>
-                      <td>El snort testosterone trophy driving gloves handsome</td>
+                      <td>Rp 5.000</td>
+                      <td>1</td>
                       <td>$64.50</td>
                     </tr>
                     <tr>
-                      <td>1</td>
+                      <td class="btn-danger">Delete</td>
+                      <td>Prod02</td>
                       <td>Need for Speed IV</td>
-                      <td>247-925-726</td>
-                      <td>Wes Anderson umami biodiesel</td>
+                      <td>Rp 5.000</td>
+                      <td>2</td>
                       <td>$50.00</td>
                     </tr>
                     <tr>
-                      <td>1</td>
+                      <td class="btn-danger">Delete</td>
+                      <td>Prod03</td>
                       <td>Monsters DVD</td>
-                      <td>735-845-642</td>
-                      <td>Terry Richardson helvetica tousled street art master</td>
+                      <td>Rp 5.000</td>
+                      <td>2</td>
                       <td>$10.70</td>
                     </tr>
                     <tr>
-                      <td>1</td>
+                      <td class="btn-danger">Delete</td>
+                      <td>Prod04</td>
                       <td>Grown Ups Blue Ray</td>
-                      <td>422-568-642</td>
-                      <td>Tousled lomo letterpress</td>
+                      <td>Rp 5.000</td>
+                      <td>1</td>
                       <td>$25.99</td>
                     </tr>
                     </tbody>

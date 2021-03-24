@@ -204,8 +204,8 @@ $select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin WHERE field_user_id
 $select_stmt->execute(array(":uid"=>$id));  
 $rows=$select_stmt->fetch(PDO::FETCH_ASSOC);
 
-$s=$row['field_status_aktif'];
-$t=$row['field_token_otp'];
+// $s=$row['field_status_aktif'];
+// $t=$row['field_token_otp'];
 
 $Sql = 'SELECT * FROM tblcustomer C JOIN tbluserlogin U ON C.field_member_id=U.field_member_id ORDER BY field_customer_id DESC LIMIT 10';
 $Stmt = $db->prepare($Sql);

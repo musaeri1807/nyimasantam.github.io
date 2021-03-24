@@ -22,21 +22,43 @@ if ($_SERVER['SERVER_NAME']=='localhost') {
 	$svrname='nyimasantam.my.id';
 }
 
-echo $svrname;
-die();
+if ($_SESSION['rolelogin']=='ADM') {
+	// $Sql ="SELECT * FROM tbldepartment WHERE field_department_id !='SPA'";
+	$Sql ="SELECT * FROM tbldepartment ";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute();
+	$resultdept = $Stmt->fetchAll(); 
+	# code...
+	$Sql ="SELECT * FROM tblbranch";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute();
+	$result = $Stmt->fetchAll();
+}elseif ($_SESSION['rolelogin']=='MGR') {
+	# code...
+	$Sql ="SELECT * FROM tbldepartment WHERE field_department_id !='ADM' AND field_department_id !='MGR'";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute();
+	$resultdept = $Stmt->fetchAll(); 
 
+	$Sql ="SELECT * FROM tblbranch";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute();
+	$result = $Stmt->fetchAll();
+}elseif ($_SESSION['rolelogin']=='SPV' OR $_SESSION['rolelogin']=='BCO' OR $_SESSION['rolelogin']=='CMS') {
+	# code...
+	$Sql ="SELECT * FROM tbldepartment WHERE field_department_id !='ADM' AND field_department_id !='MGR' AND field_department_id !='SPV'";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute();
+	$resultdept = $Stmt->fetchAll();
 
+	$Sql ="SELECT * FROM tblbranch WHERE field_branch_id=:idbranch";
+	$Stmt = $db->prepare($Sql);
+	//$Stmt->execute();
+	$Stmt->execute(array(":idbranch"=>$branchid));
+	$result = $Stmt->fetchAll();
+}
 
-$Sql ="SELECT * FROM tbldepartment WHERE field_department_id !='SPA'";
-$Stmt = $db->prepare($Sql);
-$Stmt->execute();
-$resultdept = $Stmt->fetchAll(); 
-
-$Sql ="SELECT * FROM tblbranch";
-$Stmt = $db->prepare($Sql);
-$Stmt->execute();
-$result = $Stmt->fetchAll();
-//extract($row);                
+//extract($row);               
 
 if(isset($_REQUEST['btn_insert']))
 {

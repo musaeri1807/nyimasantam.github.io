@@ -135,12 +135,26 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
                       }
 
               break;
-            case 'CSM':
+            case 'BCO':
               $_SESSION["rolelogin"]          =$row["field_role"];
               $_SESSION["idlogin"]            =$row["field_user_id"];
               $_SESSION["userlogin"]          =$row["field_email"];
               $_SESSION["branchlogin"]        =$row["field_branch"];
-              $loginMsg="Officer..Successfully Login";
+              $loginMsg="Back Office..Successfully Login";
+              //header("refresh:1;../../admin/admin_home.php");
+                    if ($_SERVER['SERVER_NAME']=='localhost') {                     
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=home">';
+                      }else{
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/administrator/dashboard?module=home">';
+                      }
+
+              break;
+            case 'CMS':
+              $_SESSION["rolelogin"]          =$row["field_role"];
+              $_SESSION["idlogin"]            =$row["field_user_id"];
+              $_SESSION["userlogin"]          =$row["field_email"];
+              $_SESSION["branchlogin"]        =$row["field_branch"];
+              $loginMsg="Customer Service..Successfully Login";
               //header("refresh:1;../../officer/officer_home.php");
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
                       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=home">';

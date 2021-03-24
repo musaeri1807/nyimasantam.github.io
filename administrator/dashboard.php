@@ -13,7 +13,7 @@ if(!isset($_SESSION['userlogin'])) {
 $id = $_SESSION['idlogin'];                               
 $select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin E JOIN tbldepartment D
                                                                 ON E.field_role=D.field_department_id 
-                                                                WHERE field_user_id=:uid");
+                                                                WHERE E.field_user_id=:uid");
 $select_stmt->execute(array(":uid"=>$id));  
 $rows=$select_stmt->fetch(PDO::FETCH_ASSOC);
 $branchid=$rows['field_branch'];  
@@ -177,7 +177,7 @@ $branchid=$rows['field_branch'];
        <!--  <li class="active treeview">--- -->
         <li>
           <a href="?module=home">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+            <i class="fa fa-dashboard"></i> <span>Dashboard |<?php echo $rows["field_department_name"] ?></span>
             <span class="pull-right-container">
              <!--  <i class="fa fa-angle-left pull-right"></i> -->
             </span>
@@ -252,7 +252,12 @@ $branchid=$rows['field_branch'];
           </a>
           <ul class="treeview-menu">
             <!-- <li><a href="development"><i class="fa fa-user"></i>Profile</a></li>  -->
-            <li><a href="?module=adminoffice"><i class="fa fa-user-secret"></i>Login Admin Office</a></li> 
+            <?php 
+              if ($_SESSION['rolelogin']=='ADM' OR $_SESSION['rolelogin']=='MGR' OR $_SESSION['rolelogin']=='SPV' ) {
+                echo '<li><a href="?module=adminoffice"><i class="fa fa-user-secret"></i>Login Admin Office</a></li> ';
+              }
+
+            ?>            
             <li><a href="?module=customer"><i class="fa fa-user-plus"></i>Login Customer </a></li>            
             <li><a href="?module=activation"><i class="fa fa fa-plus"></i>Activation Customer</a></li>          
           </ul>

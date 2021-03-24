@@ -9,20 +9,23 @@ if(!isset($_SESSION['userlogin'])) {
 }
 
 if (isset($_REQUEST['btn_insert2'])) {
-	$datamodal=$_REQUEST['txt_tambahkategori'];
-	
-	if (empty($datamodal)) {
-		$errorMsg="Silakan Masukkan Kategori";
+	$category=$_REQUEST['txt_tambahkategori'];
+	$typetrash=$_REQUEST['txt_trash'];
+
+	if (empty($category)) {
+		$errorMsg="Silakan Masukkan Category";
+	}elseif ($typetrash=="Pilih") {
+		$errorMsg="Silakan Masukkan Type";
 	}else
 		{
 		try
 		{
 			if(!isset($errorMsg))
 			{
-				$insert_stmt=$db->prepare('INSERT INTO tblcategory (field_category) 
-														VALUES(:kategori)'); //sql insert query					
-				$insert_stmt->bindParam(':kategori',$datamodal);
-				  
+				$insert_stmt=$db->prepare('INSERT INTO tblcategory (field_category,field_type_product) 
+														VALUES(:category,:typetrash)'); //sql insert query					
+				$insert_stmt->bindParam(':category',$category);
+				$insert_stmt->bindParam(':typetrash',$typetrash);				  
 					  
 					
 				if($insert_stmt->execute())
@@ -93,10 +96,11 @@ if(isset($_REQUEST['btn_insert']))
 	$namaproduk	= $_REQUEST['txt_nama'];	//textbox name "txt_lastname"
 	$hargaproduk= $_REQUEST['txt_harga'];
 	$beratsampah= $_REQUEST['txt_berat'];
-	$date		= date('Y-m-d');
+	$date		= date('Y-m-d H:i:s');
 	$kategori	= $_REQUEST['txt_kategori'];
 	$cabang		= $_REQUEST['txt_cabang'];
 	$Keterangan = $_REQUEST['txt_keterangan'];
+	$officer 	= $_SESSION['idlogin'];
 
 
 	// echo $cabang;
@@ -128,8 +132,26 @@ if(isset($_REQUEST['btn_insert']))
 		{
 			if(!isset($errorMsg))
 			{
-				$insert_stmt=$db->prepare('INSERT INTO produk (produk_kode,produk_nama,produk_satuan,produk_date,produk_kategori,branch,produk_harga_jual,produk_keterangan) 
-														VALUES(:kodeproduk,:namaproduk,:beratsampah,:udate,:kategori,:cabang,:hargaproduk,:Keterangan)'); //sql insert query					
+				$insert_stmt=$db->prepare('INSERT INTO tblproduct 
+													(field_product_code,
+													 field_product_name,
+													 field_unit,
+													 field_date_price,
+													 field_category,
+													 field_branch,
+													 field_price,
+													 field_note,
+													 field_officer) 
+											VALUES  (:kodeproduk,
+													 :namaproduk,
+													 :beratsampah,
+													 :udate,
+													 :kategori,
+													 :cabang,
+													 :hargaproduk,
+													 :Keterangan,
+													 :petugas)');
+
 				$insert_stmt->bindParam(':kodeproduk',$kodeproduk);
 				$insert_stmt->bindParam(':namaproduk',$namaproduk); 
 				$insert_stmt->bindParam(':beratsampah',$beratsampah);
@@ -138,14 +160,13 @@ if(isset($_REQUEST['btn_insert']))
 				$insert_stmt->bindParam(':cabang',$cabang);
 				$insert_stmt->bindParam(':hargaproduk',$hargaproduk);
 				$insert_stmt->bindParam(':Keterangan',$Keterangan);  
-					  
+				$insert_stmt->bindParam(':petugas',$officer);	  
 					
 				if($insert_stmt->execute())
 				{
 					$insertMsg="Insert Successfully"; //execute query success message
 					echo '<META HTTP-EQUIV="Refresh" Content="1;">';
-					//header("location: administrator/dashboard.php?module=product");
-					//header("refresh:1;index.php"); //refresh 3 second and redirect to index.php page
+					
 				}
 			}
 		}
@@ -229,7 +250,7 @@ if(isset($_REQUEST['btn_insert']))
 					<select class="form-control" type="text" name="txt_kategori">
 						<option>Pilih</option>
 						<?php foreach($resultKategori as $rows) { ?>
-						<option  value="<?php echo $rows['field_category_id']; ?>"><?php echo $rows['field_category_id']."-"; echo $rows['field_category'] ; ?></option>
+						<option  value="<?php echo $rows['field_category_id']; ?>"><?php echo $rows['field_category_id']."-"; echo $rows['field_name_category'] ; ?></option>
 						<?php } ?>
 					</select>
 				</div>
@@ -271,14 +292,23 @@ if(isset($_REQUEST['btn_insert']))
 											              <div class="modal-header">
 											                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 											                  <span aria-hidden="true">&times;</span></button>
-											                <h4 class="modal-title">Tambah Kategori</h4>
+											                <h4 class="modal-title">Add Category</h4>
 											              </div>
 											              <div class="modal-body">
 											                <form method="post" class="form-horizontal">
 											                	<div class="form-group">
-											                		<div class="box-header">
-																<input type="text" name="txt_tambahkategori" class="form-control" placeholder="Masukkan Nama Kategori" />
-																	</div>
+											                	<div class="box-header">
+																<input type="text" name="txt_tambahkategori" class="form-control" placeholder="Masukkan Nama Category" />
+																</div>
+																<div class="box-header">
+																	<select class="form-control" name="txt_trash">
+																	<option>Pilih</option>
+																	<option value="Anorganic">Anorganic</option>
+																	<option value="Organic">Organic</option>
+																	<option value="B3">B3</option>
+																	<option value="Rupiah">Rupiah</option>
+																	</select>
+																</div>
 																</div>
 														        <div class="modal-footer">
 														        <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>														                

@@ -18,7 +18,7 @@ if (isset($_REQUEST['id'])) {
     $row=$select_stmt->fetch(PDO::FETCH_ASSOC);
       if ($id==$row["field_user_id"]) {
         //echo "TRUE";
-            $iduser   =$_SESSION['administrator_id'];//member_id
+            $iduser   =$_SESSION['idlogin'];//member_id
             $idmember =$_SESSION['administrator_login'];//id_member
             $aktifitas="DELETE AKUN ".$row["field_username"];
             $date     = date("Y-m-d H:s:i");
@@ -47,19 +47,62 @@ if (isset($_REQUEST['id'])) {
 }
 
 
+if ($_SESSION['rolelogin']=='ADM') {
+    $Sql = "SELECT E.*,D.field_department_name,B.field_branch_name  
+                        FROM tblemployeeslogin E 
+                        JOIN tblbranch B ON E.field_branch=B.field_branch_id 
+                        JOIN tbldepartment D ON E.field_role=D.field_department_id 
+                        ORDER BY E.field_user_id DESC ";
+    $Stmt = $db->prepare($Sql);
+    $Stmt->execute();
+    $result = $Stmt->fetchAll();
+  # code...
+}elseif ($_SESSION['rolelogin']=='MGR') {
+   $Sql = "SELECT E.*,D.field_department_name,B.field_branch_name  
+                        FROM tblemployeeslogin E 
+                        JOIN tblbranch B ON E.field_branch=B.field_branch_id 
+                        JOIN tbldepartment D ON E.field_role=D.field_department_id 
+                        WHERE E.field_role !='ADM'
+                        ORDER BY E.field_user_id DESC ";
+    $Stmt = $db->prepare($Sql);
+    $Stmt->execute();
+    $result = $Stmt->fetchAll();
+}elseif ($_SESSION['rolelogin']=='SPV') {
+  # code...
+  $Sql = "SELECT E.*,D.field_department_name,B.field_branch_name  
+                        FROM tblemployeeslogin E 
+                        JOIN tblbranch B ON E.field_branch=B.field_branch_id 
+                        JOIN tbldepartment D ON E.field_role=D.field_department_id 
+                        WHERE E.field_role !='ADM' AND E.field_role !='MGR' AND E.field_role !='SPV' AND E.field_branch=:idbranch
+                        ORDER BY E.field_user_id DESC ";
+    $Stmt = $db->prepare($Sql);
+    //$Stmt->execute();
+    $Stmt->execute(array(":idbranch"=>$branchid));
+    $result = $Stmt->fetchAll();
+}elseif ($_SESSION['rolelogin']=='BCO') {
+  $Sql = "SELECT E.*,D.field_department_name,B.field_branch_name  
+                        FROM tblemployeeslogin E 
+                        JOIN tblbranch B ON E.field_branch=B.field_branch_id 
+                        JOIN tbldepartment D ON E.field_role=D.field_department_id 
+                        WHERE E.field_role !='ADM' AND E.field_role !='MGR' AND E.field_role !='SPV' AND E.field_branch=:idbranch
+                        ORDER BY E.field_user_id DESC ";
+    $Stmt = $db->prepare($Sql);
+    //$Stmt->execute();
+    $Stmt->execute(array(":idbranch"=>$branchid));
+    $result = $Stmt->fetchAll();
+}elseif ($_SESSION['rolelogin']=='CMS') {
+  $Sql = "SELECT E.*,D.field_department_name,B.field_branch_name  
+                        FROM tblemployeeslogin E 
+                        JOIN tblbranch B ON E.field_branch=B.field_branch_id 
+                        JOIN tbldepartment D ON E.field_role=D.field_department_id 
+                        WHERE E.field_role !='ADM' AND E.field_role !='MGR' AND E.field_role !='SPV' AND E.field_branch=:idbranch
+                        ORDER BY E.field_user_id DESC ";
+    $Stmt = $db->prepare($Sql);
+    //$Stmt->execute();
+    $Stmt->execute(array(":idbranch"=>$branchid));
+    $result = $Stmt->fetchAll();
+}
 
-$id = $_SESSION['administrator_id'];                               
-$select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin WHERE field_user_id=:uid");
-$select_stmt->execute(array(":uid"=>$id));  
-$rows=$select_stmt->fetch(PDO::FETCH_ASSOC);
-
-
-$Sql = "SELECT * FROM tblemployeeslogin E JOIN tblbranch B ON E.field_branch=B.field_branch_id 
-                                          JOIN tbldepartment D ON E.field_role=D.field_department_id 
-                                          ORDER BY field_user_id DESC ";
-$Stmt = $db->prepare($Sql);
-$Stmt->execute();
-$result = $Stmt->fetchAll();
 
 
 $no=1;
@@ -122,15 +165,13 @@ $no=1;
                     <?php 
                     if ($rows["field_role"]=="ADM") {
                       echo '<a href="?module=updadminoffice&id='.$row["field_user_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
-                      // echo '<a href="?module=product&id='.$row["produk_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
+                      
                       echo '<a href="#" data-toggle="modal" data-target="#modal-default'.$row["field_user_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';                    
                      
+                    }elseif ($rows["field_role"]=="MGR") {
+                       echo '<a href="?module=updadminoffice&id='.$row["field_user_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';                     
                     }elseif ($rows["field_role"]=="SPV") {
-                      echo '<a href="detail.php?trx_id='.$row["field_role"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';                      
-                    }elseif ($rows["field_role"]=="Officer") {
-                      echo "";
-                    }elseif ($rows["field_role"]=="Superadmin") {
-                      echo "Proses";
+                       echo '<a href="?module=updadminoffice&id='.$row["field_user_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
                     }
                      ?>                    
                   

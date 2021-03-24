@@ -8,8 +8,6 @@ if(!isset($_SESSION['userlogin'])) {
   header("location: ../index.php");
 }
 
-
-
 if (isset($_REQUEST['id'])) {
 
     $id=$_REQUEST['id'];    
@@ -24,15 +22,6 @@ if (isset($_REQUEST['id'])) {
     $delete_stmt->execute();
 }
 
-// echo $id;
-// echo "<br>";
-
-$id = $_SESSION['idlogin'];                               
-$select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin WHERE field_user_id=:uid");
-$select_stmt->execute(array(":uid"=>$id));  
-$rows=$select_stmt->fetch(PDO::FETCH_ASSOC);
-
-//$Sql = "SELECT * FROM tblorder WHERE field_member_id=$trx_id_member AND field_status='Success' ORDER BY field_order_id DESC LIMIT 5";
 $Sql = "SELECT * FROM tblgoldprice ORDER BY field_gold_id DESC";
 $Stmt = $db->prepare($Sql);
 $Stmt->execute();
@@ -68,15 +57,6 @@ if ($Selisi > 1) {
 }
 
 
-
-// $encrypt=encrypt($rows["field_user_id"]);
-// $decrypt=decrypt($encrypt);
-// echo $encrypt;
-// echo "<br>";
-// echo $decrypt;
-// echo "<br>";
-// echo "<br>";
-
 ?>
                  
     
@@ -89,7 +69,6 @@ if ($Selisi > 1) {
           <!-- <div class="box"> -->
             <div class="">
             <div class="box-header">
-
               <h3 class="box-title"><a href="?module=addgold" class="text-white btn btn-warning "><i class="fa fa-plus"></i> Add Gold Price</a></h3>
             </div>
             <!-- /.box-header -->
@@ -100,8 +79,7 @@ if ($Selisi > 1) {
                   <th >No</th>
                   <th >Ratio</th>                               
                   <th >Name Gold</th>                 
-                  <th >Amount Price</th>
-                 
+                  <th >Amount Price</th>                 
                   <th>Action</th>                   
                   
             
@@ -137,16 +115,14 @@ if ($Selisi > 1) {
                     <?php 
                     
                     if ($rows["field_role"]=="ADM") {
-                      echo '<a href="?module=updgold&id='.$row["field_gold_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
-                      // echo '<a href="?module=product&id='.$row["produk_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default'.$row["field_gold_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';                    
-                     
+                      echo '<a href="?module=updgold&id='.$row["field_gold_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';                      
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-default'.$row["field_gold_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';                 
                     }elseif ($rows["field_role"]=="MGR") {
                       echo '<a href="?module=updgold&id='.$row["field_gold_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';                     
                     }elseif ($rows["field_role"]=="SPV") {
-                      echo '<a href="?module=updgold&id='.$row["field_gold_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
+                      echo '';
                     }elseif ($rows["field_role"]=="BCO") {
-                      echo '<a href="?module=updgold&id='.$row["field_gold_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
+                      echo '';
                     }elseif ($rows["field_role"]=="CMS") {
                       echo '';
                     }

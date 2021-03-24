@@ -14,7 +14,9 @@ if(isset($_REQUEST['id']))
 	try
 	{
 		$id = $_REQUEST['id']; //get "update_id" from index.php page through anchor tag operation and store in "$id" variable
-		$select_stmt = $db->prepare("SELECT * FROM ((produk JOIN kategori ON produk.produk_kategori=kategori.kategori_id) JOIN tblbranch ON produk.branch=tblbranch.field_branch_id) WHERE produk_id =:id"); //sql select query
+		$select_stmt = $db->prepare("SELECT * FROM tblproduct P JOIN tblcategory C ON P.field_category=C.field_category_id 
+																JOIN tblbranch B ON P.field_branch=B.field_branch_id 
+																WHERE P.field_product_id =:id");
 		$select_stmt->bindParam(':id',$id);
 		$select_stmt->execute(); 
 		$row = $select_stmt->fetch(PDO::FETCH_ASSOC);
@@ -33,10 +35,18 @@ $Stmt = $db->prepare($Sql);
 $Stmt->execute();
 $resultKategori = $Stmt->fetchAll(); 
 
-$Sql ="SELECT * FROM tblbranch";
-$Stmt = $db->prepare($Sql);
-$Stmt->execute();
-$result = $Stmt->fetchAll();
+if ($_SESSION['rolelogin']=='ADM' OR $_SESSION['rolelogin']=='MGR') {
+	$Sql ="SELECT * FROM tblbranch";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute();
+	$result = $Stmt->fetchAll();
+	
+}else{
+	$Sql ="SELECT * FROM tblbranch WHERE field_branch_id=:idbranch";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute(array(":idbranch"=>$branchid));
+	$result = $Stmt->fetchAll();
+}
 //extract($row);                
 
 if(isset($_REQUEST['btn_update']))
@@ -50,6 +60,7 @@ if(isset($_REQUEST['btn_update']))
 	$cabang		= $_REQUEST['txt_cabang'];
 	$hargaproduk= $_REQUEST['txt_harga'];
 	$Keterangan = $_REQUEST['txt_keterangan'];
+	$officer 	= $_SESSION['idlogin'];
 
 
 	// echo $cabang;
@@ -84,7 +95,16 @@ if(isset($_REQUEST['btn_update']))
 				
 														 //sql insert query	
 
-				$update_stmt=$db->prepare('UPDATE produk SET produk_kode=:kodeproduk, produk_nama=:namaproduk,produk_satuan=:beratsampah,produk_date=:udate,produk_kategori=:kategori,branch=:cabang,produk_harga_jual=:hargaproduk,produk_keterangan=:Keterangan WHERE produk_id=:id');
+				$update_stmt=$db->prepare('UPDATE tblproduct SET field_product_code=:kodeproduk, 
+																 field_product_name=:namaproduk,
+																 field_unit=:beratsampah,
+																 field_date_price=:udate,
+																 field_category=:kategori,
+																 field_branch=:cabang,
+																 field_price=:hargaproduk,
+																 field_note=:Keterangan,
+																 field_officer=:petugas 
+																 WHERE field_product_id=:id');
 				$update_stmt->bindParam(':id',$id);				
 				$update_stmt->bindParam(':kodeproduk',$kodeproduk);
 				$update_stmt->bindParam(':namaproduk',$namaproduk); 
@@ -93,7 +113,8 @@ if(isset($_REQUEST['btn_update']))
 				$update_stmt->bindParam(':kategori',$kategori);   
 				$update_stmt->bindParam(':cabang',$cabang);
 				$update_stmt->bindParam(':hargaproduk',$hargaproduk);
-				$update_stmt->bindParam(':Keterangan',$Keterangan);  
+				$update_stmt->bindParam(':Keterangan',$Keterangan); 
+				$update_stmt->bindParam(':petugas',$officer);	 
 					  
 					
 				if($update_stmt->execute())
@@ -145,28 +166,28 @@ if(isset($_REQUEST['btn_update']))
 			<form method="post" class="form-horizontal">
 					
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Kode Produk</label>
+				<label class="col-sm-3 control-label">Code Product</label>
 				<div class="col-sm-3">
-				<input type="text" name="txt_kodeproduk" class="form-control" value="<?php echo $row["produk_kode"]; ?>" readonly />
+				<input type="text" name="txt_kodeproduk" class="form-control" value="<?php echo $row["field_product_code"]; ?>" readonly />
 				</div>
 				</div>
 						
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Nama Produk sampah</label>
+				<label class="col-sm-3 control-label">Name Product</label>
 				<div class="col-sm-6">
-				<input type="text" name="txt_nama" class="form-control" value="<?php echo $row["produk_nama"]; ?>" />
+				<input type="text" name="txt_nama" class="form-control" value="<?php echo $row["field_product_name"]; ?>" />
 				</div>
 				</div>
 
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Harga Sampah</label>
+				<label class="col-sm-3 control-label">Price</label>
 				<div class="row">
 				<div class="col-sm-3">
-				<input type="text" name="txt_harga" class="form-control" value="<?php echo $row["produk_harga_jual"]; ?>" />
+				<input type="text" name="txt_harga" class="form-control" value="<?php echo $row["field_price"]; ?>" />
 				</div>
 				<div class="col-sm-2">
 					<select class="form-control" name="txt_berat">
-						<option value="<?php echo $row["produk_satuan"]; ?>"><?php echo $row["produk_satuan"]; ?></option>
+						<option value="<?php echo $row["field_unit"]; ?>"><?php echo $row["field_unit"]; ?></option>
 						<option value="Kg">Kg</option>
 						<option value="Rp">Rp</option>
 						<option value="Pcs">Pcs</option>
@@ -179,29 +200,29 @@ if(isset($_REQUEST['btn_update']))
 				</div>
 
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Kategori Sampah</label>
+				<label class="col-sm-3 control-label">Category</label>
 				<div class="col-sm-2">
 					<select class="form-control" type="text" name="txt_kategori">
-						<option  value="<?php echo $row['produk_kategori']; ?>"><?php echo $row['produk_kategori']."-"; echo $row['kategori'] ;?></option>
+						<option  value="<?php echo $row['field_category']; ?>"><?php echo $row['field_category']."-"; echo $row['field_name_category'] ;?></option>
 						<?php foreach($resultKategori as $rows) { ?>
-						<option  value="<?php echo $rows['kategori_id']; ?>"><?php echo $rows['kategori_id']."-"; echo $rows['kategori'] ; ?></option>
+						<option  value="<?php echo $rows['field_category_id']; ?>"><?php echo $rows['field_category_id']."-"; echo $rows['field_name_category'] ; ?></option>
 						<?php } ?>
 					</select>
 				</div>
 				</div>
 
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Keterangan</label>
+				<label class="col-sm-3 control-label">Note</label>
 				<div class="col-sm-6">
 				<!-- <input type="text" name="txt_keterangan" class="form-control" value="<?php //echo $row["produk_keterangan"]; ?>" /> -->
-				<input type="text" class="form-control" name="txt_keterangan" value="<?php echo $row["produk_keterangan"]; ?>" >
+				<input type="text" class="form-control" name="txt_keterangan" value="<?php echo $row["field_note"]; ?>" >
 				</div>
 				</div>
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Cabang Kantor</label>
+				<label class="col-sm-3 control-label">Branch Office</label>
 				<div class="col-sm-6">
 				<select class="form-control" type="text" name="txt_cabang">
-						<option value="<?php echo $row["branch"]; ?>"><?php echo $row["field_branch_name"]."-"; echo $row["field_branch_id"]; ?></option>
+						<option value="<?php echo $row["field_branch"]; ?>"><?php echo $row["field_branch_name"]."-"; echo $row["field_branch_id"]; ?></option>
 						<?php foreach($result as $branch) { ?> 
 						<option  value="<?php echo $branch['field_branch_id'] ; ?>"><?php echo $branch['field_branch_name']."-";echo $branch['field_branch_id'] ; ?></option>		
 						<?php } ?>
