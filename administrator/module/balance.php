@@ -39,43 +39,16 @@ $no=1;
 
 
 ?>
-                 
-    
-    <!-- Content Header (Page header) -->
-     <section  class="content-header">
-      <div class="row box-footer">
-<!-- <section class="content"> -->
+    <section class="content">
       <div class="row">
-        <div class="col-xs-12">
-          <!-- <div class="box"> -->
-            <?php
-            if(isset($errorMsg))
-            {
-              ?>
-                    <div class="alert alert-danger">
-                      <strong>WRONG ! <?php echo $errorMsg; ?></strong>
-                    </div>
-                    <?php
-            }
-            if(isset($insertMsg)){
-            ?>
-              <div class="alert alert-success">
-                <strong>SUCCESS ! <?php echo $insertMsg; ?></strong>
-              </div>
-                <?php
-            }
-            ?> 
-            <div class="">
-            <div class="box-header-center">
-
-
-              <h3 class="box-title"><a href="#" class="text-white "><i class="fa fa-windows"></i> Balance Customer</a></h3>
-            </div>
-       
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-             
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header">
+              <i class="fa fa-edit"></i>
+              <h3 class="box-title">Balance Customer</h3>              
+            </div>     
+              <!-- Content -->
+            <div class="box-body">             
               <table id="trxSemua" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -85,13 +58,11 @@ $no=1;
                   <th>Account</th>
                   <th>Balance</th>
                   <th>Branch</th>
-                  <th>Action</th>                   
-                  
-            
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-             <?php 
+                <?php 
               foreach($result as $row) {        
                 ?> 
              
@@ -110,28 +81,21 @@ $no=1;
 
               <?php } ?>
                 </tbody>
-         <!--        <tfoot>
+                <tfoot>
                 <tr>
-                  <th>Trx</th>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
+                   <th >No</th>                              
+                  <th>ID Number</th>
+                  <th>Customer</th>                 
+                  <th>Account</th>
+                  <th>Balance</th>
+                  <th>Branch</th>
+                  <th>Action</th>
                 </tr>
-                </tfoot> -->
-              </table>
-                              
+                </tfoot>
+              </table>                              
             </div>
-            <!-- /.box-body -->
+              <!-- Content -->
           </div>
-
-          <!-- /.box -->
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
-      <!-- div ikut atas -->    
     </section>
-
-

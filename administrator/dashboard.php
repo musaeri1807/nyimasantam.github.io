@@ -177,9 +177,9 @@ $branchid=$rows['field_branch'];
        <!--  <li class="active treeview">--- -->
         <li>
           <a href="?module=home">
-            <i class="fa fa-dashboard"></i> <span>Dashboard |<?php echo $rows["field_department_name"] ?></span>
+            <i class="fa fa-dashboard"></i> <span> |<?php echo $rows["field_department_name"] ?></span>
             <span class="pull-right-container">
-             <!--  <i class="fa fa-angle-left pull-right"></i> -->
+             <!--  <i class="fa fa-angle-left pull-right">Dashboard</i> -->
             </span>
           </a>
          
@@ -206,9 +206,9 @@ $branchid=$rows['field_branch'];
             </span>
           </a>
           <ul class="treeview-menu">
+            <li><a href="?module=balance"><i class="fa fa-window-maximize"></i>Balance</a></li>                     
+            <li><a href="?module=deposit"><i class="fa fa-window-restore"></i>Deposit</a></li>
             <li><a href="?module=withdraw"><i class="fa fa-server"></i>Withdraw</a></li>
-            <li><a href="?module=deposit"><i class="fa fa-window-restore"></i> Deposit</a></li>
-            <li><a href="?module=balance"><i class="fa fa-window-maximize"></i> Customer Balance</a></li>                      
           </ul>
         </li>
         
@@ -392,6 +392,8 @@ $branchid=$rows['field_branch'];
                                 include "module/withdraw.php";
                               }elseif ($_GET['module']=="mailbox") {
                                 include "module/mailbox.php";
+                              }elseif ($_GET['module']=="adddeposit") {
+                                include "module/adddeposit.php";
                               }
 
                                   
