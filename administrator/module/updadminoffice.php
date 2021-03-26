@@ -175,36 +175,26 @@ if (isset($_REQUEST["btn_forget"])) {
 }
 
 ?>
-<!-- Content Header (Page header) -->
-     <section  class="content-header">
-      <div class="row box-footer">
-<!-- <section class="content"> -->
+    <section class="content">
       <div class="row">
-        <div class="col-xs-12">
-          <!-- <div class="box"> -->
-
-          		<?php
-		if(isset($errorMsg))
-		{
-			?>
-            <div class="alert alert-danger">
-            	<strong>WRONG ! <?php echo $errorMsg; ?></strong>
-            </div>
-            <?php
-		}
-		if(isset($insertMsg)){
-		?>
-			<div class="alert alert-success">
-				<strong>SUCCESS ! <?php echo $insertMsg; ?></strong>
-			</div>
-        <?php
-		}
-		?> 
-            
-           
-            <!-- /.box-header -->
+        <div class="col-md-12">
+          <div class="box box-primary">
             <div class="box-header">
-            		<center><h2>Update Employee</h2></center>
+              <i class="fa fa-edit"></i>
+              <h3 class="box-title">Update Employee</h3>
+                
+            </div>
+              <!-- Content --> 
+				<?php
+				if(isset($errorMsg)){
+				echo'<div class="alert alert-danger"><strong>WRONG !'.$errorMsg.'</strong></div>';
+				}
+				if(isset($insertMsg)){
+				echo'<div class="alert alert-success"><strong>SUCCESS !'.$insertMsg.'</strong></div>';
+				}
+				?>                    
+
+            <div class="box-body">
 			<form method="post" class="form-horizontal">
 					
 				<div class="form-group">
@@ -216,7 +206,7 @@ if (isset($_REQUEST["btn_forget"])) {
 				</div>
 
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Nama</label>
+				<label class="col-sm-3 control-label">Name</label>
 				<div class="row">
 				<div class="col-sm-3">
 				<input type="text" name="txt_firstname" class="form-control" value="<?php echo $row["field_name_officer"]; ?>" />
@@ -257,7 +247,7 @@ if (isset($_REQUEST["btn_forget"])) {
 				</div>
 				</div> -->
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Cabang Kantor</label>
+				<label class="col-sm-3 control-label">Branch Office</label>
 				<div class="col-sm-6">
 				<select class="form-control" type="text" name="txt_cabang">
 						<option value="<?php echo $row["field_branch"]; ?>"><?php echo $row['field_branch_name']."-"; echo $row["field_branch"]; ?></option>
@@ -294,24 +284,15 @@ if (isset($_REQUEST["btn_forget"])) {
 			
 				<div class="form-group">
 				<div class="col-sm-offset-3 col-sm-9 m-t-15">
-				<input type="submit"  name="btn_update" class="btn btn-success " value="Update">
+				<input type="submit"  name="btn_update" class="btn btn-success " value="Save">
 				<input type="submit"  name="btn_forget" class="btn btn-info " value="Forget Password">
 				<a href="?module=adminoffice" class="btn btn-danger">Cancel</a>
 				</div>
 				</div>
 					
 			</form>
-    
-    <!-- form -->
-            </div>
-            <!-- /.box-body -->
-          
-
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
+			</div>
+       </div>
       </div>
-      <!-- /.row -->
-      <!-- div ikut atas -->
     </div> 
     </section>

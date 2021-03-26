@@ -220,38 +220,26 @@ $no=1;
 
 
 ?>
-                 
-    
-    <!-- Content Header (Page header) -->
-     <section  class="content-header">
-      <div class="row box-footer">
-<!-- <section class="content"> -->
+    <section class="content">
       <div class="row">
-        <div class="col-xs-12">
-          <!-- <div class="box"> -->
-            <?php
-            if(isset($errorMsg))
-            {
-              ?>
-                    <div class="alert alert-danger">
-                      <strong>WRONG ! <?php echo $errorMsg; ?></strong>
-                    </div>
-                    <?php
-            }
-            if(isset($insertMsg)){
-            ?>
-              <div class="alert alert-success">
-                <strong>SUCCESS ! <?php echo $insertMsg; ?></strong>
-              </div>
-                <?php
-            }
-            ?> 
-            <div class="">
-            <div class="box-header-center">
-              <br>
-              <br>
-              <br>
-              <center>
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header">
+              <i class="fa fa-edit"></i>
+              <h3 class="box-title">Activation</h3>
+                
+            </div>
+              <!-- Content --> 
+				<?php
+				if(isset($errorMsg)){
+				echo'<div class="alert alert-danger"><strong>WRONG !'.$errorMsg.'</strong></div>';
+				}
+				if(isset($insertMsg)){
+				echo'<div class="alert alert-success"><strong>SUCCESS !'.$insertMsg.'</strong></div>';
+				}
+				?>                    
+
+            <div class="box-body">
               <form method="post" class="form-horizontal"> 
    
               <div class="form-group">
@@ -341,29 +329,22 @@ $no=1;
 
               <?php } ?>
                 </tbody>
-         <!--        <tfoot>
+                <tfoot>
                 <tr>
-                  <th>Trx</th>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
+                  <th >No</th>                              
+                  <th>Name</th>                 
+                  <th>ID Number</th>
+                  <th>Account</th>
+                  <th>Action</th> 
                 </tr>
-                </tfoot> -->
+                </tfoot>
               </table>
                               
             </div>
-            <!-- /.box-body -->
-          </div>
-
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
+		<!-- contain -->
       </div>
-      <!-- /.row -->
-      <!-- div ikut atas -->
+      </div>
     </div> 
-    </section>
+  </section>
 
 

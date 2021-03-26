@@ -2,14 +2,11 @@
 // ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
-
-
 session_start();
 
 if(!isset($_SESSION['userlogin'])) {
     header("location: ../index.php");
 }
-
 $id = $_SESSION['idlogin'];                               
 $select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin E JOIN tbldepartment D
                                                                 ON E.field_role=D.field_department_id 

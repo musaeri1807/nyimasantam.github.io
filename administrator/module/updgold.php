@@ -110,36 +110,27 @@ if(isset($_REQUEST['btn_update']))
 }
 
 ?>
-<!-- Content Header (Page header) -->
-     <section  class="content-header">
-      <div class="row box-footer">
-<!-- <section class="content"> -->
+    <section class="content">
       <div class="row">
-        <div class="col-xs-12">
-          <!-- <div class="box"> -->
-
-          		<?php
-		if(isset($errorMsg))
-		{
-			?>
-            <div class="alert alert-danger">
-            	<strong>WRONG ! <?php echo $errorMsg; ?></strong>
-            </div>
-            <?php
-		}
-		if(isset($insertMsg)){
-		?>
-			<div class="alert alert-success">
-				<strong>SUCCESS ! <?php echo $insertMsg; ?></strong>
-			</div>
-        <?php
-		}
-		?> 
-            
-           
-            <!-- /.box-header -->
+        <div class="col-md-12">
+          <div class="box box-primary">
             <div class="box-header">
-            		<center><h2>Update Product</h2></center>
+              <i class="fa fa-edit"></i>
+              <h3 class="box-title">Update Gold Price</h3>
+                
+            </div>
+              <!-- Content --> 
+				<?php
+				if(isset($errorMsg)){
+				echo'<div class="alert alert-danger"><strong>WRONG !'.$errorMsg.'</strong></div>';
+				}
+				if(isset($insertMsg)){
+				echo'<div class="alert alert-success"><strong>SUCCESS !'.$insertMsg.'</strong></div>';
+				}
+				?>         
+           
+
+            <div class="box-body"> 
 			<form method="post" class="form-horizontal">
 					
 				<div class="form-group">
@@ -166,23 +157,14 @@ if(isset($_REQUEST['btn_update']))
 			
 				<div class="form-group">
 				<div class="col-sm-offset-3 col-sm-9 m-t-15">
-				<input type="submit"  name="btn_update" class="btn btn-success " value="Update">
+				<input type="submit"  name="btn_update" class="btn btn-success " value="Save">
 				<a href="?module=gold" class="btn btn-danger">Cancel</a>
 				</div>
 				</div>
 					
 			</form>
-    
-    <!-- form -->
             </div>
-            <!-- /.box-body -->
-          
-
-          <!-- /.box -->
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
-      <!-- div ikut atas -->
     </div> 
     </section>

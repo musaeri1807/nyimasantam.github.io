@@ -241,36 +241,26 @@ if(isset($_REQUEST['btn_insert']))
 }
 
 ?>
-<!-- Content Header (Page header) -->
-     <section  class="content-header">
-      <div class="row box-footer">
-<!-- <section class="content"> -->
+    <section class="content">
       <div class="row">
-        <div class="col-xs-12">
-          <!-- <div class="box"> -->
-
-          		<?php
-		if(isset($errorMsg))
-		{
-			?>
-            <div class="alert alert-danger">
-            	<strong>WRONG ! <?php echo $errorMsg; ?></strong>
-            </div>
-            <?php
-		}
-		if(isset($insertMsg)){
-		?>
-			<div class="alert alert-success">
-				<strong>SUCCESS ! <?php echo $insertMsg; ?></strong>
-			</div>
-        <?php
-		}
-		?> 
-            
-           
-            <!-- /.box-header -->
+        <div class="col-md-12">
+          <div class="box box-primary">
             <div class="box-header">
-            		<center><h2>Insert Employee</h2></center>
+              <i class="fa fa-edit"></i>
+              <h3 class="box-title">Insert Employee</h3>
+                
+            </div>
+              <!-- Content --> 
+				<?php
+				if(isset($errorMsg)){
+				echo'<div class="alert alert-danger"><strong>WRONG !'.$errorMsg.'</strong></div>';
+				}
+				if(isset($insertMsg)){
+				echo'<div class="alert alert-success"><strong>SUCCESS !'.$insertMsg.'</strong></div>';
+				}
+				?>                    
+
+            <div class="box-body">
 			<form method="post" class="form-horizontal">
 					
 				<div class="form-group">
@@ -281,12 +271,12 @@ if(isset($_REQUEST['btn_insert']))
 				</div>
 
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Nama</label>
+				<label class="col-sm-3 control-label">Name</label>
 				<div class="row">
 				<div class="col-sm-2">
 				<input type="text" name="txt_firstname" class="form-control" placeholder="Masukkan Depan" />
 				</div>				
-				<div class="col-sm-2">
+				<div class="col-sm-3">
 				<input type="text" name="txt_lastname" class="form-control" placeholder="Masukkan Belakang" />
 				</div>
 				</div>
@@ -325,7 +315,7 @@ if(isset($_REQUEST['btn_insert']))
 				</div>
 				</div> -->
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Cabang Kantor</label>
+				<label class="col-sm-3 control-label">Branch Office</label>
 				<div class="col-sm-6">
 				<select class="form-control" type="text" name="txt_cabang">
 						<option>Pilih</option>
@@ -339,7 +329,7 @@ if(isset($_REQUEST['btn_insert']))
 			
 				<div class="form-group">
 				<div class="col-sm-offset-3 col-sm-9 m-t-15">
-				<input type="submit"  name="btn_insert" class="btn btn-success " value="Insert">
+				<input type="submit"  name="btn_insert" class="btn btn-success " value="Save">
 				<a href="?module=adminoffice" class="btn btn-danger">Cancel</a>
 				</div>
 				</div>
@@ -380,15 +370,9 @@ if(isset($_REQUEST['btn_insert']))
 											        <!-- /.modal -->
     
     <!-- form -->
-            </div>
-            <!-- /.box-body -->
-          
-
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
+		</div>
+		<!-- contain -->
+       </div>
       </div>
-      <!-- /.row -->
-      <!-- div ikut atas -->
     </div> 
     </section>

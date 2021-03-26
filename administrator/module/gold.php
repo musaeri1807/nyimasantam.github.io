@@ -58,20 +58,17 @@ if ($Selisi > 1) {
 
 
 ?>
-                 
-    
-    <!-- Content Header (Page header) -->
-     <section  class="content-header">
-      <div class="row box-footer">
-<!-- <section class="content"> -->
+    <section class="content">
       <div class="row">
-        <div class="col-xs-12">
-          <!-- <div class="box"> -->
-            <div class="">
+        <div class="col-md-12">
+          <div class="box box-primary">
             <div class="box-header">
-              <h3 class="box-title"><a href="?module=addgold" class="text-white btn btn-warning "><i class="fa fa-plus"></i> Add Gold Price</a></h3>
-            </div>
-            <!-- /.box-header -->
+              <i class="fa fa-edit"></i>
+              <h3 class="box-title">Gold Price</h3>
+              <!-- <button type="submit" class="btn btn-success pull-right">Add Transaction</button> -->
+              <a href="?module=addgold" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Add Price</a>          
+            </div>     
+              <!-- Content -->                 
             <div class="box-body">
               <table id="trxSemua" class="table table-bordered table-striped">
                 <thead>
@@ -80,9 +77,7 @@ if ($Selisi > 1) {
                   <th >Ratio</th>                               
                   <th >Name Gold</th>                 
                   <th >Amount Price</th>                 
-                  <th>Action</th>                   
-                  
-            
+                  <th>Action</th>         
                 </tr>
                 </thead>
                 <tbody>
@@ -170,29 +165,21 @@ if ($Selisi > 1) {
                 
               <?php } ?>
                 </tbody>
-         <!--        <tfoot>
+               <tfoot>
                 <tr>
-                  <th>Trx</th>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
+                  <th >No</th>
+                  <th >Ratio</th>                               
+                  <th >Name Gold</th>                 
+                  <th >Amount Price</th>                 
+                  <th>Action</th> 
                 </tr>
-                </tfoot> -->
-              </table>
-                              
+                </tfoot>
+              </table>                              
             </div>
-            <!-- /.box-body -->
-          </div>
-
-          <!-- /.box -->
+              <!-- Content -->
+              </div>
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
-      <!-- div ikut atas -->
-    </div> 
     </section>
 
 

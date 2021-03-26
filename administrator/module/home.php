@@ -4,19 +4,31 @@ date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
 require_once("../php/function.php");
 
+$Sql ="SELECT * FROM tblbranch WHERE field_branch_id=:idbranch";
+$Stmt = $db->prepare($Sql);
+$Stmt->execute(array(":idbranch"=>$branchid));
+$result = $Stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 
 
-
-<br/>
-<div style="margin-right:10%;margin-left:15%" class="alert alert-danger alert-dismissable">
+<div style="margin-right:10%;margin-left:15%" class="alert alert-info alert-dismissable">
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-<p><i class="icon fa fa-info"></i>
+<Center>
+<h3><i class="icon fa fa-info"></i>
 Welcome ! <?php echo $rows["field_name_officer"]; ?> &nbsp;&nbsp;
 Anda berada di halaman "<?php echo $rows["field_department_name"]; ?>"
-</p>
+<?php 
+if ($_SESSION['rolelogin']=='ADM' OR $_SESSION['rolelogin']=='MGR') {
+  # code...
+} else {
+  # code...
+  echo 'Cabang '.  $result['field_branch_name'];
+}
+?>
+</h3>
+</Center>
 </div> 
-<div class="box box-solid box-danger">
+<!-- <div class="box box-solid box-danger">
 <div class="box-header">
 <i class="fa fa-info"></i>Informasi
 </div>
@@ -31,8 +43,8 @@ Anda berada di halaman "<?php echo $rows["field_department_name"]; ?>"
   <h2>Style Social Media Buttons</h2>
 
 
-<!-- Add font awesome icons -->
-<a href="#" class="fa fa-facebook"></a>
+Add font awesome icons -->
+<!-- <a href="#" class="fa fa-facebook"></a>
 <a href="#" class="fa fa-twitter"></a>
 <a href="#" class="fa fa-google"></a>
 <a href="#" class="fa fa-linkedin"></a>
@@ -54,7 +66,7 @@ Anda berada di halaman "<?php echo $rows["field_department_name"]; ?>"
 <a href="#" class="fa fa-rss"></a>
 
 </div>
-</div><!-- /.row -->
+</div> -->
 
 
 

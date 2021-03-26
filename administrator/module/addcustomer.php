@@ -165,41 +165,31 @@ if(isset($_REQUEST['btn_insert']))
 }
 
 ?>
-<!-- Content Header (Page header) -->
-     <section  class="content-header">
-      <div class="row box-footer">
-<!-- <section class="content"> -->
+    <section class="content">
       <div class="row">
-        <div class="col-xs-12">
-          <!-- <div class="box"> -->
-
-          		<?php
-		if(isset($errorMsg))
-		{
-			?>
-            <div class="alert alert-danger">
-            	<strong>WRONG ! <?php echo $errorMsg; ?></strong>
-            </div>
-            <?php
-		}
-		if(isset($insertMsg)){
-		?>
-			<div class="alert alert-success">
-				<strong>SUCCESS ! <?php echo $insertMsg; ?></strong>
-			</div>
-        <?php
-		}
-		?> 
-            
-           
-            <!-- /.box-header -->
+        <div class="col-md-12">
+          <div class="box box-primary">
             <div class="box-header">
-            		<center><h2>Insert Customer</h2></center>
+              <i class="fa fa-edit"></i>
+              <h3 class="box-title">Insert Customer</h3>
+                
+            </div>
+              <!-- Content --> 
+				<?php
+				if(isset($errorMsg)){
+				echo'<div class="alert alert-danger"><strong>WRONG !'.$errorMsg.'</strong></div>';
+				}
+				if(isset($insertMsg)){
+				echo'<div class="alert alert-success"><strong>SUCCESS !'.$insertMsg.'</strong></div>';
+				}
+				?>                    
+
+            <div class="box-body">
 			<form method="post" class="form-horizontal">
 					
 
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Nama</label>
+				<label class="col-sm-3 control-label">Name</label>
 			
 				<div class="col-sm-6">
 				<input type="text" name="txt_firstname" class="form-control" placeholder="Masukkan Nama" />
@@ -215,7 +205,7 @@ if(isset($_REQUEST['btn_insert']))
 				</div>
 
 				<div class="form-group">
-				<label class="col-sm-3 control-label">No Handphone</label>
+				<label class="col-sm-3 control-label">Cell Pphone</label>
 				<div class="col-sm-3">
 				<input type="text" name="txt_angka" class="form-control" placeholder="Masukkan No Hp 08XX" />
 				</div>
@@ -223,7 +213,7 @@ if(isset($_REQUEST['btn_insert']))
 
 				
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Cabang Kantor</label>
+				<label class="col-sm-3 control-label">Branch Office</label>
 				<div class="col-sm-6">
 				<select class="form-control" type="text" name="txt_cabang">
 						<option>Pilih</option>
@@ -237,7 +227,7 @@ if(isset($_REQUEST['btn_insert']))
 			
 				<div class="form-group">
 				<div class="col-sm-offset-3 col-sm-9 m-t-15">
-				<input type="submit"  name="btn_insert" class="btn btn-success " value="Insert">
+				<input type="submit"  name="btn_insert" class="btn btn-success " value="Save">
 				<a href="?module=customer" class="btn btn-danger">Cancel</a>
 				</div>
 				</div>
@@ -279,14 +269,8 @@ if(isset($_REQUEST['btn_insert']))
     
     <!-- form -->
             </div>
-            <!-- /.box-body -->
-          
-
-          <!-- /.box -->
+              <!-- Content -->
+		 </div>
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
-      <!-- div ikut atas -->
-    </div> 
     </section>

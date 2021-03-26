@@ -7,38 +7,7 @@ require_once("../php/function.php");
 if(!isset($_SESSION['userlogin'])) {
     header("location: ../index.php");
 }
-
-// $SqlEmas="SELECT * FROM tblgoldprice ORDER BY field_gold_id DESC LIMIT 1";
-// $StmtEmas = $db->prepare($SqlEmas);
-// $StmtEmas->execute();
-// $ResultEmas = $StmtEmas->fetch(PDO::FETCH_ASSOC);
-// $SqlEmas2="SELECT * FROM tblgoldprice ORDER BY field_gold_id DESC LIMIT 1,1";
-// $StmtEmas2 = $db->prepare($SqlEmas2);
-// $StmtEmas2->execute();
-// $ResultEmas2 = $StmtEmas2->fetch(PDO::FETCH_ASSOC);
-
-
-
-// $HargaKemarin=$ResultEmas2['field_sell'];
-// $HargaTerkini=$ResultEmas['field_sell'];
-// $Selisi      =$HargaTerkini-$HargaKemarin;
-
-// echo abs($Selisi);
-// echo "<br>";
-// echo $Selisi;
-
-
-
-// $Sql ="SELECT * FROM kategori";
-// $Stmt = $db->prepare($Sql);
-// $Stmt->execute();
-// $resultKategori = $Stmt->fetchAll(); 
-
-// $Sql ="SELECT * FROM tblbranch";
-// $Stmt = $db->prepare($Sql);
-// $Stmt->execute();
-// $result = $Stmt->fetchAll();
-//extract($row);                
+                
 
 if(isset($_REQUEST['btn_insert']))
 {
@@ -97,11 +66,8 @@ if(isset($_REQUEST['btn_insert']))
 					 $update_stmt=$db->prepare("UPDATE tblgoldprice SET field_fluktuasi=:fluktuasi, field_rasio=:rasio WHERE field_gold_id=:trxid ");
 					 $update_stmt->execute(array(':trxid'=>$trxid ,':fluktuasi'=>$abs, ':rasio'=>"Turun"));  
 					}
-
-
-
 					$insertMsg="Insert Successfully"; //execute query success message
-					echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard.php?module=gold">';
+					echo '<META HTTP-EQUIV="Refresh" Content="1;">';
 					
 				}
 			}
@@ -114,38 +80,27 @@ if(isset($_REQUEST['btn_insert']))
 }
 
 ?>
-<!-- Content Header (Page header) -->
-     <section  class="content-header">
-      <div class="row box-footer">
-<!-- <section class="content"> -->
+    <section class="content">
       <div class="row">
-        <div class="col-xs-12">
-          <!-- <div class="box"> -->
-
-          		<?php
-		if(isset($errorMsg))
-		{
-			?>
-            <div class="alert alert-danger">
-            	<strong>WRONG ! <?php echo $errorMsg; ?></strong>
-            </div>
-            <?php
-		}
-		if(isset($insertMsg)){
-		?>
-			<div class="alert alert-success">
-				<strong>SUCCESS ! <?php echo $insertMsg; ?></strong>
-			</div>
-        <?php
-		}
-		?> 
-            
-           
-            <!-- /.box-header -->
+        <div class="col-md-12">
+          <div class="box box-primary">
             <div class="box-header">
-            		<center><h2>Insert Gold Price</h2></center>
-			<form method="post" class="form-horizontal">
-					
+              <i class="fa fa-edit"></i>
+              <h3 class="box-title">Insert Gold Price</h3>
+                
+            </div>
+              <!-- Content --> 
+				<?php
+				if(isset($errorMsg)){
+				echo'<div class="alert alert-danger"><strong>WRONG !'.$errorMsg.'</strong></div>';
+				}
+				if(isset($insertMsg)){
+				echo'<div class="alert alert-success"><strong>SUCCESS !'.$insertMsg.'</strong></div>';
+				}
+				?>                    
+
+            <div class="box-body">            
+			<form method="post" class="form-horizontal">					
 				<div class="form-group">
 				<label class="col-sm-3 control-label">Tanggal</label>
 				<div class="col-sm-3">
@@ -171,51 +126,14 @@ if(isset($_REQUEST['btn_insert']))
 			
 				<div class="form-group">
 				<div class="col-sm-offset-3 col-sm-9 m-t-15">
-				<input type="submit"  name="btn_insert" class="btn btn-success " value="Insert">
+				<input type="submit"  name="btn_insert" class="btn btn-success " value="Save">
 				<a href="?module=gold" class="btn btn-danger">Cancel</a>
 				</div>
 				</div>
 					
 			</form>
-			<!-- Modal -->
-												   	<div class="modal fade" id="modal-default">
-											          <div class="modal-dialog">
-											            <div class="modal-content">
-											              <div class="modal-header">
-											                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											                  <span aria-hidden="true">&times;</span></button>
-											                <h4 class="modal-title">Tambah Kategori</h4>
-											              </div>
-											              <div class="modal-body">
-											                <form method="post" class="form-horizontal">
-											                	<div class="form-group">
-											                		<div class="box-header">
-																<input type="text" name="txt_tambahkategori" class="form-control" placeholder="Masukkan Nama Kategori" />
-																	</div>
-																</div>
-														        <div class="modal-footer">
-														        <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>														                
-														        <input type="submit"  name="btn_insert2" class="btn btn-success " value="Insert">
-														        </div>
-											                </form>
-											              </div>
-											            </div>
-											            <!-- /.modal-content -->
-											          </div>
-											          <!-- /.modal-dialog -->
-											        </div>
-											        <!-- /.modal -->
-    
-    <!-- form -->
             </div>
-            <!-- /.box-body -->
-          
-
-          <!-- /.box -->
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
-      <!-- div ikut atas -->
     </div> 
     </section>

@@ -50,21 +50,17 @@ $no=1;
 
 
 ?>
-                 
-    
-    <!-- Content Header (Page header) -->
-     <section  class="content-header">
-      <div class="row box-footer">
-<!-- <section class="content"> -->
+    <section class="content">
       <div class="row">
-        <div class="col-xs-12">
-          <!-- <div class="box"> -->
-            <div class="">
+        <div class="col-md-12">
+          <div class="box box-primary">
             <div class="box-header">
-
-              <h3 class="box-title"><a href="?module=addproduct" class="text-white btn btn-info "><i class="fa fa-plus"></i> Add Product Price</a></h3>
-            </div>
-            <!-- /.box-header -->
+              <i class="fa fa-edit"></i>
+              <h3 class="box-title">Product Price</h3>
+              <!-- <button type="submit" class="btn btn-success pull-right">Add Transaction</button> -->
+              <a href="?module=addproduct" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Add Price</a>          
+            </div>     
+              <!-- Content -->
             <div class="box-body">
               <table id="trxSemua" class="table table-bordered table-striped">
                 <thead>
@@ -73,21 +69,17 @@ $no=1;
                   <th>Name Product</th>                 
                   <th>Amount Price</th>
                   <th>Price Branch</th>
-                  <th>Action</th>                   
-                  
-            
+                  <th>Action</th>              
                 </tr>
                 </thead>
                 <tbody>
-             <?php 
+              <?php 
               foreach($result as $row) {        
-                ?> 
+              ?> 
              
                  <tr>
                   <td ><?php echo $no++?></td>
-                                
-                  
-                  <td data-title="Trx Id"><?php echo $row["field_name_category"]; ?>|<?php echo $row["field_product_code"];?><br><strong><?php echo $row["field_product_name"];?></strong></td>
+                   <td data-title="Trx Id"><?php echo $row["field_name_category"]; ?>|<?php echo $row["field_product_code"];?><br><strong><?php echo $row["field_product_name"];?></strong></td>
                   <td data-title="Trx Id"><?php echo $row["field_note"] ?>/<?php echo $row["field_unit"];?><br><strong><?php echo rupiah($row["field_price"]);?></strong> <br><small> Harga Update <?php echo date("d F Y",strtotime($row["field_date_price"]));  ?></small></td>
                   <td ><?php echo $row["field_branch_name"]; ?><br>Create <strong><?php echo $row["field_name_officer"]; ?></strong></td>
                   <td ata-title="Trx Id" >                   
@@ -107,10 +99,8 @@ $no=1;
                     }
                      ?>                    
                   
-                  </td> 
-                                      
+                  </td>                                       
                 </tr>
-
                     <div class="modal fade" id="modal-default<?php echo $row["field_product_id"];?>">
                     <div class="modal-dialog">
                     <div class="modal-content">
@@ -149,29 +139,21 @@ $no=1;
                 
               <?php } ?>
                 </tbody>
-         <!--        <tfoot>
+                <tfoot>
                 <tr>
-                  <th>Trx</th>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
+                  <th >No</th>                              
+                  <th>Name Product</th>                 
+                  <th>Amount Price</th>
+                  <th>Price Branch</th>
+                  <th>Action</th>
                 </tr>
-                </tfoot> -->
-              </table>
-                              
+                </tfoot>
+              </table>                              
             </div>
-            <!-- /.box-body -->
-          </div>
-
-          <!-- /.box -->
+              <!-- Content -->
+            </div>
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
-      <!-- div ikut atas -->
-    </div> 
     </section>
 
 
