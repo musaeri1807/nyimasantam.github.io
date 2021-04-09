@@ -12,7 +12,7 @@ require_once("config/koneksi.php");
 session_start();
 if(isset($_SESSION["userlogin"])) //admin_login//check condition user login not direct back to index.php page
 {
-  header("location: administrator/dashboard?module=home");
+  header("location: admin/dashboard?module=home");
 }
 // if(isset($_SESSION["manager_login"]))  //admin_login//check condition user login not direct back to index.php page
 // {
@@ -104,9 +104,9 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
               $loginMsg="Administrator..Successfully Login";
               //header("refresh:1;../../superadmin/superadmin_home.php");
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/administrator/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/admin/dashboard?module=home">';
                       }
               break;
             case 'MGR':
@@ -116,9 +116,9 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
               $loginMsg="Manager..Successfully Login";
               //header("refresh:1;../../superadmin/superadmin_home.php");
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/administrator/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/admin/dashboard?module=home">';
                       }
               break;
             case 'SPV':
@@ -129,9 +129,9 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
               $loginMsg="Supervisor..Successfully Login";
               //header("refresh:1;../../admin/admin_home.php");
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/administrator/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/admin/dashboard?module=home">';
                       }
 
               break;
@@ -143,9 +143,9 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
               $loginMsg="Back Office..Successfully Login";
               //header("refresh:1;../../admin/admin_home.php");
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/administrator/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/admin/dashboard?module=home">';
                       }
 
               break;
@@ -157,9 +157,9 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
               $loginMsg="Customer Service..Successfully Login";
               //header("refresh:1;../../officer/officer_home.php");
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/administrator/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/admin/dashboard?module=home">';
                       }
                 
               break;
@@ -349,10 +349,9 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
     </div>
 
     
-  </div>
+  </div>   
     
-    
-<script src='https://www.google.com/recaptcha/api.js'></script> 
+    <script src='https://www.google.com/recaptcha/api.js'></script> 
     <script src="view/assetlogin/js/jquery-3.3.1.min.js"></script>
     <script src="view/assetlogin/js/popper.min.js"></script>
     <script src="view/assetlogin/js/bootstrap.min.js"></script>

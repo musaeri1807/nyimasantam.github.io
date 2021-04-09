@@ -64,7 +64,8 @@ $branchid=$rows['field_branch'];
 
 </head>
 <!-- <body class="hold-transition  skin-blue sidebar-mini"> -->
-<body class="hold-transition  skin-blue sidebar-mini">
+<!-- <body class="hold-transition  skin-blue sidebar-mini"> -->
+<body class="skin-blue sidebar-mini sidebar-collapse">
 <!-- <body class="skin-red sidebar-mini fixed"> -->
 <div class="wrapper">
 
@@ -391,6 +392,18 @@ $branchid=$rows['field_branch'];
                                 include "module/mailbox.php";
                               }elseif ($_GET['module']=="adddeposit") {
                                 include "module/adddeposit.php";
+                              }else{
+                                echo "<script>
+                              
+                                swal({
+                                    title: 'Akses ditolak',
+                                    text: 'Hanya akun email Google, Yahoo dan AOL Mail yang diperbolehkan',
+                                    type: 'error'
+                                }, function() {
+                                    window.location = 'login.php';
+                                });
+                          
+                                </script>";
                               }
 
                                   

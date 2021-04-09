@@ -28,7 +28,7 @@ if ($_SESSION['rolelogin']=='ADM' OR $_SESSION['rolelogin']=='MGR') {
                                                                 JOIN tblcategory C ON P.field_category=C.field_category_id 
                                                                 JOIN tblbranch B ON P.field_branch=B.field_branch_id
                                                                 JOIN tblemployeeslogin E ON P.field_officer=E.field_user_id 
-                                                                ORDER BY field_product_id DESC";
+                                                                ORDER BY P.field_product_id DESC";
     $Stmt = $db->prepare($Sql);
     $Stmt->execute();
     $result = $Stmt->fetchAll();

@@ -143,7 +143,7 @@ if (isset($_REQUEST['token'])) {
                                           ':comment'  =>"Balance"
                                           ));//
                       $insertMsg = "Token! Valid";
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://'.$_SERVER["SERVER_NAME"].'/Login-Register-PHP-PDO/administrator/dashboard.php?module=activation">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://'.$_SERVER["SERVER_NAME"].'/Login-Register-PHP-PDO/admin/dashboard.php?module=activation">';
                     }
 
                 }else{
@@ -187,11 +187,11 @@ if (isset($_REQUEST['id'])) {
                 $insert->bindParam(':waktu',$date);
                 $insert->execute();
                 $insertMsg="Delete Successfully"; //execute query success message
-                echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=customer">';
+                echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/admin/dashboard?module=customer">';
             }
       }else{
         //echo "FALSE"; 
-        echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/administrator/dashboard?module=customer">';
+        echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/admin/dashboard?module=customer">';
       }      
 
 
