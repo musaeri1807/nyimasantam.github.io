@@ -650,42 +650,51 @@ $branchid=$rows['field_branch'];
     //- PIE CHART -
     //-------------
     // Get context with jQuery - using jQuery's .get() method.
+    <?php
+    $Chrome=700;
+    $IE=700;
+    $FireFox=400;
+    $Safari=500;
+    $Opera=200;
+    $Navigator=100;
+    ?>
     var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
     var pieChart       = new Chart(pieChartCanvas)
     var PieData        = [
+      
       {
-        value    : 700,
+        value    : <?php echo $Chrome;?>,
         color    : '#f56954',
         highlight: '#f56954',
-        label    : 'Chrome'
+        label    : 'Chrome',
       },
       {
-        value    : 700,
+        value    : <?php echo $IE;?>,
         color    : '#00a65a',
         highlight: '#00a65a',
         label    : 'IE'
       }
       ,
       {
-        value    : 400,
+        value    : <?php echo $FireFox;?>,
         color    : '#f39c12',
         highlight: '#f39c12',
         label    : 'FireFox'
       },
       {
-        value    : 600,
+        value    : <?php echo $Safari;?>,
         color    : '#00c0ef',
         highlight: '#00c0ef',
         label    : 'Safari'
       },
       {
-        value    : 300,
+        value    : <?php echo $Opera;?>,
         color    : '#3c8dbc',
         highlight: '#3c8dbc',
         label    : 'Opera'
       },
       {
-        value    : 0,
+        value    : <?php echo $Navigator;?>,
         color    : '#d2d6de',
         highlight: '#d2d6de',
         label    : 'Navigator'
