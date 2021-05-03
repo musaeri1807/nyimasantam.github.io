@@ -64,8 +64,8 @@ $branchid=$rows['field_branch'];
 
 </head>
 <!-- <body class="hold-transition  skin-blue sidebar-mini"> -->
-<!-- <body class="hold-transition  skin-blue sidebar-mini"> -->
-<body class="skin-blue sidebar-mini sidebar-collapse">
+<body class="hold-transition  skin-blue sidebar-mini">
+<!-- <body class="skin-blue sidebar-mini sidebar-collapse"> -->
 <!-- <body class="skin-red sidebar-mini fixed"> -->
 <div class="wrapper">
 
@@ -162,7 +162,8 @@ $branchid=$rows['field_branch'];
         </div>
         <div class="pull-left info">
           <!-- <p>Muhammad Gavin Alhanan</p> -->
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <a href="#"><i class="fa fa-circle text-success"></i> Online</a> <br>
+          Nilai Aset Rp 1.000.000.000
         </div>
       </div>
       <!-- search form -->
