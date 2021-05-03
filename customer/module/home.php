@@ -5,9 +5,7 @@
 <!-- Content Header (Page header) -->
 
      <section  class="content-header">
-
       <div class="row box-footer">
-
         <div class="col-lg-4">
 
           <div class="icon">   
@@ -38,7 +36,6 @@
         <br>
 
         <div class="col-lg-8">
-
         <div class="col-lg-6">
 
           <!-- small box -->            
