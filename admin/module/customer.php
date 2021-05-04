@@ -129,8 +129,8 @@ $no=1;
                       echo '<a href="?module=updcustomer&id='.$row["field_user_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';                    
                       echo '<a href="#" data-toggle="modal" data-target="#modal-default'.$row["field_user_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';                      
                     }elseif ($row["field_status_aktif"]=="0") {
-                      echo '<a href="../activasipdf.php?m='.$row['field_member_id'].'" class="btn btn-sm btn-warning"><i class="fa fa-print"></i> &nbsp Print</a>&nbsp';
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default'.$row["field_user_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';  
+                      echo '<a href="../activasipdf.php?m='.$row['field_member_id'].'" class="btn btn-sm btn-warning"><i class="fa fa-download"></i></a>&nbsp';
+                      // echo '<a href="#" data-toggle="modal" data-target="#modal-default'.$row["field_user_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';  
                     }
                      ?>                    
                   

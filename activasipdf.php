@@ -28,11 +28,11 @@ function Header()
     // Logo
     $this->Image('logon.jpg',10,4,40);
     // Arial bold 15
-    $this->SetFont('Times','B',14);
+    $this->SetFont('Times','B',16);
     // Move to the right
     $this->Cell(80);
     // Title
-    $this->Cell(30,5,'Activasi Customer',0,0,'C');
+    $this->Cell(30,5,'Forms Activasi Customer',0,0,'C');
     // Arial bold 15
     
  
@@ -77,17 +77,28 @@ $pdf->Cell(10,2,'',0,1);
 $pdf->SetFont('Times','',12);
 $pdf->Cell(35,6,'Customer',0,0);
 $pdf->Cell(5,6,':',0,0);
-$pdf->Cell(35,6, $rows['field_nama'],0,1);
+$pdf->Cell(60,6, $rows['field_nama'],0,0);
+
+// $pdf->Cell(10,9,'',0,1);
+$pdf->Cell(23,6, date("d F Y",strtotime($rows['field_tanggal_reg'])),0,0);
+$pdf->Cell(3,6,',',0,0); 
+$pdf->Cell(35,6, $rows['field_time_reg'].' WIB',0,1);
+// $pdf->Cell(10,9,'',0,1);
 
 $pdf->Cell(35,6,'Email',0,0);
 $pdf->Cell(5,6,':',0,0);
-$pdf->Cell(35,6, $rows['field_email'],0,1);
-// $pdf->Cell(10,5,'ssssss',0,1);
+$pdf->Cell(60,6, $rows['field_email'],0,0);
+// $pdf->Cell(10,9,'',0,1);
+$pdf->Cell(20,6,'Handphone',0,0);
+$pdf->Cell(3,6,':',0,0);
+$pdf->Cell(35,6, $rows['field_handphone'],0,1);
+// $pdf->Cell(10,9,'',0,1);
+
 $pdf->Cell(35,6,'Member ID',0,0);
 $pdf->Cell(5,6,':',0,0);
 $pdf->Cell(60,6,$rows['field_member_id'] ,0,0);
 
-$pdf->Cell(20,6,'Account',0,0);
+$pdf->Cell(20,6,'Account*',0,0);
 $pdf->Cell(4,6,':',0,0);
 
 $pdf->SetFont('Times','',1);
@@ -101,7 +112,7 @@ $pdf->Cell(35,6,'Branch',0,0);
 $pdf->Cell(5,6,':',0,0);
 $pdf->Cell(60,6, $rows['field_branch_name'] ,0,0);
 
-$pdf->Cell(20,6,'Date',0,0);
+$pdf->Cell(20,6,'Date*',0,0);
 $pdf->Cell(4,6,':',0,0);
 
 $pdf->SetFont('Times','',1);
@@ -290,6 +301,6 @@ $pdf->Cell(35,20,'Customer',1,0);
 
 
 
-//$pdf->Output('D',$rows['field_rekening'].'.pdf');
-$pdf->Output();
+$pdf->Output('D',$rows['field_nama'].'.pdf');
+//$pdf->Output();
 ?>
