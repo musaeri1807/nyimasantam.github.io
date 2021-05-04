@@ -77,19 +77,19 @@ $pdf->Cell(10,2,'',0,1);
 $pdf->SetFont('Times','',12);
 $pdf->Cell(35,6,'Customer',0,0);
 $pdf->Cell(5,6,':',0,0);
-$pdf->Cell(60,6, $rows['field_nama'],0,0);
+$pdf->Cell(100,6, $rows['field_nama'],0,0);
 
 // $pdf->Cell(10,9,'',0,1);
-$pdf->Cell(23,6, date("d F Y",strtotime($rows['field_tanggal_reg'])),0,0);
+$pdf->Cell(27,6, date("d F Y",strtotime($rows['field_tanggal_reg'])),0,0);
 $pdf->Cell(3,6,',',0,0); 
 $pdf->Cell(35,6, $rows['field_time_reg'].' WIB',0,1);
 // $pdf->Cell(10,9,'',0,1);
 
 $pdf->Cell(35,6,'Email',0,0);
 $pdf->Cell(5,6,':',0,0);
-$pdf->Cell(60,6, $rows['field_email'],0,0);
+$pdf->Cell(100,6, $rows['field_email'],0,0);
 // $pdf->Cell(10,9,'',0,1);
-$pdf->Cell(20,6,'Handphone',0,0);
+$pdf->Cell(25,6,'Handphone',0,0);
 $pdf->Cell(3,6,':',0,0);
 $pdf->Cell(35,6, $rows['field_handphone'],0,1);
 // $pdf->Cell(10,9,'',0,1);
