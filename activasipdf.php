@@ -2,8 +2,8 @@
 require('library/fpdf181/fpdf.php');
 require_once("config/koneksi.php");
 
-$member_id = '085799990456';
-//$member_id = $_GET['m'];
+// $member_id = '085799990456';
+$member_id = $_GET['m'];
 
 $no=1;
 $sql= "SELECT * FROM tbluserlogin U JOIN tblbranch B ON U.field_branch=B.field_branch_id 
@@ -26,18 +26,18 @@ function Header()
 {
    
     // Logo
-    $this->Image('logon.jpg',10,8,40);
+    $this->Image('logon.jpg',10,4,40);
     // Arial bold 15
     $this->SetFont('Times','B',14);
     // Move to the right
     $this->Cell(80);
     // Title
-    $this->Cell(30,10,'Activasi Customer',0,0,'C');
+    $this->Cell(30,5,'Activasi Customer',0,0,'C');
     // Arial bold 15
     
  
 
-    $this->Ln(20);
+    $this->Ln(18);
     // Line break
     $this->Line(10,25,200,25);
 
@@ -71,7 +71,7 @@ $pdf->AddPage();
 // $pdf->Cell(10,2,'',0,1);
 // $pdf->SetFont('Arial','B',10);
 $pdf->SetFont('Times','B',16);
-$pdf->Cell(35,6,'Customer',0,1);
+$pdf->Cell(35,2,'Customer',0,1);
 $pdf->Cell(10,2,'',0,1);
 
 $pdf->SetFont('Times','',12);
@@ -186,7 +186,7 @@ $pdf->Cell(10,9,'',0,1);
 // .......................
 $pdf->Cell(10,2,'',0,1);
 $pdf->SetFont('Times','B',16);
-$pdf->Cell(35,6,'Data Pewaris',0,1);
+$pdf->Cell(35,2,'Data Pewaris',0,1);
 $pdf->Cell(10,2,'',0,1);
 
 
@@ -265,6 +265,14 @@ $pdf->Cell(10,9,'',0,1);
 
 $pdf->SetFont('Times','',12);
 $pdf->Cell(35,6,'Status Perkawinan',0,0);
+$pdf->Cell(5,6,':',0,0);
+$pdf->SetFont('Times','',1);
+for($i=1;$i<=22;$i++)
+     $pdf->Cell(7,7,$i,1,0,'C');
+$pdf->Cell(10,9,'',0,1);
+
+$pdf->SetFont('Times','',12);
+$pdf->Cell(35,6,'Handphone',0,0);
 $pdf->Cell(5,6,':',0,0);
 $pdf->SetFont('Times','',1);
 for($i=1;$i<=22;$i++)

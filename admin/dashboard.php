@@ -163,7 +163,7 @@ $branchid=$rows['field_branch'];
         <div class="pull-left info">
           <!-- <p>Muhammad Gavin Alhanan</p> -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a> <br>
-          Nilai Aset Rp 1.000.000.000
+          
         </div>
       </div>
       <!-- search form -->
