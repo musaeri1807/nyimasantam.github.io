@@ -127,20 +127,42 @@ $branchid=$rows['field_branch'];
             </ul>
           </li>
 
-           <li>
+           <!-- <li>
             <a href="setting.php">
             <i class="fa fa-gears"></i> Password</a>
-          </li>
+          </li> -->
 
-          <li>
+          <!-- <li>
             <a href="#"> 
             <i class="fa fa-user"></i> <?php echo $rows["field_name_officer"]; ?></a>
-          </li>   
-       
-          <li>
+          </li>   -->
+
+          <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                             Menu <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                              <a href="#"><i class="fa fa-user"></i>Profile</a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fa fa-gear"></i>Settings</a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fa fa-shield"></i> Keamanan</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                              <a href="../logout.php"><i class="fa fa-sign-out"></i> Logout</a>
+                            </li>
+                        </ul>
+           </li>
+
+
+          <!-- <li>
             <a href="../logout.php"> 
              <i class="fa fa-sign-out"></i></a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </nav>
@@ -161,9 +183,10 @@ $branchid=$rows['field_branch'];
            ?>
         </div>
         <div class="pull-left info">
+      
           <!-- <p>Muhammad Gavin Alhanan</p> -->
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a> <br>
-          
+          <!-- <a href="#"><i class="fa fa-circle text-success"></i> online</a> <br> -->
+         <h5><?php echo $rows["field_name_officer"]; ?></h5> 
         </div>
       </div>
       <!-- search form -->
@@ -279,7 +302,7 @@ $branchid=$rows['field_branch'];
 
           <li class="treeview">
           <a href="#">
-            <i class="fa fa-gears"></i> <span>Setting</span>
+            <i class="fa fa-database"></i> <span>Database</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -287,7 +310,7 @@ $branchid=$rows['field_branch'];
           <ul class="treeview-menu">
             <li><a href="#"><i class="fa fa-server"></i>Connection </a></li>
             <li><a href="#"><i class="fa fa-window-restore"></i> Restore</a></li>
-            <li><a href="?module=backupdatabase"><i class="fa fa-database"></i>Backup</a></li>           
+            <li><a href="?module=backupdatabase"><i class="fa fa-clone"></i>Backup</a></li>           
           </ul>
         </li>
 
