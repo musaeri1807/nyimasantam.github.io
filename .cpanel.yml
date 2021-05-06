@@ -23,4 +23,4 @@ deployment:
     - /bin/cp logon.jpg $DEPLOYPATH
     - /bin/cp logout.php $DEPLOYPATH
     - /bin/cp mutasicustomerpdf.php $DEPLOYPATH
-    - /bin/cp settingdatabase.php $DEPLOYPATH 
+    - /bin/cp settingdatabase.php $DEPLOYPATH
