@@ -183,10 +183,9 @@ $branchid=$rows['field_branch'];
            ?>
         </div>
         <div class="pull-left info">
-      
+          <p><?php echo $rows["field_name_officer"]; ?></p>
           <!-- <p>Muhammad Gavin Alhanan</p> -->
-          <!-- <a href="#"><i class="fa fa-circle text-success"></i> online</a> <br> -->
-         <h5><?php echo $rows["field_name_officer"]; ?></h5> 
+          <a href="#"><i class="fa fa-user o  text-success"></i> Branch</a> <br>
         </div>
       </div>
       <!-- search form -->
@@ -309,7 +308,7 @@ $branchid=$rows['field_branch'];
           </a>
           <ul class="treeview-menu">
             <li><a href="#"><i class="fa fa-server"></i>Connection </a></li>
-            <li><a href="#"><i class="fa fa-window-restore"></i> Restore</a></li>
+            <li><a href="?module=formcustomer"><i class="fa fa-window-restore"></i> Restore</a></li>
             <li><a href="?module=backupdatabase"><i class="fa fa-clone"></i>Backup</a></li>           
           </ul>
         </li>
@@ -416,6 +415,8 @@ $branchid=$rows['field_branch'];
                                 include "module/mailbox.php";
                               }elseif ($_GET['module']=="adddeposit") {
                                 include "module/adddeposit.php";
+                              }elseif( $_GET['module']=="formcustomer"){
+                                include "module/formcustomer.php";
                               }else{
                                 echo "<script>
                               
@@ -429,7 +430,7 @@ $branchid=$rows['field_branch'];
                           
                                 </script>";
                               }
-
+                              
                                   
                               ?> 
                    
