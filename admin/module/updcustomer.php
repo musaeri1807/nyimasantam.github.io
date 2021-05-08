@@ -269,6 +269,35 @@ if(isset($_REQUEST['btn_update']))
 					</select>
 				</div>
 				</div>
+
+				<div class="form-group">
+				<label class="col-sm-3 control-label">Provinsi</label>
+				<div class="col-sm-3">							
+				<select class="form-control" type="text" name="txt_provinsi" id="provinsi">
+				</select>
+				</div>
+				</div>
+				<div class="form-group">
+				<label class="col-sm-3 control-label">Kabupaten</label>
+				<div class="col-sm-3">							
+				<select class="form-control" type="text" name="txt_kabupaten" id="kabupaten">
+				</select>
+				</div>
+				</div>
+				<div class="form-group">
+				<label class="col-sm-3 control-label">Kecamatan</label>
+				<div class="col-sm-3">							
+				<select class="form-control" type="text" name="txt_kecamatan" id="kecamatan">
+				</select>
+				</div>
+				</div>
+				<div class="form-group">
+				<label class="col-sm-3 control-label">Kelurahan</label>
+				<div class="col-sm-3">							
+				<select class="form-control" type="text" name="txt_kelurahan" id="kelurahan">
+				</select>
+				</div>
+				</div>
 			
 				<div class="form-group">
 				<div class="col-sm-offset-3 col-sm-9 m-t-15">
