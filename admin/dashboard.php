@@ -943,5 +943,72 @@ $branchid=$rows['field_branch'];
     </script>
 <!-- get wilayah -->
 
+<!-- get wilayah -->
+<script type="text/javascript"> 
+    $(document).ready(function() { 
+    $("#provinsi2").append('<option value="">Pilih</option>'); 
+    $("#kabupaten2").html(''); 
+    $("#kecamatan2").html(''); 
+    $("#kelurahan2").html(''); 
+    $("#kabupaten2").append('<option value="">Pilih</option>'); 
+    $("#kecamatan2").append('<option value="">Pilih</option>'); 
+    $("#kelurahan2").append('<option value="">Pilih</option>'); 
+    url = '../getphp/get_provinsi.php'; 
+    $.ajax({ url: url, 
+    type: 'GET', 
+    dataType: 'json', 
+    success: function(result) { 
+    for (var i = 0; i < result.length; i++) 
+    $("#provinsi2").append('<option value="' + result[i].id_prov + '">' + result[i].nama + '</option>'); 
+    } 
+    }); 
+    }); 
+    $("#provinsi2").change(function(){ 
+    var id_prov = $("#provinsi2").val(); 
+    var url = '../getphp/get_kabupaten.php?id_prov=' + id_prov; 
+    $("#kabupaten2").html(''); $("#kecamatan2").html(''); 
+    $("#kelurahan2").html(''); $("#kabupaten2").append('<option value="">Pilih</option>'); 
+    $("#kecamatan2").append('<option value="">Pilih</option>'); 
+    $("#kelurahan2").append('<option value="">Pilih</option>'); 
+    $.ajax({ url : url, 
+    type: 'GET', 
+    dataType : 'json', 
+    success : function(result){ 
+    for(var i = 0; i < result.length; i++) 
+    $("#kabupaten2").append('<option value="'+ result[i].id_kab +'">' + result[i].nama + '</option>'); 
+    } 
+    });  
+    }); 
+    $("#kabupaten2").change(function(){ 
+    var id_kab = $("#kabupaten2").val(); 
+    var url = '../getphp/get_kecamatan.php?id_kab=' + id_kab; 
+    $("#kecamatan2").html(''); $("#kelurahan2").html(''); 
+    $("#kecamatan2").append('<option value="">Pilih</option>'); 
+    $("#kelurahan2").append('<option value="">Pilih</option>'); 
+    $.ajax({ url : url, 
+    type: 'GET', 
+    dataType : 'json', 
+    success : function(result){ 
+    for(var i = 0; i < result.length; i++) 
+    $("#kecamatan2").append('<option value="'+ result[i].id_kec +'">' + result[i].nama + '</option>'); 
+    } 
+    });  
+    }); 
+    $("#kecamatan2").change(function(){ 
+    var id_kec = $("#kecamatan2").val(); 
+    var url = '../getphp/get_kelurahan.php?id_kec=' + id_kec; $("#kelurahan2").html(''); 
+    $("#kelurahan2").append('<option value="">Pilih</option>'); 
+    $.ajax({ url : url, 
+    type: 'GET', 
+    dataType : 'json', 
+    success : function(result){ 
+    for(var i = 0; i < result.length; i++) 
+    $("#kelurahan2").append('<option value="'+ result[i].id_kel +'">' + result[i].nama + '</option>'); 
+    } 
+    });  
+    }); 
+    </script>
+<!-- get wilayah -->
+
 </body>
 </html>

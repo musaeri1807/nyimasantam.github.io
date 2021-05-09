@@ -1,15 +1,15 @@
 <?php
-// include('../config.php');
+require_once("../config/connection.php");
+$data = array();                          
+$select_stmt = $db->prepare("SELECT * FROM tblwilayahprovinsi ");
+$select_stmt->execute(array());  
+$rows=$select_stmt->fetch(PDO::FETCH_ASSOC);
 
-$mysqli = new mysqli('localhost', 'root', '', 'vps01na'); //sesuaikan dengan konfigurasi database kamu ya
-if (mysqli_connect_error()) { 
-die('Connect Error (' . mysqli_connect_errno() . ') '. mysqli_connect_error());
+while($row=$select_stmt->fetch(PDO::FETCH_ASSOC)){
+    $data[] = array("id_prov" => $row['field_provinsi_id'], "nama" => $row['field_nama_provinsi']);
 }
 
-$sql = "SELECT * FROM tblwilayahprovinsi";
-$query = $mysqli->query($sql);
-$data = array();
-while($row = $query->fetch_array(MYSQLI_ASSOC)){
-$data[] = array("id_prov" => $row['field_provinsi_id'], "nama" => $row['field_nama_provinsi']);
-}
-echo json_encode($data);?>
+echo json_encode($data);
+
+
+?>

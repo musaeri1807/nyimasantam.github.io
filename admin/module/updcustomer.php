@@ -135,190 +135,388 @@ if(isset($_REQUEST['btn_update']))
 	}
 }
 
-?>
-<!-- Content Header (Page header) -->
-     <section  class="content-header">
-      <div class="row box-footer">
-<!-- <section class="content"> -->
+?>    
+    <!-- Main content -->
+    <section class="content">
+
       <div class="row">
-        <div class="col-xs-12">
-          <!-- <div class="box"> -->
+        <div class="col-md-3">
 
-          		<?php
-		if(isset($errorMsg))
-		{
-			?>
-            <div class="alert alert-danger">
-            	<strong>WRONG ! <?php echo $errorMsg; ?></strong>
-            </div>
-            <?php
-		}
-		if(isset($insertMsg)){
-		?>
-			<div class="alert alert-success">
-				<strong>SUCCESS ! <?php echo $insertMsg; ?></strong>
-			</div>
-        <?php
-		}
-		?> 
-            
-           
-            <!-- /.box-header -->
-            <div class="box-header">
-            		<center><h2>Update Customer</h2></center>
-			<form method="post" class="form-horizontal">					
-				
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="../uploads/1.png" alt="User profile picture">
 
-				<div class="form-group">
-				<label class="col-sm-3 control-label">Nama</label>
-			
-				<div class="col-sm-6">
-				<input type="text" name="txt_firstname" class="form-control" value="<?php echo $row["field_nama_customer"]; ?>" />
-				</div>				
-				
-				</div>
-						
-				<div class="form-group">
-				<label class="col-sm-3 control-label">Email</label>
-				<div class="col-sm-6">
-				<input type="text" name="txt_email" class="form-control" value="<?php echo $row["field_email"]; ?>" readonly />
-				</div>
-				</div>
+              <h3 class="profile-username text-center"><?php echo $row["field_nama_customer"]; ?></h3>
 
-				<div class="form-group">
-				<label class="col-sm-3 control-label">No Handphone</label>
-				<div class="col-sm-3">
-				<input type="text" name="txt_angka" class="form-control" value="<?php echo $row["field_handphone"]; ?>" readonly/>
-				</div>
-				</div>
-				<div class="form-group">
-				<label class="col-sm-3 control-label">Swafoto</label>
-				<div class="col-sm-3">
-				
-                
-				<img src="../uploads/<?php echo $row['field_swafoto'] ?>" width="100" height="100" class="img-circle" alt="User Image" >
-				</div>
-				</div>
-				<div class="form-group">
-				<label class="col-sm-3 control-label">Document KTP</label>
-				<div class="col-sm-3">
-				
-                <img src="../uploads/<?php echo $row['field_image_ktp'] ?>" width="150" height="100">
-				
-				</div>
-				</div>
-
-				<div class="form-group">
-				<label class="col-sm-3 control-label">Document Butang</label>
-				<div class="col-sm-3">
-				
-                <img src="../uploads/<?php echo $row['field_image_butang'] ?>" width="150" height="100">
-				
-				</div>
-				</div>
-
-				<div class="form-group">
-				<label class="col-sm-3 control-label">Document Pewaris</label>
-				<div class="col-sm-3">
-				
-                <img src="../uploads/<?php echo $row['field_image_pewaris'] ?>" width="150" height="100">
-				
-				</div>
-				</div>
-
-				<div class="form-group">
-				<label class="col-sm-3 control-label">Alamat</label>
-				<div class="col-sm-6">
-				<input type="text" name="txt_angka" class="form-control" value="<?php echo $row["field_alamat"]; ?>"/>
-				<textarea></textarea>
-				</div>
-				</div>
-
-				<div class="form-group">
-				<label class="col-sm-3 control-label">Cabang Kantor</label>
-				<div class="col-sm-6">
-				<select class="form-control" type="text" name="txt_cabang" readonly>
-					<option value="<?php echo $rows["field_branch_id"]; ?>"><?php echo $rows['field_branch_name']."-"; echo $rows["field_branch_id"]; ?></option>
-				<!-- 		<?php foreach($result as $branch) { ?> 
-					<option  value="<?php echo $branch['field_branch_id'] ; ?>"><?php echo $branch['field_branch_name']."-";echo $branch['field_branch_id'] ; ?></option>
-						
-						<?php } ?> -->
-					</select>
-				</div>
-				</div>
-
-				<div class="form-group">
-				<label class="col-sm-3 control-label">Status Document</label>
-				<div class="col-sm-3">
-							
-				<select class="form-control" type="text" name="txt_status">
-
-						<?php if ($row["field_document"]=="Y") { 
-
-							echo '<option value="Y">Verifikasi</option>';
-
-						}elseif ($row["field_document"]=="N") {
-
-							echo '<option value="N">Unverifikasi</option>';
-
-						}?>					
-					
-						<option value="Y">Verifikasi</option>
-						<option value="N">Unverifikasi</option>
-
-					</select>
-				</div>
-				</div>
-
-				<div class="form-group">
-				<label class="col-sm-3 control-label">Provinsi</label>
-				<div class="col-sm-3">							
-				<select class="form-control" type="text" name="txt_provinsi" id="provinsi">
-				</select>
-				</div>
-				</div>
-				<div class="form-group">
-				<label class="col-sm-3 control-label">Kabupaten</label>
-				<div class="col-sm-3">							
-				<select class="form-control" type="text" name="txt_kabupaten" id="kabupaten">
-				</select>
-				</div>
-				</div>
-				<div class="form-group">
-				<label class="col-sm-3 control-label">Kecamatan</label>
-				<div class="col-sm-3">							
-				<select class="form-control" type="text" name="txt_kecamatan" id="kecamatan">
-				</select>
-				</div>
-				</div>
-				<div class="form-group">
-				<label class="col-sm-3 control-label">Kelurahan</label>
-				<div class="col-sm-3">							
-				<select class="form-control" type="text" name="txt_kelurahan" id="kelurahan">
-				</select>
-				</div>
-				</div>
-			
-				<div class="form-group">
-				<div class="col-sm-offset-3 col-sm-9 m-t-15">
-				<input type="submit"  name="btn_update" class="btn btn-success " value="Update">
-				<input type="submit"  name="btn_forgot" class="btn btn-info " value="Forgot Password">
-				<a href="?module=activation" class="btn btn-danger">Cancel</a>
-				</div>
-				</div>
-					
-			</form>
-    
-    <!-- form -->
+              <p class="text-muted text-center">Customer JATI</p>   
+ 
             </div>
             <!-- /.box-body -->
-          
-
+          </div>
           <!-- /.box -->
+
+          <!-- About Me Box -->
+          <div class="box box-primary">
+            <!-- <div class="box-header with-border">
+              <h3 class="box-title">About Me</h3>
+            </div> -->
+
+            <!-- /.box-header -->
+            <div class="box-body">
+              <hr>
+              <strong><i class="fa fa-envelope  margin-r-5"></i> <?php echo $row["field_email"]; ?></strong>
+              <hr>
+              <strong><i class="fa fa-mobile margin-r-5"></i> <?php echo $row["field_handphone"]; ?></strong>
+              <hr>
+              <strong><i class="fa fa-file-text-o margin-r-5"></i> <?php echo $row["field_member_id"]; ?></strong>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#activity" data-toggle="tab">Data Customer</a></li>
+              <li><a href="#timeline" data-toggle="tab">Timeline</a></li>
+              <li><a href="#settings" data-toggle="tab">Ahli Waris</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="active tab-pane" id="activity">
+                    <!-- Post -->
+                <div class="post clearfix">                      
+
+                  <form class="form-horizontal">
+                  <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">NIK</label>
+
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control" id="inputName" placeholder="Name">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2 control-label">Date of birth</label>
+
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="inputEmail" placeholder="Email">
+                      <input type="date" class="form-control" id="inputEmail" placeholder="Email">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">Gender</label>
+
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputName" placeholder="Name">
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="inputExperience" class="col-sm-2 control-label">Address</label>
+
+                    <div class="col-sm-10">
+                      <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
+                    </div>
+                  </div>
+                 
+
+                  <div class="form-group">
+				            <label for="inputSkills" class="col-sm-2 control-label">Provinsi</label>
+				            <div class="col-sm-6">							
+				              <select class="form-control" type="text" name="txt_provinsi" id="provinsi"></select>
+				            </div>
+				          </div>
+				          <div class="form-group">
+				            <label class="col-sm-2 control-label">Kabupaten</label>
+				            <div class="col-sm-6">							
+				              <select class="form-control" type="text" name="txt_kabupaten" id="kabupaten">
+				              </select>
+				            </div>
+				          </div>
+				          <div class="form-group">
+				            <label class="col-sm-2 control-label">Kecamatan</label>
+				            <div class="col-sm-6">							
+				              <select class="form-control" type="text" name="txt_kecamatan" id="kecamatan">
+				              </select>
+				            </div>
+				          </div>
+				          <div class="form-group">
+				            <label class="col-sm-2 control-label">Kelurahan</label>
+				            <div class="col-sm-6">							
+				              <select class="form-control" type="text" name="txt_kelurahan" id="kelurahan">
+				              </select>
+				            </div>
+				          </div>  
+
+                  <div class="form-group">
+                    <label for="inputSkills" class="col-sm-2 control-label">Agama</label>
+                    <div class="col-sm-6">
+                    <select class="form-control" type="text" name="" id="">
+                    <option value="">Pilih</option>
+				            <option value="">Islam</option>
+                    <option value="">Protestan</option>
+                    <option value="">Katolik</option>
+                    <option value="">Hindu</option>
+                    <option value="">Buddha</option>
+                    <option value="">Khonghucu</option>
+                    </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputSkills" class="col-sm-2 control-label">Status Perkawinan</label>
+                    <div class="col-sm-6">
+                    <select class="form-control" type="text" name="" id="">
+				            <option value="">Pilih</option>
+                    <option value="">Kawin</option>
+                    <option value="">Belum Kawin</option>
+                    <option value="">Duda</option>
+                    <option value="">Janda</option>
+                    
+                    </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-danger">Submit</button>
+                    </div>
+                  </div>
+                </form>
+
+                
+                </div>
+                <!-- /.post -->
+
+           
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="timeline">
+                <!-- The timeline -->
+                <ul class="timeline timeline-inverse">
+                  <!-- timeline time label -->
+                  <li class="time-label">
+                        <span class="bg-red">
+                          10 Feb. 2014
+                        </span>
+                  </li>
+                  <!-- /.timeline-label -->
+                  <!-- timeline item -->
+                  <li>
+                    <i class="fa fa-envelope bg-blue"></i>
+
+                    <div class="timeline-item">
+                      <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+
+                      <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+
+                      <div class="timeline-body">
+                        Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+                        weebly ning heekya handango imeem plugg dopplr jibjab, movity
+                        jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+                        quora plaxo ideeli hulu weebly balihoo...
+                      </div>
+                      <div class="timeline-footer">
+                        <a class="btn btn-primary btn-xs">Read more</a>
+                        <a class="btn btn-danger btn-xs">Delete</a>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- END timeline item -->
+                  <!-- timeline item -->
+                  <li>
+                    <i class="fa fa-user bg-aqua"></i>
+
+                    <div class="timeline-item">
+                      <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
+
+                      <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request
+                      </h3>
+                    </div>
+                  </li>
+                  <!-- END timeline item -->
+                  <!-- timeline item -->
+                  <li>
+                    <i class="fa fa-comments bg-yellow"></i>
+
+                    <div class="timeline-item">
+                      <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
+
+                      <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+
+                      <div class="timeline-body">
+                        Take me to your leader!
+                        Switzerland is small and neutral!
+                        We are more like Germany, ambitious and misunderstood!
+                      </div>
+                      <div class="timeline-footer">
+                        <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- END timeline item -->
+                  <!-- timeline time label -->
+                  <li class="time-label">
+                        <span class="bg-green">
+                          3 Jan. 2014
+                        </span>
+                  </li>
+                  <!-- /.timeline-label -->
+                  <!-- timeline item -->
+                  <li>
+                    <i class="fa fa-camera bg-purple"></i>
+
+                    <div class="timeline-item">
+                      <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
+
+                      <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+
+                      <div class="timeline-body">
+                        <img src="http://placehold.it/150x100" alt="..." class="margin">
+                        <img src="http://placehold.it/150x100" alt="..." class="margin">
+                        <img src="http://placehold.it/150x100" alt="..." class="margin">
+                        <img src="http://placehold.it/150x100" alt="..." class="margin">
+                      </div>
+                    </div>
+                  </li>
+                  <!-- END timeline item -->
+                  <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                  </li>
+                </ul>
+              </div>
+              <!-- /.tab-pane -->
+
+              <div class="tab-pane" id="settings">
+              <form class="form-horizontal">
+                  <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">NIK</label>
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control" id="inputName" placeholder="Name">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control" id="inputName" placeholder="Name">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2 control-label">Date of birth</label>
+
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="inputEmail" placeholder="Email">
+                      <input type="date" class="form-control" id="inputEmail" placeholder="Email">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">Gender</label>
+
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputName" placeholder="Name">
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="inputExperience" class="col-sm-2 control-label">Address</label>
+
+                    <div class="col-sm-10">
+                      <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
+                    </div>
+                  </div>
+                 
+
+                  <div class="form-group">
+				            <label for="inputSkills" class="col-sm-2 control-label">Provinsi</label>
+				            <div class="col-sm-6">							
+				              <select class="form-control" type="text" name="txt_provinsi" id="provinsi2"></select>
+				            </div>
+				          </div>
+				          <div class="form-group">
+				            <label class="col-sm-2 control-label">Kabupaten</label>
+				            <div class="col-sm-6">							
+				              <select class="form-control" type="text" name="txt_kabupaten" id="kabupaten2">
+				              </select>
+				            </div>
+				          </div>
+				          <div class="form-group">
+				            <label class="col-sm-2 control-label">Kecamatan</label>
+				            <div class="col-sm-6">							
+				              <select class="form-control" type="text" name="txt_kecamatan" id="kecamatan2">
+				              </select>
+				            </div>
+				          </div>
+				          <div class="form-group">
+				            <label class="col-sm-2 control-label">Kelurahan</label>
+				            <div class="col-sm-6">							
+				              <select class="form-control" type="text" name="txt_kelurahan" id="kelurahan2">
+				              </select>
+				            </div>
+				          </div>  
+
+                  <div class="form-group">
+                    <label for="inputSkills" class="col-sm-2 control-label">Agama</label>
+                    <div class="col-sm-6">
+                    <select class="form-control" type="text" name="" id="">
+                    <option value="">Pilih</option>
+				            <option value="">Islam</option>
+                    <option value="">Protestan</option>
+                    <option value="">Katolik</option>
+                    <option value="">Hindu</option>
+                    <option value="">Buddha</option>
+                    <option value="">Khonghucu</option>
+                    </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputSkills" class="col-sm-2 control-label">Status Perkawinan</label>
+                    <div class="col-sm-6">
+                    <select class="form-control" type="text" name="" id="">
+				            <option value="">Pilih</option>
+                    <option value="">Kawin</option>
+                    <option value="">Belum Kawin</option>
+                    <option value="">Duda</option>
+                    <option value="">Janda</option>
+                    
+                    </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-danger">Submit</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
         </div>
         <!-- /.col -->
       </div>
       <!-- /.row -->
-      <!-- div ikut atas -->
-    </div> 
+
     </section>
+    <!-- /.content -->
+ 
