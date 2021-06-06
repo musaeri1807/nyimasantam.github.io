@@ -41,6 +41,8 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
           $secretKey = "6Lf6eR0aAAAAABFKOeUrFysV3fvrrWcoTayg3R2j"; //nyimasantam.com
         }elseif ($_SERVER['SERVER_NAME']=='nyimasantam.my.id') {
           $secretKey = "6Lc9f84ZAAAAAEBSnQvoHzWcPvD0Tqcn0HD0izsO";//nyimasantam.my.id
+        }elseif($_SERVER['SERVER_NAME']=='musaeri.my.id'){
+          $secretKey = "6LdCXhcbAAAAABj_ExKExLI_0h_1uz7tSCYdDHM-";//musaeri.my.id
         }
     
     $responseKey = $_POST['g-recaptcha-response'];
@@ -145,7 +147,7 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
                       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/admin/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://'.$domain.'/admin/dashboard?module=home">';
                       }
 
               break;
@@ -324,6 +326,8 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
                       echo '<div class="g-recaptcha" data-sitekey="6Lf6eR0aAAAAAAXiPck77ymXUnqtLYj1dvtlli1B"></div>';
                     }elseif ($_SERVER['SERVER_NAME']=='nyimasantam.my.id') {
                       echo '<div class="g-recaptcha" data-sitekey="6Lc9f84ZAAAAANDLO3VFPiJEsa1trW4PwdE5fX0U"></div>';
+                    }elseif ($_SERVER['SERVER_NAME']=='musaeri.id') {
+                      echo '<div class="g-recaptcha" data-sitekey="6LdCXhcbAAAAAKhaHQouGGvtU6u4fJUSx8dpQUGv"></div>';
                     }
 
                    ?> 
