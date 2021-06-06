@@ -94,7 +94,7 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
             // //header('location:loading');  //refresh 2 second after redirect to "welcome.php" page
             // echo '<META HTTP-EQUIV="Refresh" Content="2; URL=https://nyimasantam.com/loading">';
             // 'Superadmin','Administrator','Supervisor','Officer'
-
+            
             switch ($row["field_role"]) 
             {
             case 'ADM':

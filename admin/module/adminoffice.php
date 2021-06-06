@@ -19,7 +19,7 @@ if (isset($_REQUEST['id'])) {
       if ($id==$row["field_user_id"]) {
         //echo "TRUE";
             $iduser   =$_SESSION['idlogin'];//member_id
-            $idmember =$_SESSION['administrator_login'];//id_member
+            $idmember =$_SESSION['userlogin'];//id_member
             $aktifitas="DELETE AKUN ".$row["field_username"];
             $date     = date("Y-m-d H:s:i");
             

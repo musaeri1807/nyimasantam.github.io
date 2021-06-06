@@ -8,8 +8,8 @@ if(!isset($_SESSION['userlogin'])) {
     header("location: ../index.php");
 }
 $id = $_SESSION['idlogin'];                               
-$select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin E JOIN tbldepartment D
-                                                                ON E.field_role=D.field_department_id 
+$select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin E JOIN tbldepartment D ON E.field_role=D.field_department_id
+                                                               JOIN tblbranch B ON E.field_branch=B.field_branch_id
                                                                 WHERE E.field_user_id=:uid");
 $select_stmt->execute(array(":uid"=>$id));  
 $rows=$select_stmt->fetch(PDO::FETCH_ASSOC);
@@ -185,7 +185,7 @@ $branchid=$rows['field_branch'];
         <div class="pull-left info">
           <p><?php echo $rows["field_name_officer"]; ?></p>
           <!-- <p>Muhammad Gavin Alhanan</p> -->
-          <a href="#"><i class="fa fa-user o  text-success"></i> Branch</a> <br>
+          <a href="#"><i class="fa fa-user o  text-success"></i><?php echo $rows['field_branch_name']?> </a> <br>
         </div>
       </div>
       <!-- search form -->

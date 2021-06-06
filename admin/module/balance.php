@@ -72,10 +72,10 @@ $no=1;
                   <td data-title="Trx Id"><?php echo $row["field_member_id"];?></td>
                   <td data-title="Trx Id"><?php echo $row["field_nama"];?></td>
                   <td ><?php echo $row["field_rekening"];?></td>
-                  <td ata-title="Trx Id" ><strong><?php echo $row["TotalSaldo"];?></strong></td> 
-                  <td ata-title="Trx Id" ><?php echo $row["field_branch_name"];?>             </td>  
-                  <td ata-title="Trx Id" >
-                    <a href="../mutasicustomerpdf.php?m=<?php echo $row['field_member_id'];?>" class="btn btn-sm btn-warning"><i class="fa fa-print"></i> &nbsp Print</a>
+                  <td data-title="Trx Id" ><strong><?php echo $row["TotalSaldo"];?></strong></td> 
+                  <td data-title="Trx Id" ><?php echo $row["field_branch_name"];?>             </td>  
+                  <td data-title="Trx Id" >
+                    <a href="../mutasicustomerpdf.php?m=<?php echo $row['field_member_id'];?>" class="btn btn-sm btn-warning"><i class="fa fa-print o text-warning"></i></a>
                   </td>                   
                 </tr>
 
