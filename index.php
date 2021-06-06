@@ -1,8 +1,6 @@
 <?php
 $svrname=$_SERVER['SERVER_NAME'];
 
-echo $svrname;
-die();
 
 if ($_SERVER['SERVER_NAME']=='localhost') {
                

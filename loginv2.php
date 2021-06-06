@@ -14,14 +14,8 @@ if(isset($_SESSION["userlogin"])) //admin_login//check condition user login not 
 {
   header("location: admin/dashboard?module=home");
 }
-// if(isset($_SESSION["manager_login"]))  //admin_login//check condition user login not direct back to index.php page
-// {
-//   header("location: administrator/dashboard?module=home");
-// }
-// if(isset($_SESSION["officer_login"])) //admin_login//check condition user login not direct back to index.php page
-// {
-//   header("location: administrator/dashboard?module=home");
-// }
+
+$domain = file_get_contents("config/domain.txt");
 
 if(isset($_REQUEST['btn_login'])) //button name is "btn_login" 
 {
@@ -108,7 +102,7 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
                       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/admin/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://'.$domain.'/admin/dashboard?module=home">';
                       }
               break;
             case 'MGR':
@@ -120,7 +114,7 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
                       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/admin/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://'.$domain.'/admin/dashboard?module=home">';
                       }
               break;
             case 'SPV':
@@ -133,7 +127,7 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
                       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/admin/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://'.$domain.'/admin/dashboard?module=home">';
                       }
 
               break;
@@ -161,7 +155,7 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
                       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/admin/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://'.$domain.'/admin/dashboard?module=home">';
                       }
                 
               break;
@@ -326,7 +320,7 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
                       echo '<div class="g-recaptcha" data-sitekey="6Lf6eR0aAAAAAAXiPck77ymXUnqtLYj1dvtlli1B"></div>';
                     }elseif ($_SERVER['SERVER_NAME']=='nyimasantam.my.id') {
                       echo '<div class="g-recaptcha" data-sitekey="6Lc9f84ZAAAAANDLO3VFPiJEsa1trW4PwdE5fX0U"></div>';
-                    }elseif ($_SERVER['SERVER_NAME']=='musaeri.id') {
+                    }elseif ($_SERVER['SERVER_NAME']=='musaeri.my.id') {
                       echo '<div class="g-recaptcha" data-sitekey="6LdCXhcbAAAAAKhaHQouGGvtU6u4fJUSx8dpQUGv"></div>';
                     }
 

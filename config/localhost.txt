@@ -1,1 +1,1 @@
-nyimasantam.my.id
+localhost

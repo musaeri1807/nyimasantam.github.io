@@ -4,14 +4,16 @@ date_default_timezone_set('Asia/Jakarta');
 
 
 if(isset($_POST['submit'])){
-  $HostName = filter_input(INPUT_POST, 'HostName', FILTER_SANITIZE_STRING);
-  $UserName = filter_input(INPUT_POST, 'UserName', FILTER_SANITIZE_STRING);
-  $Password = filter_input(INPUT_POST, 'Password', FILTER_SANITIZE_STRING);
-  $DatabaseName = filter_input(INPUT_POST, 'DatabaseName', FILTER_SANITIZE_STRING);
+  $HostName       = filter_input(INPUT_POST, 'HostName', FILTER_SANITIZE_STRING);
+  $UserName       = filter_input(INPUT_POST, 'UserName', FILTER_SANITIZE_STRING);
+  $Password       = filter_input(INPUT_POST, 'Password', FILTER_SANITIZE_STRING);
+  $DatabaseName   = filter_input(INPUT_POST, 'DatabaseName', FILTER_SANITIZE_STRING);
+  $Domain         = filter_input(INPUT_POST, 'Domain', FILTER_SANITIZE_STRING);
   file_put_contents("config/localhost.txt",$HostName);
   file_put_contents("config/users.txt",$UserName);
   file_put_contents("config/password.txt",$Password);
   file_put_contents("config/database.txt",$DatabaseName);
+  file_put_contents("config/domain.txt",$Domain);
   header("Location: loginv2.php");
 }
 ?>
@@ -66,7 +68,7 @@ if(isset($_POST['submit'])){
 <!-- Automatic element centering -->
 <div class="lockscreen-wrapper">
   <div class="lockscreen-logo">
-    <a href="#"><b>Setting </b>Database</a>
+    <a href="#"><b>Setting </b></a>
   </div>
   <!-- User name -->
 <!--   <div class="lockscreen-name">John Doe</div> -->
@@ -86,14 +88,17 @@ if(isset($_POST['submit'])){
             <input type="text" class="form-control" name="HostName" value="localhost" placeholder="HostName" required>
             </div>
           <div class="form-group">           
-            <input type="text" class="form-control" name="UserName" value="uruh7792_musaeri"  placeholder="UserName" required>
+            <input type="text" class="form-control" name="UserName" value="musx1236_musaeri"  placeholder="UserName" required>
           </div>                    
           <div class="form-group">       
-          <input type="password" class="form-control" name="Password" value="P@ssw0rd" placeholder="Password">
+          <input type="password" class="form-control" name="Password" value="P@55w.rdmusaeri.123#" placeholder="Password">
           </div>
           <div class="form-group">
-          <input type="text" class="form-control" name="DatabaseName" value="uruh7792_VPS01NA" placeholder="DatabaseName" required>
+          <input type="text" class="form-control" name="DatabaseName" value="musx1236_VPS01NA" placeholder="DatabaseName" required>
           </div> 
+          <div class="form-group">
+          <input type="text" class="form-control" name="Domain" value="musaeri.my.id" placeholder="Domain" required>
+          </div>
            <center> 
           <button type="submit" name="submit" class="btn btn-primary">Submit</button>
           </center> 
