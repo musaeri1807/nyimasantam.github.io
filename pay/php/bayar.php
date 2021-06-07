@@ -6,10 +6,13 @@
 	$id_order 	= $_POST['id_order'];
 	$product 	= $_POST['product'];
 	$quantity 	= $_POST['quantity'];
+	$handphone 	= $_POST['handphone'];
 	$price 		= $_POST['price'];
 	$comments 	= $_POST['comments'];
-	
+	$name		= "Customer";
+	$email		= "musaeri1807@gmail.com";
 	// $api_key = file_get_contents("../config/apikey.txt");
+
 
 	if ($_SERVER['SERVER_NAME']=='localhost') {
 		$api_key = file_get_contents("../config/apikey.txt");
@@ -21,25 +24,36 @@
 	$notif = $domain.'/notify.php';
 	$callback = $domain.'/selesai.php?id_order='.$id_order;
 
-	if ($_SERVER['SERVER_NAME']=='localhost') {
-		$CURLOPT_URL="https://my.ipaymu.com/payment";
-	} else {
-		$CURLOPT_URL="https://sandbox.ipaymu.com/payment";
+	if ($_SERVER['SERVER_NAME']=='localhost' && $comments=='qrs' ) {
+		$CURLOPT_URL="https://my.ipaymu.com/api/payment/qris";
+	} elseif($_SERVER['SERVER_NAME']=='localhost' && $comments=='transfer' ) {
+		$CURLOPT_URL="https://my.ipaymu.com/api/bcatransfer";
+	} elseif($_SERVER['SERVER_NAME']!=='localhost' && $comments=='qrs' ){
+		$CURLOPT_URL="https://sandbox.ipaymu.com/api/payment/qris";
+	} elseif($_SERVER['SERVER_NAME']!=='localhost' && $comments=='transfer' ){
+		$CURLOPT_URL="https://sandbox.ipaymu.com/api/bcatransfer";
 	}
 
+	if ($comments=='qrs') {
+		$CURLOPT_POSTFIELDS="key=$api_key&format=json&name=$name&phone=$handphone&email=$email&amount=$price&notifyUrl=$notif&auto_redirect=10";
+	} else {
+		$CURLOPT_POSTFIELDS="key=$api_key&action=payment&format=json&product=$product&quantity=$quantity&price=$price&comments=$comments&ureturn=$callback&unotify=$notif&auto_redirect=10";
+	}
+	
 	
 	$curl = curl_init();
 	curl_setopt_array($curl, array(
 	//   CURLOPT_URL => "https://my.ipaymu.com/payment",
-	  CURLOPT_URL => "$CURLOPT_URL",
-	  CURLOPT_RETURNTRANSFER => true,
-	  CURLOPT_ENCODING => "",
-	  CURLOPT_MAXREDIRS => 10,
-	  CURLOPT_TIMEOUT => 30,
-	  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-	  CURLOPT_CUSTOMREQUEST => "POST",
-	  CURLOPT_POSTFIELDS => "key=$api_key&action=payment&format=json&product=$product&quantity=$quantity&price=$price&comments=$comments&ureturn=$callback&unotify=$notif&auto_redirect=10",
-	  CURLOPT_HTTPHEADER => array(
+	  CURLOPT_URL 				=> "$CURLOPT_URL",
+	  CURLOPT_RETURNTRANSFER 	=> true,
+	  CURLOPT_ENCODING 			=> "",
+	  CURLOPT_MAXREDIRS 		=> 10,
+	  CURLOPT_TIMEOUT 			=> 30,
+	  CURLOPT_HTTP_VERSION 		=> CURL_HTTP_VERSION_1_1,
+	  CURLOPT_CUSTOMREQUEST 	=> "POST",
+	  CURLOPT_POSTFIELDS 		=> "key=$api_key&format=json&name=$name&phone=$handphone&email=$email&amount=$price&notifyUrl=$notif&auto_redirect=10",
+	  //CURLOPT_POSTFIELDS 		=> "key=$api_key&action=payment&format=json&product=$product&quantity=$quantity&price=$price&comments=$comments&ureturn=$callback&unotify=$notif&auto_redirect=10",
+	  CURLOPT_HTTPHEADER 		=> array(
 	    "content-type: application/x-www-form-urlencoded"
 	  )
 	));
@@ -55,17 +69,19 @@
 		$obj = json_decode($response);
 		$url = $obj->url;
 		if(isset($url)){
-		$sql = "INSERT INTO tblpesanan_ipaymu (product,quantity,price,comments,url,status,harga) 
-				VALUES (:product,:quantity,:price,:comments,:url,:status,:harga)";
+		$sql = "INSERT INTO tblpesanan_ipaymu (product,quantity,handphone,price,comments,url,status,harga) 
+				VALUES (:product,:quantity,:handphone,:price,:comments,:url,:status,:harga)";
 		$stmt = $db->prepare($sql);
 		$params = array(
-			":product" 	=> $product,
-			":quantity" => $quantity,
-			":price" 	=> $price,
-			":comments" => $comments,
-			":url" 		=> $url,
-			":status" 	=> 'tertunda',
-			":harga" 	=> intval($price)*intval($quantity)
+			":product" 		=> $product,
+			":quantity" 	=> $quantity,
+			":handphone" 	=> $handphone,
+			":price" 		=> $price,
+			":comments" 	=> $comments,
+			":url" 			=> $url,
+			//":url" 			=> 'https://sandbox.ipaymu.com/payment/E4D4685B-832E-4E60-835B-756832A244C9',
+			":status" 		=> 'tertunda',
+			":harga" 		=> intval($price)*intval($quantity)
 		);
 		$saved = $stmt->execute($params);
 		if($saved) { 

@@ -80,13 +80,13 @@ function rupiah($angka){
             <div class="card-body">
 				<ul id="kiri" class="nav nav-tabs" role="tablist">
 					<li class="nav-item">
-						<a class="nav-link active" data-toggle="tab" href="#saldo">Saldo</a>
+						<a class="nav-link " data-toggle="tab" href="#saldo">Saldo</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#transaksi">Transaksi</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#order">Order</a>
+						<a class="nav-link active" data-toggle="tab" href="#order">Order</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#status">Status Pembayaran</a>
@@ -94,7 +94,7 @@ function rupiah($angka){
 				</ul>
 				
 				<div class="tab-content">
-					<div id="saldo" class="container tab-pane active">
+					<div id="saldo" class="container tab-pane ">
 						<br />
 						<input id="ceksaldo" type="submit" value="Cek Saldo" class="btn btn-primary btn-block">
 					</div> 
@@ -114,26 +114,47 @@ function rupiah($angka){
 						<input id="cektransaksi" type="submit" value="Cek Transaksi" class="btn btn-primary btn-block">
 					</div>            
 		  
-					<div id="order" class="container tab-pane">
-						<label>ID Produk</label>
+					<div id="order" class="container tab-pane active">
+						<!-- <label>ID Produk</label> -->
+						<!-- <br> -->
+						<input id="id_order" type="hidden" name="id_order" value="<?php echo $id;?>" class="form-control" readonly>
 						<br>
-						<input id="id_order" type="text" name="id_order" value="<?php echo $id;?>" class="form-control" readonly>
+						<label>Nama Operator</label>
 						<br>
-						<label>Nama Produk</label>
-						<br>
-						<input id="product" type="text" name="product" value="Kopi Gayo" class="form-control">
-						<br>
+						<!-- <input id="product" type="text" name="product" value="Kopi Gayo" class="form-control"> -->
+						<select id="product" name="product" class="form-control" type="text">
+
+						<option value="INDOSAT">INDOSAT</option>
+						<option value="TELKOMSEL">TELKOMSEL</option>
+						<option value="XL">XL</option>
+						<option value="AXIS">AXIS</option>
+						</select>
+						<!-- <br>
 						<label>Jumlah</label>
+						<br> -->
+						<input id="quantity" type="hidden" name="quantity" value="1" min="1" class="form-control">
 						<br>
-						<input id="quantity" type="number" name="quantity" value="1" min="1" class="form-control">
+						<label>No Handphone</label>
 						<br>
-						<label>Harga Satuan</label>
+						<input id="handphone" type="number" name="handphone"  value="08121003701" class="form-control" placeholder="08121003701">
 						<br>
-						<input id="price" type="number" name="price" value="5000" min="500" class="form-control">
+						<label>Satuan</label>
 						<br>
-						<label>Catatan</label>
+						<!-- <input id="price" type="number" name="price" value="5000" min="500" class="form-control"> -->
+						<select type="number" name="price" id="price" class="form-control">
+						<option value="12000">10K</option>					
+						<option value="22000">20K</option>
+						<option value="52000">50K</option>
+						<option value="102000">100K</option>
+						</select>
 						<br>
-						<input id="comments" type="text" name="comments" value="Tanpa Gula" class="form-control">
+						<label>Type</label>
+						<br>
+						<!-- <input id="comments" type="text" name="comments" value="" class="form-control"> -->
+						<select type="text" id="comments" class="form-control" name="comments">
+						<option value="qrs">QRS</option>
+						<option value="transfer">Transfer</option>
+						</select>
 						<br>
 						<input id="tambahorder" type="submit" name="tambahorder" value="Tambah Order" class="btn btn-primary btn-block">	
 					</div>
@@ -148,7 +169,7 @@ function rupiah($angka){
 									<td>TRX ID</td>
 									<td>Pesanan</td>
 									<td>Harga</td>
-									<td>Pemasukan</td>
+									<!-- <td>Pemasukan</td> -->
 									<td>Status</td>
 									<td>Tindakan</td>
 								</tr>
@@ -173,7 +194,7 @@ function rupiah($angka){
 									<td data-title="TRX ID"><?php echo $row["trx_id"];?></td>
 									<td data-title="Pesanan"><?php echo  $row["product"];?></td>
 									<td data-title="Harga"><?php echo  rupiah($row["harga"]);?></td>
-									<td data-title="Pemasukan"><?php echo rupiah($row["harga"]-$row["potongan"]);?></td>
+									<!-- <td data-title="Pemasukan"><?php echo rupiah($row["harga"]-$row["potongan"]);?></td> -->
 									<td data-title="Status"><?php echo $status;?></td>
 									<td data-title="Aksi" style="text-align:right"><?php echo $tindakan;?></td>
 								</tr>	
@@ -275,15 +296,16 @@ function rupiah($angka){
 		$('#tambahorder').click(function(){
 			$("#loading").show();
 			$("#ket").empty();
-			var id_order = $('#id_order').val();
-			var product = $('#product').val();
-			var quantity = $('#quantity').val();
-			var price = $('#price').val();
-			var comments = $('#comments').val();
+			var id_order 	= $('#id_order').val();
+			var product 	= $('#product').val();
+			var quantity 	= $('#quantity').val();
+			var handphone 	= $('#handphone').val();
+			var price 		= $('#price').val();
+			var comments 	= $('#comments').val();
 			$.ajax({
             	type : 'POST',
            		url : 'php/bayar.php',
-				data :  {'id_order' : id_order, 'product' : product, 'quantity' : quantity, 'price' : price, 'comments' : comments},
+				data :  {'id_order' : id_order, 'product' : product, 'quantity' : quantity, 'handphone' :handphone, 'price' : price, 'comments' : comments},
             	success: function (data) {
 					$("#ket").show();
 					var obj=$.parseJSON(data);
