@@ -3,11 +3,11 @@
 	date_default_timezone_set('Asia/Jakarta');
 	require_once("../config/koneksi.php");
 	
-	$id_order = $_POST['id_order'];
-	$product = $_POST['product'];
-	$quantity = $_POST['quantity'];
-	$price = $_POST['price'];
-	$comments = $_POST['comments'];
+	$id_order 	= $_POST['id_order'];
+	$product 	= $_POST['product'];
+	$quantity 	= $_POST['quantity'];
+	$price 		= $_POST['price'];
+	$comments 	= $_POST['comments'];
 	
 	// $api_key = file_get_contents("../config/apikey.txt");
 

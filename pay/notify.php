@@ -12,9 +12,9 @@ if ($_SERVER['SERVER_NAME']=='localhost') {
 }
 
 
-$status = $_POST['status'];
-$trx_id = $_POST['trx_id'];
-$via = $_POST['via'];
+$status 	= $_POST['status'];
+$trx_id 	= $_POST['trx_id'];
+$via 		= $_POST['via'];
 if($via=="qris"){
 	$status = "berhasil";	
 }
