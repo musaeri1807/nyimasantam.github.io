@@ -1,29 +1,40 @@
 <?php
-// ini_set('display_errors', 0);
+//ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("config/koneksi.php");
 
-if ($_SERVER['SERVER_NAME']=='localhost') {
-	# code...
-	$api_key = file_get_contents("config/sandboxapikey.txt");
-} else {
-	$api_key = file_get_contents("config/apikey.txt");
-	# code...
-}
 
 
-$status 	= $_POST['status'];
 $trx_id 	= $_POST['trx_id'];
+$sid		= $_POST['sid'];
+$status 	= $_POST['status'];
 $via 		= $_POST['via'];
+
+
+echo $trx_id ;
+echo '<br>'	 ;
+echo $sid	;
+echo '<br>'	 ;
+echo $status ;
+echo '<br>'	 ;
+echo $via ;
+
+die();
+
+
 if($via=="qris"){
 	$status = "berhasil";	
 }
 
-if ($_SERVER['SERVER_NAME']=='localhost') {
-	# code...
-	$CURLOPT_URL = "https://sandbox.ipaymu.com/api/transaksi?key=$api_key&id=$trx_id&format=json";
+if ($_SERVER['SERVER_NAME']=='localhost') {	
+	$api_key = file_get_contents("config/sandboxapikey.txt");
 } else {
-	# code...
+	$api_key = file_get_contents("config/apikey.txt");	
+}
+
+if ($_SERVER['SERVER_NAME']=='localhost') {	
+	$CURLOPT_URL = "https://sandbox.ipaymu.com/api/transaksi?key=$api_key&id=$trx_id&format=json";
+} else {	
 	$CURLOPT_URL ="https://my.ipaymu.com/api/transaksi?key=$api_key&id=$trx_id&format=json";
 }
 
