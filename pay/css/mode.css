@@ -1,0 +1,29 @@
+.bg-starter,
+.bg-pro,
+.bg-ipaymu {
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+form.bg-starter,
+form.bg-pro,
+form.bg-ipaymu{
+  padding-top:251px;
+  padding-bottom:177px;  
+  padding-left:100px;
+  padding-right:100px;
+}
+form.bg-pro,
+form.bg-ipaymu{
+  padding-top:200px;
+}
+.bg-starter {
+  background-color:green;
+}
+.bg-pro {
+  background-color:purple;
+}
+.bg-ipaymu {
+  background-color:blue;
+}

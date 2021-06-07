@@ -12,6 +12,7 @@ deployment:
     - /bin/cp -R uploads $DEPLOYPATH
     - /bin/cp -R view $DEPLOYPATH
     - /bin/cp -R getphp $DEPLOYPATH
+    - /bin/cp -R pay $DEPLOYPATH
     - /bin/cp .cpanel.yml $DEPLOYPATH    
     - /bin/cp .htaccess $DEPLOYPATH
     - /bin/cp activasipdf.php $DEPLOYPATH

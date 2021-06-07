@@ -1,0 +1,9 @@
+PHP
+Minimarket: http://localhost/ipaymu.didinstudio.online/selesai.php?id_order=11&trx_id=694743&via=cstore&channel=Alfamart&code=258207606
+Bank: http://localhost/ipaymu.didinstudio.online/selesai.php?id_order=12&trx_id=694745&status=pending&tipe=nonmember&via=va&channel=mandiri&va=8900870453963&displayName=IPAYMU+-+Didin+Studio
+eWallet: https://ipaymu.didinstudio.online/selesai.php?id_order=3&trx_id=697000&via=qris&channel=linkaja
+
+WP
+Minimarket: http://www.didinstudio.com/?wc-api=WC_Gateway_iPaymu&id_order=997&trx_id=694782&via=cstore&channel=Alfamart&code=258208743
+Bank: http://www.didinstudio.com/?wc-api=WC_Gateway_iPaymu&id_order=998&trx_id=694784&status=pending&tipe=nonmember&via=va&channel=mandiri&va=8900853767170&displayName=IPAYMU+-+Didin+Studio
+eWallet: http://www.didinstudio.com/?wc-api=WC_Gateway_iPaymu&id_order=996&trx_id=694777&via=qris&channel=linkaja
