@@ -12,9 +12,9 @@
 	// $api_key = file_get_contents("../config/apikey.txt");
 
 	if ($_SERVER['SERVER_NAME']=='localhost') {
-		$api_key = file_get_contents("../config/sandboxapikey.txt");
-	} else {
 		$api_key = file_get_contents("../config/apikey.txt");
+	} else {
+		$api_key = file_get_contents("../config/sandboxapikey.txt");
 	}
 
 	$domain = file_get_contents("../config/domain.txt");
@@ -22,9 +22,9 @@
 	$callback = $domain.'/selesai.php?id_order='.$id_order;
 
 	if ($_SERVER['SERVER_NAME']=='localhost') {
-		$CURLOPT_URL="https://sandbox.ipaymu.com/payment";
-	} else {
 		$CURLOPT_URL="https://my.ipaymu.com/payment";
+	} else {
+		$CURLOPT_URL="https://sandbox.ipaymu.com/payment";
 	}
 
 	
@@ -59,13 +59,13 @@
 				VALUES (:product,:quantity,:price,:comments,:url,:status,:harga)";
 		$stmt = $db->prepare($sql);
 		$params = array(
-			":product" => $product,
+			":product" 	=> $product,
 			":quantity" => $quantity,
-			":price" => $price,
+			":price" 	=> $price,
 			":comments" => $comments,
-			":url" => $url,
-			":status" => 'tertunda',
-			":harga" => intval($price)*intval($quantity)
+			":url" 		=> $url,
+			":status" 	=> 'tertunda',
+			":harga" 	=> intval($price)*intval($quantity)
 		);
 		$saved = $stmt->execute($params);
 		if($saved) { 

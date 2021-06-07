@@ -2,15 +2,15 @@
 	// $trx = '17500';
 	$trx = $_GET['trx'];
 	if ($_SERVER['SERVER_NAME']=='localhost') {
-		$api_key = file_get_contents("../config/sandboxapikey.txt");
-	} else {
 		$api_key = file_get_contents("../config/apikey.txt");
+	} else {
+		$api_key = file_get_contents("../config/sandboxapikey.txt");
 	}
 
 	if ($_SERVER['SERVER_NAME']=='localhost') {
-		$CURLOPT_URL="https://sandbox.ipaymu.com/api/transaksi?key=$api_key&id=$trx&format=json";
-	} else {
 		$CURLOPT_URL="https://my.ipaymu.com/api/transaksi?key=$api_key&id=$trx&format=json";
+	} else {
+		$CURLOPT_URL="https://sandbox.ipaymu.com/api/transaksi?key=$api_key&id=$trx&format=json";
 	}
 
 	

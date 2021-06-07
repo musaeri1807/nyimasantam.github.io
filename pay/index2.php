@@ -102,12 +102,13 @@ function rupiah($angka){
 
 						<label>ID Transaksi</label>
 						<br>
-						<select id="trx" type="text" name="trx" class="form-control">
+						<!-- <select id="trx" type="text" name="trx" class="form-control">
 							<option value="692681">692681</option>
 							<option value="680390">680390</option>
 							<option value="697000">697000</option>
 							<option value="17500">17500</option>
-						</select>
+						</select> -->
+						<input type="text" name="trx" id="trx" class="form-control">
 						<br>
 
 						<input id="cektransaksi" type="submit" value="Cek Transaksi" class="btn btn-primary btn-block">

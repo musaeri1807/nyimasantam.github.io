@@ -4,7 +4,7 @@ date_default_timezone_set('Asia/Jakarta');
 require_once("config/koneksi.php");
 
 $trx_id = $_GET['trx_id'];
-$sql = "SELECT * FROM pesanan WHERE trx_id=:trx_id";
+$sql = "SELECT * FROM tblpesanan_ipaymu WHERE trx_id=:trx_id";
 $stmt = $db->prepare($sql);
 $params = array(
     ":trx_id" => $trx_id

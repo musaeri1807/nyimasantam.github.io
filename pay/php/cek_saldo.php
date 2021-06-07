@@ -1,15 +1,15 @@
 <?php
 
 	if ($_SERVER['SERVER_NAME']=='localhost') {
-		$api_key = file_get_contents("../config/sandboxapikey.txt");
-	} else {
 		$api_key = file_get_contents("../config/apikey.txt");
+	} else {
+		$api_key = file_get_contents("../config/sandboxapikey.txt");
 	}
 
 	if ($_SERVER['SERVER_NAME']=='localhost') {
-		$CURLOPT_URL="https://sandbox.ipaymu.com/api/saldo";
-	} else {
 		$CURLOPT_URL="https://my.ipaymu.com/api/saldo";
+	} else {
+		$CURLOPT_URL="https://sandbox.ipaymu.com/api/saldo";
 	}
 	
 

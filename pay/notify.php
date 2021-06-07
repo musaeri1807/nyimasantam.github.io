@@ -60,7 +60,7 @@ if($saved) {
 	} else {
 		$obj = json_decode($response);
 		$waktu_bayar = $obj->WaktuBayar;
-		$sql = "UPDATE pesanan 
+		$sql = "UPDATE tblpesanan_ipaymu 
 				SET waktu_bayar=:waktu_bayar
 				WHERE trx_id=:trx_id";
 		$stmt = $db->prepare($sql);
