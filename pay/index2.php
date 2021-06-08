@@ -152,7 +152,7 @@ function rupiah($angka){
 						<br>
 						<!-- <input id="comments" type="text" name="comments" value="" class="form-control"> -->
 						<select type="text" id="comments" class="form-control" name="comments">
-						<option value="qrs">QRS</option>
+						<option value="qris">Qris</option>
 						<option value="transfer">Transfer</option>
 						</select>
 						<br>
