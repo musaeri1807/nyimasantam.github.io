@@ -63,8 +63,8 @@ function rupiah($angka){
 									<td><?php echo $order['quantity'];?></td>
 								</tr>
 								<tr>
-									<td>Catatan Pesanan</td>
-									<td><?php echo $order['comments'];?></td>
+									<td>Type</td>
+									<td><?php echo $order['type'];?></td>
 								</tr>
 								<tr>
 									<td>Harga Satuan</td>
@@ -78,22 +78,34 @@ function rupiah($angka){
 									<td>Biaya Admin</td>
 									<td><?php echo rupiah($order['potongan']);?></td>
 								</tr>
-								<tr>
+								<!-- <tr>
 									<td>Pemasukan</td>
 									<td><?php echo rupiah($order['harga']-$order['potongan']);?></td>
-								</tr>
+								</tr> -->
 								<tr>
 									<td>Status Pembayaran</td>
 									<td><?php echo $status;?></td>
 								</tr>
 								<tr>
 									<td>Metode Pembayaran</td>
-									<td><font style="text-transform:uppercase;"><?php echo $order['channel'];?></font></td>
+								<?php
+								if ($order['type']=='qris') {
+									?>
+									<td>https://sandbox.ipaymu.com/qr/template/38622</td>
+									<?php
+									
+								} else {
+									echo '<td>$order["channel"];</td>';
+								}
+								
+								?>
+									
+									
 								</tr>
-								<tr>
+								<!-- <tr>
 									<td>Waktu Pembayaran</td>
 									<td><?php echo $waktu_bayar;?></td>
-								</tr>
+								</tr> -->
 							</tbody>
 						</table>
 						<a href="./" class="btn btn-primary btn-block">Kembali</a>

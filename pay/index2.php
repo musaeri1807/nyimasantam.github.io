@@ -151,7 +151,7 @@ function rupiah($angka){
 						<label>Type</label>
 						<br>
 						<!-- <input id="comments" type="text" name="comments" value="" class="form-control"> -->
-						<select type="text" id="comments" class="form-control" name="comments">
+						<select type="text" id="type" class="form-control" name="type">
 						<option value="qris">Qris</option>
 						<option value="transfer">Transfer</option>
 						</select>
@@ -301,11 +301,11 @@ function rupiah($angka){
 			var quantity 	= $('#quantity').val();
 			var handphone 	= $('#handphone').val();
 			var price 		= $('#price').val();
-			var comments 	= $('#comments').val();
+			var type 	= $('#type').val();
 			$.ajax({
             	type : 'POST',
            		url : 'php/bayar.php',
-				data :  {'id_order' : id_order, 'product' : product, 'quantity' : quantity, 'handphone' :handphone, 'price' : price, 'comments' : comments},
+				data :  {'id_order' : id_order, 'product' : product, 'quantity' : quantity, 'handphone' :handphone, 'price' : price, 'type' : type},
             	success: function (data) {
 					$("#ket").show();
 					var obj=$.parseJSON(data);

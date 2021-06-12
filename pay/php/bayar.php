@@ -8,7 +8,7 @@
 	$quantity 	= $_POST['quantity'];
 	$handphone 	= $_POST['handphone'];
 	$price 		= $_POST['price'];
-	$comments 	= $_POST['comments'];
+	$type 		= $_POST['type'];
 
 	// $id_order 	= "1";
 	// $product 	= "XL";
@@ -31,7 +31,7 @@
 	$api_key = file_get_contents("../config/sandboxapikey.txt");
 	$domain = file_get_contents("../config/domain.txt");
 	$notif = $domain.'/notify.php';
-	$callback = $domain.'/selesai.php?id_order='.$id_order;
+	//$callback = $domain.'/selesai.php?id_order='.$id_order;
 
 	// if ($_SERVER['SERVER_NAME']=='localhost' && $comments=='qris' ) {
 	// 	$CURLOPT_URL="https://my.ipaymu.com/api/payment/qris";
@@ -43,7 +43,7 @@
 	// 	$CURLOPT_URL="https://sandbox.ipaymu.com/api/bcatransfer";
 	// }
 
-	if ($comments=='qris') {
+	if ($type=='qris') {
 		$CURLOPT_URL="https://sandbox.ipaymu.com/api/payment/qris";
 	} else {
 		$CURLOPT_URL="https://sandbox.ipaymu.com/api/bcatransfer";
@@ -80,14 +80,14 @@
 	} else {
 		$obj = json_decode($response);
 		// $url = $obj->url;
-		$TransactionId = $obj->Data->TransactionId;
-		$Via = $obj->Data->Via;
-		$PaymentNo = $obj->Data->PaymentNo;
-		$PaymentName = $obj->Data->PaymentName;
-		$Fee = $obj->Data->Fee;
-		$Expired = $obj->Data->Expired;
+		$TransactionId 			= $obj->Data->TransactionId;
+		$Via 					= $obj->Data->Via;
+		$PaymentNo 				= $obj->Data->PaymentNo;
+		$PaymentName 			= $obj->Data->PaymentName;
+		$Fee 					= $obj->Data->Fee;
+		$Expired 				= $obj->Data->Expired;
 
-		if ($comments=='qris') {
+		if ($type=='qris') {
 			$url = $obj->Data->QrTemplate;
 			$Channel = "";
 		} else {
@@ -96,8 +96,8 @@
 		}		
 	
 		if(isset($url)){
-		$sql = "INSERT INTO tblpesanan_ipaymu (trx_id,product,quantity,handphone,price,comments,url,status,channel,via,expired,harga,potongan) 
-				VALUES (:trx_id,:product,:quantity,:handphone,:price,:comments,:url,:status,:channel,:via,:expired,:harga,:potongan)";
+		$sql = "INSERT INTO tblpesanan_ipaymu (trx_id,product,quantity,handphone,price,type,paymentno,paymentname,url,status,channel,via,expired,harga,potongan) 
+				VALUES (:trx_id,:product,:quantity,:handphone,:price,:type,:paymentno,:paymentname,:url,:status,:channel,:via,:expired,:harga,:potongan)";
 		$stmt = $db->prepare($sql);
 		$params = array(
 			":trx_id"		=> $TransactionId,
@@ -105,7 +105,9 @@
 			":quantity" 	=> $quantity,
 			":handphone" 	=> $handphone,
 			":price" 		=> $price,
-			":comments" 	=> $comments,
+			":type" 		=> $type,
+			":paymentno" 	=> $PaymentNo,
+			":paymentname" 	=> $PaymentName,
 			":url" 			=> $url,
 			//":url" 			=> 'https://sandbox.ipaymu.com/payment/E4D4685B-832E-4E60-835B-756832A244C9',
 			":status" 		=> 'tertunda',

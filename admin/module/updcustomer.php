@@ -135,6 +135,38 @@ if(isset($_REQUEST['btn_update']))
 	}
 }
 
+
+if (isset($_REQUEST['btn-ektp'])) {
+  # code...
+  $username= "admin";
+  $password= "M4Potl0ZZCET2I5AsGrt6w==";
+  $CURLOPT_URL="172.24.33.162:8089/gmkservice/ktpreader/services/bacaChip";
+  $curl = curl_init();
+    curl_setopt_array($curl, array(	
+    CURLOPT_URL => "$CURLOPT_URL",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "POST",
+    CURLOPT_POSTFIELDS => "username=$username&password=$password&format=json",
+    CURLOPT_HTTPHEADER => array(
+       "content-type: application/x-www-form-urlencoded"
+     )
+  ));
+  $response = curl_exec($curl);
+  $err = curl_error($curl);
+  curl_close($curl);
+  
+  if ($err) {
+    echo "cURL Error #:" . $err;
+  } else {
+  
+    $data=json_decode($response,true);
+  }
+}//end if btn-ektp
+
 ?>    
     <!-- Main content -->
     <section class="content">
@@ -186,15 +218,23 @@ if(isset($_REQUEST['btn_update']))
             <div class="tab-content">
               <div class="active tab-pane" id="activity">
                     <!-- Post -->
-                <div class="post clearfix">                      
+                <div class="post clearfix"> 
+                  <div>
+                      <form class="from-horizontal" method="post">
+                      <!-- <button type="submit" name="btn-ektp" class="btn btn-danger">Scan EKTP</button> -->
+                      <input type="submit"  name="btn-ektp" class="btn btn-success " value="Scan EKTP">
+                      </form>
+                    </div>                     
 
                   <form class="form-horizontal">
                   <div class="form-group">
                     <label for="inputName" class="col-sm-2 control-label">NIK</label>
 
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputName" placeholder="Name">
+                    <div class="col-sm-6">
+                      <input type="email" class="form-control" value="<?php echo $data['nik'];?>"id="inputName" placeholder="Name">
+                     
                     </div>
+                    
                   </div>
                   <div class="form-group">
                     <label for="inputEmail" class="col-sm-2 control-label">Date of birth</label>

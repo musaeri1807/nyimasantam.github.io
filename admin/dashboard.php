@@ -234,7 +234,7 @@ $branchid=$rows['field_branch'];
         </li>
         
         <li>
-          <a href="development">
+          <a href="?module=payment">
             <i class="fa fa-plus"></i> <span>Extra</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-red">3</small>
@@ -450,6 +450,8 @@ $branchid=$rows['field_branch'];
                                 include "module/adddeposit.php";
                               }elseif( $_GET['module']=="formcustomer"){
                                 include "module/formcustomer.php";
+                              }elseif($_GET['module']=="payment"){
+                                include "module/payment.php";
                               }else{
                                 echo "<script>
                               

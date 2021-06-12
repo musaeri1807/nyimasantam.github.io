@@ -16,20 +16,20 @@ $via 		= $_POST['via'];
 
 
 
-// echo $trx_id ;
-// echo '<br>'	 ;
-// echo $sid	;
-// echo '<br>'	 ;
-// echo $status ;
-// echo '<br>'	 ;
-// echo $via ;
+echo $trx_id ;
+echo '<br>'	 ;
+echo $sid	;
+echo '<br>'	 ;
+echo $status ;
+echo '<br>'	 ;
+echo $via ;
 
 // die();
 
 
-// if($via=="qris"){
-// 	$status = "berhasil";	
-// }
+if($via=="qris"){
+	$status = "berhasil";	
+}
 
 $api_key = file_get_contents("config/sandboxapikey.txt");
 $CURLOPT_URL = "https://sandbox.ipaymu.com/api/transaksi?key=$api_key&id=$trx_id&format=json";

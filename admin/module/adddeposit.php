@@ -12,7 +12,9 @@
               <!-- <h3 class="box-title"></h3> -->
               <a href="" class="btn btn-success btn-block margin-bottom">Search Product</a>
               <div class="box-tools">
+<!-- modal -->
 
+<!-- modal -->
               </div>
             </div>
             <div class="box-body no-padding">
