@@ -16,8 +16,9 @@
 	// $handphone 	= "081210003701";
 	// $price 		= "10000";
 	// $comments 	= "transfer";
-	$name		= "Customer";
+	$name		= "Muhammad Gavin Alhanan";
 	$email		= "musaeri1807@gmail.com";
+	$memberid	= "3172090008081210003701"
 	// $api_key = file_get_contents("../config/apikey.txt");
 
 
@@ -110,7 +111,7 @@
 			":paymentname" 	=> $PaymentName,
 			":url" 			=> $url,
 			//":url" 			=> 'https://sandbox.ipaymu.com/payment/E4D4685B-832E-4E60-835B-756832A244C9',
-			":status" 		=> 'tertunda',
+			":status" 		=> 'pending',
 			":channel"		=> $Channel,
 			":via"			=> $Via,
 			":expired"		=> $Expired,

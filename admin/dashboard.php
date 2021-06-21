@@ -74,8 +74,8 @@ $branchid=$rows['field_branch'];
     <a href="#" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><img src="../uploads/iconnyimas.png"></span>
-      <!-- logo for regular state and mobile devices -->
-      <!-- <span class="logo-lg"><b><?php //echo $row["field_department_name"] ?></b></span> -->
+      <!-- logo for regular state and mobile devices -->    
+
       <span class="logo-lg"><b><img src="../uploads/logonyimas.png"></b></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
@@ -539,6 +539,7 @@ $branchid=$rows['field_branch'];
             <script>
               $(function () {
                 $('#trxSemua').DataTable()
+                $('#trxSemua2').DataTable()
                 $('#trxTerakhir').DataTable({
                   'paging'      : true,
                   'lengthChange': false,
@@ -1011,6 +1012,232 @@ $branchid=$rows['field_branch'];
     }); 
     </script>
 <!-- get wilayah -->
+
+<!-- add product -->
+<script>
+$(document).ready(function() {
+
+
+function formatNumber(num) {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
+
+// pilih customer
+$(document).on("click", ".modal-select-customer", function() {
+
+var id = $(this).attr('id');
+var account   = $("#account_" + id).val();
+var member    = $("#member_" + id).val();
+var customer  = $("#customer_" + id).val();
+
+$("#add_id").val(id);
+$("#add_account").val(account);
+$("#add_memberid").val(member);
+$("#add_customer").val(customer);
+});
+
+// pilih produk
+$(document).on("click", ".modal-pilih-produk", function() {
+
+  var id = $(this).attr('id');
+  var kode = $("#kode_" + id).val();
+  var nama = $("#nama_" + id).val();
+  var harga = $("#harga_" + id).val();
+
+  $("#tambahkan_id").val(id);
+  $("#tambahkan_kode").val(kode);
+  $("#tambahkan_nama").val(nama);
+  $("#tambahkan_harga").val(harga);
+  $("#tambahkan_jumlah").val(1);
+  $("#tambahkan_total").val(harga);
+
+});
+// ubah jumlah
+$(document).on("change keyup", "#tambahkan_jumlah", function() {
+
+    // var id = $(this).attr('id');
+    // var kode = $("#kode_"+id).val();
+    // var nama = $("#nama_"+id).val();
+    var harga = $("#tambahkan_harga").val();
+    var jumlah = $("#tambahkan_jumlah").val();
+    var total = harga * jumlah;
+    $("#tambahkan_total").val(total);
+
+  });
+
+
+// ubah jumlah
+$("body").on("keyup", "#tambahkan_kode", function() {
+  var kode = $(this).val();
+  var data = "kode=" + kode;
+  $.ajax({
+    type: "POST",
+    url: "penjualan_cari_ajax.php",
+    data: data,
+    dataType: 'JSON',
+    success: function(html) {
+      $("#tambahkan_id").val(html[0].id);
+
+      $("#tambahkan_nama").val(html[0].nama);
+      $("#tambahkan_harga").val(html[0].harga);
+      $("#tambahkan_jumlah").val(html[0].jumlah);
+      $("#tambahkan_total").val(html[0].harga)
+
+    }
+
+  });
+});
+
+
+// tombol tambahkan produk
+$("body").on("click", "#tombol-tambahkan", function() {
+
+  var id = $("#tambahkan_id").val();
+  var kode = $("#tambahkan_kode").val();
+  var nama = $("#tambahkan_nama").val();
+  var harga = $("#tambahkan_harga").val();
+  var jumlah = $("#tambahkan_jumlah").val();
+  var total = $("#tambahkan_total").val();
+
+
+  if (id.length == 0) {
+    alert("Produk belum dipilih");
+  } else if (kode.length == 0) {
+    alert("Kode produk harus diisi");
+  } else if (jumlah == 0) {
+    alert("Jumlah harus lebih besar dari 0");
+  } else {
+    var table_pembelian = "<tr id='tr_" + id + "'>" +
+    "<td> <input  type='hidden' name='transaksi_produk[]' value='" + id + "'> <input type='hidden'  name='transaksi_harga[]' value='" + harga + "'> <input type='hidden' name='transaksi_jumlah[]' value='" + jumlah + "'> <input type='hidden' name='transaksi_total[]' value='" + total + "'>" +
+    kode +
+    "</td>" +
+    "<td>" + nama + "</td>" +
+    "<td align='center'>Rp." + formatNumber(harga) + ",-</td>" +
+    "<td align='center'>" + formatNumber(jumlah) + "</td>" +
+    "<td align='center'>Rp." + formatNumber(total) + ",-</td>" +
+    "<td align='center'> <span class='btn btn-danger tombol-hapus-penjualan' total='" + total + "' jumlah='" + jumlah + "' harga='" + harga + "' id='" + id + "'><i class='fa fa-close'></i> Batal</span></td>" +
+    "</tr>";
+    $("#table-pembelian tbody").append(table_pembelian);
+
+
+        // update total pembelian
+        var pembelian_harga = $(".pembelian_harga").attr("id");
+        var pembelian_jumlah = $(".pembelian_jumlah").attr("id");
+        var pembelian_total = $(".pembelian_total").attr("id");
+
+        // jumlahkan pembelian
+        var jumlahkan_harga = eval(pembelian_harga) + eval(harga);
+        var jumlahkan_jumlah = eval(pembelian_jumlah) + eval(jumlah);
+        var jumlahkan_total = eval(pembelian_total) + eval(total);
+       
+
+        // isi di table penjualan
+        $(".pembelian_harga").attr("id", jumlahkan_harga);
+        $(".pembelian_jumlah").attr("id", jumlahkan_jumlah);
+        $(".pembelian_total").attr("id", jumlahkan_total);
+
+        // tulis di table penjualan
+        $(".pembelian_harga").text("Rp." + formatNumber(jumlahkan_harga) + ",-");
+        $(".pembelian_jumlah").text(formatNumber(jumlahkan_jumlah));
+        $(".pembelian_total").text("Rp." + formatNumber(jumlahkan_total) + ",-");
+
+        // total
+        $(".total_pembelian").text("Rp." + formatNumber(jumlahkan_total) + ",-");
+        $(".sub_total_pembelian").text("Rp." + formatNumber(jumlahkan_total) + ",-");
+        $(".total_pembelian").attr("id",jumlahkan_total);
+        $(".sub_total_pembelian").attr("id",jumlahkan_total);
+
+        $(".total_form").val(jumlahkan_total);
+        $(".sub_total_form").val(jumlahkan_total);
+
+        // kosongkan
+        $("#tambahkan_id").val("");
+        $("#tambahkan_kode").val("");
+        $("#tambahkan_nama").val("");
+        $("#tambahkan_harga").val("");
+        $("#tambahkan_jumlah").val("");
+        $("#tambahkan_total").val("")
+      }
+
+    });
+
+
+
+
+// tombol hapus penjualan
+$("body").on("click", ".tombol-hapus-penjualan", function() {
+
+  var id      = $(this).attr("id");
+  var harga   = $(this).attr("harga");
+  var jumlah  = $(this).attr("jumlah");
+  var total   = $(this).attr("total");
+
+    // update total pembelian
+    var pembelian_harga = $(".pembelian_harga").attr("id");
+    var pembelian_jumlah = $(".pembelian_jumlah").attr("id");
+    var pembelian_total = $(".pembelian_total").attr("id");
+
+    // jumlahkan pembelian
+    var kurangi_harga = eval(pembelian_harga) - eval(harga);
+    var kurangi_jumlah = eval(pembelian_jumlah) - eval(jumlah);
+    var kurangi_total = eval(pembelian_total) - eval(total);
+
+    // isi di table penjualan
+    $(".pembelian_harga").attr("id", kurangi_harga);
+    $(".pembelian_jumlah").attr("id", kurangi_jumlah);
+    $(".pembelian_total").attr("id", kurangi_total);
+
+    // tulis di table penjualan
+    $(".pembelian_harga").text("Rp." + formatNumber(kurangi_harga) + ",-");
+    $(".pembelian_jumlah").text(formatNumber(kurangi_jumlah));
+    $(".pembelian_total").text("Rp." + formatNumber(kurangi_total) + ",-");
+
+    // total
+    $(".total_pembelian").text("Rp." + formatNumber(kurangi_total) + ",-");
+    $(".sub_total_pembelian").text("Rp." + formatNumber(kurangi_total) + ",-");
+    $(".total_pembelian").attr("id",kurangi_total);
+    $(".sub_total_pembelian").attr("id",kurangi_total);
+
+    $(".total_form").val(kurangi_total);
+    $(".sub_total_form").val(kurangi_total);
+
+
+    $("#tr_" + id).remove();
+
+  });
+
+// diskon
+$("body").on("keyup", ".total_diskon", function() {
+  var diskon = $(this).val();
+
+  if(diskon.length != 0 && diskon != ""){
+
+    var sub_total = $(".sub_total_pembelian").attr("id");
+    var total = $(".total_pembelian").attr("id");
+
+    var hasil_diskon = sub_total*diskon/100;
+    var hasil2 = sub_total-hasil_diskon;
+    $(".total_pembelian").text("Rp."+formatNumber(hasil2)+",-");
+    $(".total_form").val(hasil2);
+
+  }else{
+
+    var sub_total_pembelian = $(".sub_total_pembelian").attr("id");
+    $(".total_pembelian").attr("id",sub_total_pembelian);
+    $(".total_pembelian").text("Rp."+formatNumber(sub_total_pembelian)+",-");
+
+  }
+
+  
+
+});
+
+
+
+
+
+});
+</script>
 
 </body>
 </html>

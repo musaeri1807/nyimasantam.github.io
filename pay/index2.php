@@ -178,7 +178,7 @@ function rupiah($angka){
 								<?php 
 									foreach($result as $row) {
 										$status = $row["status"];
-										if($status=="tertunda"){
+										if($status=="pending"){
 											$status = '<span class="badge badge-warning text-white">Menunggu Pembayaran</span>';
 											$tindakan = '<a href="'.$row["url"].'" class="text-white btn btn-primary btn-block">Bayar</a><br /><a href="detail.php?trx_id='.$row["trx_id"].'" class="text-white btn btn-info btn-block">Detail</a>';
 										}else if($status=="berhasil"){

@@ -1,12 +1,12 @@
 <?php
-//ini_set('display_errors', 0);
+ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("config/koneksi.php");
 //require_once 'connection.php';
 session_start();
 if(isset($_SESSION["user_login"]))	//check condition user login not direct back to index.php page
 {
-	header("location: dashboard");
+	header("location: location: customer/main?module=home");
 }
 if(isset($_REQUEST['btn_login']))	//button name is "btn_login" 
 {
@@ -76,14 +76,12 @@ if(isset($_REQUEST['btn_login']))	//button name is "btn_login"
 						$loginMsg 						= "Successfully Login...";		//user login success message
 						//header('location:loading');	//refresh 2 second after redirect to "welcome.php" page
 						if ($_SERVER['SERVER_NAME']=='localhost') {                     
-							echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/Login-Register-PHP-PDO/customer/main">';
+							echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/customer/main">';
 						  }else{
 							echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://urunanmu.my.id/customer/dashboard?module=home">';
 						  }
 					}
-
 					else
-
 					{
 						
 						$NLock=1;
@@ -118,22 +116,16 @@ if(isset($_REQUEST['btn_login']))	//button name is "btn_login"
 			{
 				$errorMsg[]="Akun Belum Terdaftar";
 			}
-
 			//try
 		}
 		catch(PDOException $e)
 		{
 			$e->getMessage();
 		}
-
 		//input		
-
 	} 
-
 } //google c
-
 //$loginMsgCapcha = " Login...";
-
 }
 
 ?>
@@ -145,37 +137,22 @@ if(isset($_REQUEST['btn_login']))	//button name is "btn_login"
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta content="Silakan Login Dengan Aman" name="descriptison">
-    <meta content="Login nyimasantam" name="keywords">
-    
+    <meta content="Login nyimasantam" name="keywords">    
     <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="icon">
     <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="apple-touch-icon">
-
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
-
      <!-- <link rel="stylesheet" href="fonts/icomoon/style.css"> -->
-
     <!-- <link rel="stylesheet" href="css/owl.carousel.min.css"> -->
-
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="view/assetlogin/css/bootstrap.min.css">
-    
+    <link rel="stylesheet" href="view/assetlogin/css/bootstrap.min.css">    
     <!-- Style -->
     <link rel="stylesheet" href="view/assetlogin/css/style.css">
-
     <title>NYIMASANTAM</title>
-  </head>
-
+</head>
 	<body>
-	
-
 	<div class="wrapper">
-
-	<div class="container">		
-
+	<div class="container">
 		<div class="col-lg-12">
-
-		
-
 		<?php
 		if(isset($errorMsg))
 		{
@@ -195,11 +172,7 @@ if(isset($_REQUEST['btn_login']))	//button name is "btn_login"
 				<strong><?php echo $loginMsg; ?></strong>
 			</div>
         <?php
-
 		}
-
-	
-
 		?>   
 			<center>
 				<a href="home"><img  src="https://nyimasantam.my.id/image/logonyimas.png" width="170" ></a>
@@ -207,11 +180,8 @@ if(isset($_REQUEST['btn_login']))	//button name is "btn_login"
 			</center>			
 
 			<form method="post" class="form-horizontal">
-
-					
-
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Email / No HP</label>
+				<label class="col-sm-6 control-label">Email / No HP</label>
 				<div class="col-sm-6">
 				<input type="text" name="txt_username" class="form-control" placeholder="Masukan Email atau No Hp" />
 				</div>
@@ -230,7 +200,6 @@ if(isset($_REQUEST['btn_login']))	//button name is "btn_login"
                     }elseif ($_SERVER['SERVER_NAME']=='nyimasantam.my.id') {
                       echo '<div class="g-recaptcha" data-sitekey="6Lc9f84ZAAAAANDLO3VFPiJEsa1trW4PwdE5fX0U"></div>';
                     }
-
                    ?>
 				</div>
 				</div>
