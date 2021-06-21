@@ -2,6 +2,32 @@
 require_once("../config/connection.php");
 require_once("../php/function.php");
 
+//noReff
+$sql = "SELECT field_no_referensi FROM tbltrxmutasisaldo ORDER BY field_no_referensi DESC LIMIT 1";
+$stmt = $db->prepare($sql);
+$stmt->execute();
+$order = $stmt->fetch(PDO::FETCH_ASSOC);
+if($order['field_no_referensi']==""){         
+  $no=1;                  
+  $thn = date('Y');                 
+  $thn = substr( $thn,-2);
+  $reff = "Reff";                  
+  $char = $thn.$reff;
+  $noReff =$char.sprintf("%09s",$no);
+}else{          
+  $noreff = $order['field_no_referensi'];         
+  $noUrut = substr($noreff, 6);               
+  $no=$noUrut+1;                
+  $thn = date('Y');
+  $thn = substr( $thn,-2);
+  $reff = "Reff"; 
+  $char = $thn.$reff;
+  $noReff =$char.sprintf("%09s",$no); 
+}
+
+
+$goldprice="990000";
+
 
 // $id_invoice = mysqli_insert_id(mysqli_connect("localhost", "root", "" ,"dbcrudoop"));
 
@@ -14,31 +40,29 @@ require_once("../php/function.php");
 
 if (isset($_POST['payment'])) {
   # code...
- echo $field_no_referensi       = "21Reff000001024";
+ echo $field_no_referensi       = $noReff;
  echo '<br>';
  echo $field_date_deposit       = date('Y-m-d');
  echo '<br>';
- echo $field_rekening_deposit   = "1234567890";
+ echo $field_rekening_deposit   = $_POST['txt_rekening'];
  echo '<br>';
- echo $field_sumber_dana        = "Tabungan";
+ echo $field_sumber_dana        = $_POST['txt_select']; 
  echo '<br>';
- echo $field_branch             = "JATI";
+ echo $field_branch             = $branchid;
  echo '<br>';
- echo $field_officer_id         = 3;
+ echo $field_officer_id         = $id;
  echo '<br>';
- echo $field_sub_total          = 100000;
- echo '<br>';
-  
- echo $field_operation_fee      = 5;
+ echo $field_sub_total          = $_POST['txt_subtotal'];
+ echo '<br>';  
+ echo $field_operation_fee      = $_POST['txt_free'];
  echo '<br>';
  echo $field_operation_fee_rp   = $field_sub_total*$field_operation_fee/100;
  echo '<br>';
- echo $field_total_deposit      = $_POST['total'];
+ echo $field_total_deposit      = $_POST['txt_total'];
  echo '<br>';
-
- echo $field_deposit_gold       = $_POST['diskon'];
+ echo $field_deposit_gold       = $field_total_deposit/$goldprice;
  echo '<br>';
- echo $field_gold_price         = $_POST['total'];
+ echo $field_gold_price         = $goldprice;
 }
 
 // // mysqli_query($koneksi, "insert into invoice values(NULL,'$nomor','$tanggal','$pelanggan','$kasir','$sub_total','$diskon','$total')")or die(mysqli_errno($koneksi));
@@ -199,7 +223,7 @@ $result  = $stmt->fetchAll();
                    <div class="row">
                     
                       <div class="col-xs-3">                      
-                      <select class="form-control">
+                      <select class="form-control" name="txt_select">
                         <option value="">--Pilih--</option>
                         <option value="Investasi">Investasi</option>
                         <option value="Investasi">Sampah</option>
@@ -325,7 +349,8 @@ $result  = $stmt->fetchAll();
 
 
                   <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                    Rp 990.000,00
+                   <input type="hidden" value="<?php echo $goldprice;?>" > 
+                   <span class="goldprice" id="<?php echo $goldprice;?>"><?php echo rupiah($goldprice);?></span>
                   </p>
                 </div>
                 <!-- /.col -->
@@ -337,27 +362,33 @@ $result  = $stmt->fetchAll();
                       <tr>
                         <th style="width:50%">Subtotal:</th>
                         <td>
-                        <input type="hidden" name="sub_total" class="sub_total_form" value="0">
+                        <input type="text" name="txt_subtotal" class="sub_total_form" value="0">
                         <span class="sub_total_pembelian" id="0">Rp.0,-</span>
                         </td>
                       </tr>
                       <tr>
                         <th id="txt_persen">Oprasional free (5%)</th>
                         <td>
-                          <input class="form-control total_diskon" type="number" min="0" max="100" id="0" name="diskon" value="5" required="required">
-                          <!-- <span class="" id="5">5%</span> -->
+                          <input class="form-control total_fee" type="number" min="0" max="100" id="5" name="txt_free">
+                          <span class="fee" id="0">5%</span>
+
+                          <input class="form-control total_fee_rp" type="number" min="0" max="100" value="0" id="5" name="txt_free_rp" >
+                          <span class="fee_rp" id="0">Rp.0,-</span>
                         </td>
                       </tr>
                       <tr>
                         <th>Total</th>
                         <td>
-                          <input type="hidden" name="total" class="total_form" value="0">
+                          <input type="text" name="txt_total" class="total_form" value="0">
                           <span class="total_pembelian" id="0">Rp.0,-</span>
                         </td>
                       </tr>
                       <tr>
                         <th>Gold Customer</th>
-                        <td>$265.24</td>
+                        <td>
+                        <input type="text" name="txt_gold" class="gold_form" value="0">
+                        <span class="total_gold" id="0">0,gram</span>
+                        </td>
                       </tr>
                     </table>
                   </div>

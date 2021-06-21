@@ -1119,7 +1119,8 @@ $("body").on("click", "#tombol-tambahkan", function() {
     "</tr>";
     $("#table-pembelian tbody").append(table_pembelian);
 
-
+        var pricegold =$(".goldprice").attr("id");
+        var fee =$(".total_fee").attr("id");
         // update total pembelian
         var pembelian_harga = $(".pembelian_harga").attr("id");
         var pembelian_jumlah = $(".pembelian_jumlah").attr("id");
@@ -1129,7 +1130,11 @@ $("body").on("click", "#tombol-tambahkan", function() {
         var jumlahkan_harga = eval(pembelian_harga) + eval(harga);
         var jumlahkan_jumlah = eval(pembelian_jumlah) + eval(jumlah);
         var jumlahkan_total = eval(pembelian_total) + eval(total);
-       
+
+       //gold
+        var f=jumlahkan_total*fee/100;
+        var e=jumlahkan_total-f;
+        var g=e/pricegold;
 
         // isi di table penjualan
         $(".pembelian_harga").attr("id", jumlahkan_harga);
@@ -1147,8 +1152,19 @@ $("body").on("click", "#tombol-tambahkan", function() {
         $(".total_pembelian").attr("id",jumlahkan_total);
         $(".sub_total_pembelian").attr("id",jumlahkan_total);
 
-        $(".total_form").val(jumlahkan_total);
         $(".sub_total_form").val(jumlahkan_total);
+        //$(".total_form").val(jumlahkan_total);  
+        $(".total_form").val(e);
+        $(".total_pembelian").text("Rp." + formatNumber(e) + ",-");
+        
+
+        //gold
+        $(".fee_rp").text("Rp." + formatNumber(f) + ",-");
+        $(".total_fee_rp").val(f);       
+      
+        $(".total_gold").text(g.toFixed(6)+",gram");
+        $(".gold_form").val(g.toFixed(6));
+
 
         // kosongkan
         $("#tambahkan_id").val("");
@@ -1172,6 +1188,9 @@ $("body").on("click", ".tombol-hapus-penjualan", function() {
   var jumlah  = $(this).attr("jumlah");
   var total   = $(this).attr("total");
 
+        var pricegold =$(".goldprice").attr("id");
+        var fee =$(".total_fee").attr("id");
+
     // update total pembelian
     var pembelian_harga = $(".pembelian_harga").attr("id");
     var pembelian_jumlah = $(".pembelian_jumlah").attr("id");
@@ -1181,6 +1200,11 @@ $("body").on("click", ".tombol-hapus-penjualan", function() {
     var kurangi_harga = eval(pembelian_harga) - eval(harga);
     var kurangi_jumlah = eval(pembelian_jumlah) - eval(jumlah);
     var kurangi_total = eval(pembelian_total) - eval(total);
+
+        //gold
+        var f=kurangi_total*fee/100;
+        var e=kurangi_total-f;
+        var g=e/pricegold;
 
     // isi di table penjualan
     $(".pembelian_harga").attr("id", kurangi_harga);
@@ -1198,8 +1222,20 @@ $("body").on("click", ".tombol-hapus-penjualan", function() {
     $(".total_pembelian").attr("id",kurangi_total);
     $(".sub_total_pembelian").attr("id",kurangi_total);
 
-    $(".total_form").val(kurangi_total);
+    // $(".total_form").val(kurangi_total);
+    // $(".sub_total_form").val(kurangi_total);
+
     $(".sub_total_form").val(kurangi_total);
+        //$(".total_form").val(jumlahkan_total);  
+    $(".total_form").val(e);
+    $(".total_pembelian").text("Rp." + formatNumber(e) + ",-");
+
+        //gold
+        $(".fee_rp").text("Rp." + formatNumber(f) + ",-");
+        $(".total_fee_rp").val(f);       
+      
+        $(".total_gold").text(g.toFixed(6)+",gram");
+        $(".gold_form").val(g.toFixed(6));
 
 
     $("#tr_" + id).remove();
@@ -1207,24 +1243,39 @@ $("body").on("click", ".tombol-hapus-penjualan", function() {
   });
 
 // diskon
-$("body").on("keyup", ".total_diskon", function() {
+$("body").on("keyup", ".total_fee", function() {
   var diskon = $(this).val();
+  
 
   if(diskon.length != 0 && diskon != ""){
 
-    var sub_total = $(".sub_total_pembelian").attr("id");
-    var total = $(".total_pembelian").attr("id");
+    var sub_total    = $(".sub_total_pembelian").attr("id");
+    var total        = $(".total_pembelian").attr("id");    
+    var goldprice    = $(".goldprice").attr("id");
 
+   
     var hasil_diskon = sub_total*diskon/100;
     var hasil2 = sub_total-hasil_diskon;
+    var result = hasil2/goldprice;
     $(".total_pembelian").text("Rp."+formatNumber(hasil2)+",-");
     $(".total_form").val(hasil2);
 
+    $(".total_gold").text(result.toFixed(6)+",gram");
+    $(".gold_form").val(result.toFixed(6));
+
   }else{
 
-    var sub_total_pembelian = $(".sub_total_pembelian").attr("id");
-    $(".total_pembelian").attr("id",sub_total_pembelian);
-    $(".total_pembelian").text("Rp."+formatNumber(sub_total_pembelian)+",-");
+    var sub_total_pembelian   = $(".sub_total_pembelian").attr("id");
+    var gold_price            = $(".goldprice").attr("id");
+    var result2               = sub_total_pembelian/gold_price;
+    
+    $(".total_pembelian").text("Rp."+formatNumber(sub_total_pembelian)+",-");    
+    $(".total_form").val(sub_total_pembelian);
+
+    $(".total_gold").text(result2.toFixed(6)+",Gram");
+    $(".gold_form").val(result2.toFixed(6));
+  
+
 
   }
 
