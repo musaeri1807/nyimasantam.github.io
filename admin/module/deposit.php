@@ -51,6 +51,7 @@ $no=1;
                   <th>Total</th>
                   <th>Gold</th>                  
                   <th>Officer</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -60,7 +61,7 @@ $no=1;
                 ?> 
              
                  <tr>
-                  <td ><?php echo $row["field_no_referensi"];?></td>
+                  <td ><strong><?php echo $row["field_no_referensi"];?></strong></td>
                   <!-- <strong></strong> -->
                   <td ><?php echo date("d-M-Y",strtotime($row["field_date_deposit"]));?></td>                                
                   <td ><?php echo $row["field_rekening_deposit"];?></td>
@@ -72,6 +73,17 @@ $no=1;
                   <td  ><?php echo rupiah($row["field_total_deposit"]);?></td>
                   <td  ><strong><?php echo $row["field_deposit_gold"];?></strong></td> 
                   <td  ><?php echo $row["field_name_officer"];?></td>
+                  <td  >
+                  
+                  <?php if ($row['field_status']=="pending") {                    
+                    echo '<span class="label pull-center bg-yellow"><strong>pending</strong></span>';
+                  } elseif($row['field_status']=="cancel") {                   
+                    echo '<span class="label pull-center bg-red"><strong>cancel</strong></span>';
+                  }elseif($row['field_status']=="success"){
+                    echo '<span class="label pull-center bg-green"><strong>success</strong></span>';
+                  }
+                  ?>
+                  </td>
 
                   <td  >
                     <a href="../mutasicustomerpdf.php?m=<?php echo $row['field_trx_deposit'];?>" class="btn btn-sm btn-info"><i class="fa fa-print"></i> &nbsp</a>
@@ -92,6 +104,7 @@ $no=1;
                   <th>Total</th>
                   <th>Gold</th>                  
                   <th>Officer</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
                 </tfoot>

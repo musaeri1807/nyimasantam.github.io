@@ -56,11 +56,11 @@ if (isset($_POST['payment'])) {
  echo '<br>';  
  echo $field_operation_fee      = $_POST['txt_free'];
  echo '<br>';
- echo $field_operation_fee_rp   = $field_sub_total*$field_operation_fee/100;
+//  echo $field_operation_fee_rp   = $field_sub_total*$field_operation_fee/100;
  echo '<br>';
  echo $field_total_deposit      = $_POST['txt_total'];
  echo '<br>';
- echo $field_deposit_gold       = $field_total_deposit/$goldprice;
+ echo $field_deposit_gold       = $_POST['txt_gold'];
  echo '<br>';
  echo $field_gold_price         = $goldprice;
 }
@@ -369,10 +369,10 @@ $result  = $stmt->fetchAll();
                       <tr>
                         <th id="txt_persen">Oprasional free (5%)</th>
                         <td>
-                          <input class="form-control total_fee" type="number" min="0" max="100" id="5" name="txt_free">
+                          <input class="total_fee" type="number" value="0" min="0" max="100" id="5" name="txt_free">
                           <span class="fee" id="0">5%</span>
 
-                          <input class="form-control total_fee_rp" type="number" min="0" max="100" value="0" id="5" name="txt_free_rp" >
+                          <input class="total_fee_rp" type="number" value="0" id="5" name="txt_free_rp" >
                           <span class="fee_rp" id="0">Rp.0,-</span>
                         </td>
                       </tr>

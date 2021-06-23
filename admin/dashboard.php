@@ -1283,11 +1283,19 @@ $("body").on("keyup", ".total_fee", function() {
 
 });
 
-
-
-
-
 });
+
+function cek()
+  {
+    var total = $(".total_form").attr("id");
+    if(total > 0){
+      return confirm('Apakah anda yakin ingin memproses transaksi?');
+      // return true;
+    }else{
+      alert("Pembelian Masih Kosong");
+      return false;
+    }
+  }
 </script>
 
 </body>

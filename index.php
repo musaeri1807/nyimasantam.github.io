@@ -6,11 +6,21 @@ if (isset($_REQUEST['button'])) {
   $password=$_REQUEST['password'];
 
     if ($password=="admin") {
-      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/loginv2">';
+      if ($_SERVER['SERVER_NAME']=='localhost') {
+        # code...
+        echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/loginv2">';
+      }else{
+        echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://musaeri.my.id/loginv2">';
+      }
     }elseif($password=="user") {
-      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/loginv2customer">';
-    }else{
-      echo $password;
+      if ($_SERVER['SERVER_NAME']=='localhost') {
+        # code...
+        echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/loginv2customer">';
+      } else {
+        # code...
+        echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://musaeri.my.id/loginv2customer">';
+      }
+      
     }
 
 } 
