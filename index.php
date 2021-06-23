@@ -1,12 +1,16 @@
+
 <?php
-// $svrname=$_SERVER['SERVER_NAME'];
+session_start();
+?>
+<!DOCTYPE html>
+<html>
+<body>
 
-if ($_SERVER['SERVER_NAME']=='localhost') {
-               
-  echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/loginv2">';
-}else{
-  header("location:settingdatabase");
-}
-
+<?php
+// Echo session variables that were set on previous page
+echo "Favorite color is " . $_SESSION["favcolor"] . ".<br>";
+echo "Favorite animal is " . $_SESSION["favanimal"] . ".";
 ?>
 
+</body>
+</html>
