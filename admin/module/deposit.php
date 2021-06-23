@@ -18,12 +18,7 @@ $Stmt = $db->prepare($Sql);
 //$Stmt->execute(array(":statuse"=> $s,":idtoken"=>$t));
 $Stmt->execute();
 $result = $Stmt->fetchAll();
-
-
-
 $no=1;
-
-
 
 ?>
     <section class="content">
@@ -74,7 +69,7 @@ $no=1;
                   <td  ><strong><?php echo $row["field_deposit_gold"];?></strong></td> 
                   <td  ><?php echo $row["field_name_officer"];?></td>
                   <td  >
-                  
+
                   <?php if ($row['field_status']=="pending") {                    
                     echo '<span class="label pull-center bg-yellow"><strong>pending</strong></span>';
                   } elseif($row['field_status']=="cancel") {                   
