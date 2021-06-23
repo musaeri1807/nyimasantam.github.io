@@ -102,7 +102,7 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
                       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://'.$domain.'/admin/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL='.$domain.'/admin/dashboard?module=home">';
                       }
               break;
             case 'MGR':
@@ -114,7 +114,7 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
                       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://'.$domain.'/admin/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL='.$domain.'/admin/dashboard?module=home">';
                       }
               break;
             case 'SPV':
@@ -127,7 +127,7 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
                       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://'.$domain.'/admin/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL='.$domain.'/admin/dashboard?module=home">';
                       }
 
               break;
@@ -141,7 +141,7 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
                       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://'.$domain.'/admin/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL='.$domain.'/admin/dashboard?module=home">';
                       }
 
               break;
@@ -155,7 +155,7 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
                     if ($_SERVER['SERVER_NAME']=='localhost') {                     
                       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
                       }else{
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://'.$domain.'/admin/dashboard?module=home">';
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL='.$domain.'/admin/dashboard?module=home">';
                       }
                 
               break;
