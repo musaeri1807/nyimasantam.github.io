@@ -1,11 +1,10 @@
 <?php
 
-if (!$_SERVER['SERVER_NAME']=='localhost') {
+// if (!$_SERVER['SERVER_NAME']=='localhost') {
                
-  header("location: index.php");
-}
-
-ini_set('display_errors', 0);
+//   header("location: index.php");
+// }
+// ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("config/koneksi.php");
 //require_once 'connection.php';
@@ -15,7 +14,8 @@ if(isset($_SESSION["userlogin"])) //admin_login//check condition user login not 
   header("location: admin/dashboard?module=home");
 }
 
-$domain = file_get_contents("config/domain.txt");
+// $domain = file_get_contents("config/domain.txt");
+$domain = "musaeri.my.id";
 
 if(isset($_REQUEST['btn_login'])) //button name is "btn_login" 
 {
@@ -76,10 +76,10 @@ if(isset($_REQUEST['btn_login'])) //button name is "btn_login"
           {
             $update_stmt=$db->prepare("UPDATE tblemployeeslogin SET field_log=:loglogin, field_ipaddress=:addresip WHERE field_email=:uemail OR field_username=:uname ");
               // execute the query
-            $update_stmt->execute(array(':uname'  =>  $username,
-                          ':uemail' =>  $email,
-                          ':loglogin' =>  $loglogin,
-                          ':addresip' =>  $ipaddress
+            $update_stmt->execute(array(':uname'    =>  $username,
+                                        ':uemail'   =>  $email,
+                                        ':loglogin' =>  $loglogin,
+                                        ':addresip' =>  $ipaddress
                           ));             
 
             // session_start();

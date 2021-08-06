@@ -13,6 +13,8 @@ if ($_SERVER['SERVER_NAME']=='localhost') {
     $db_name = file_get_contents("../config/database.txt");
 }
 
+//backup Database
+$connection = mysqli_connect($db_host,$db_user,$db_pass,$db_name);
 
 try {    
     //create PDO connection 
@@ -26,10 +28,3 @@ catch(PDOException $e)
     // $msg="Connection Failed ";
     // header('location:index.php');
 }
-
-//backup Database
-$connection = mysqli_connect($db_host,$db_user,$db_pass,$db_name);
-
-
-?>
-

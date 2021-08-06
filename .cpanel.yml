@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/musx1236/public_html/
+    - export DEPLOYPATH=/home/musx1236/public_html/apps
     - /bin/cp -R admin $DEPLOYPATH
     - /bin/cp -R Classes $DEPLOYPATH
     - /bin/cp -R config $DEPLOYPATH 
