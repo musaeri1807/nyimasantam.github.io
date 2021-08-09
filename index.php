@@ -10,7 +10,7 @@ if (isset($_REQUEST['button'])) {
       # code...
       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/loginv2">';
     } else {
-      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://musaeri.my.id/loginv2">';
+      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://apps.musaeri.my.id/loginv2">';
     }
   } elseif ($password == "user") {
     if ($_SERVER['SERVER_NAME'] == 'localhost') {
@@ -18,7 +18,7 @@ if (isset($_REQUEST['button'])) {
       echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/loginv2customer">';
     } else {
       # code...
-      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://musaeri.my.id/loginv2customer">';
+      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://apps.musaeri.my.id/loginv2customer">';
     }
   }
 }

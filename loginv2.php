@@ -14,8 +14,8 @@ if(isset($_SESSION["userlogin"])) //admin_login//check condition user login not 
   header("location: admin/dashboard?module=home");
 }
 
-// $domain = file_get_contents("config/domain.txt");
-$domain = "musaeri.my.id";
+$domain = file_get_contents("config/domain.txt");
+//$domain = "musaeri.my.id";
 
 if(isset($_REQUEST['btn_login'])) //button name is "btn_login" 
 {
