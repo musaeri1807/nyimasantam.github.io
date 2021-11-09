@@ -40,44 +40,38 @@ $goldprice = $Result['field_sell'];
 
 if (isset($_POST['payment'])) {
   # code...
-  echo $field_no_referensi       = $noReff;
+  echo "Nomor Reff ==" . $field_no_referensi       = $noReff;
   echo '<br>';
-  echo $field_date_deposit       = date('Y-m-d');
+  echo "Tanggal Trx ==" . $field_date_deposit       = date('Y-m-d');
   echo '<br>';
-  echo $field_rekening_deposit   = $_POST['txt_rekening'];
+  echo "Nomor Rekening ==" . $field_rekening_deposit   = $_POST['txt_rekening'];
   echo '<br>';
-  echo $field_sumber_dana        = $_POST['txt_select'];
+  echo "Sumber Dana ==" . $field_sumber_dana        = $_POST['txt_select'];
   echo '<br>';
-  echo $field_branch             = $branchid;
+  echo "Cabang ==" . $field_branch             = $branchid;
   echo '<br>';
-  echo $field_officer_id         = $id;
+  echo "Create office ==" . $field_officer_id         = $id;
   echo '<br>';
-  echo $field_sub_total          = $_POST['txt_subtotal'];
+  echo "Sub Total ==" . $field_sub_total          = $_POST['txt_subtotal'];
   echo '<br>';
-  echo $field_operation_fee      = $_POST['txt_free'];
+  echo "Fee 5% ==" . $field_operation_fee      = $_POST['txt_free'];
   echo '<br>';
-  //echo $field_operation_fee_rp   = $field_sub_total * $field_operation_fee / 100;
+  echo "Fee Rp ==" . $field_operation_fee_rp   = $field_sub_total * $field_operation_fee / 100;
   echo '<br>';
-  echo $field_total_deposit      = $_POST['txt_total'];
+  echo "Fee Rp java ==" . $field_operation_fee_rp   = $_POST['txt_free_rp'];
   echo '<br>';
-  echo $field_deposit_gold       = $_POST['txt_gold'];
+  echo "Total ==" . $field_total_deposit      = $_POST['txt_total'];
   echo '<br>';
-  echo $field_gold_price         = $goldprice;
+  echo "Gold ==" . $field_deposit_gold       = $_POST['txt_gold'];
+  echo '<br>';
+  echo "Harga Emas ==" . $field_gold_price         = $goldprice;
 
   $transaksi_produk   = $_POST['transaksi_produk'];
   $transaksi_harga    = $_POST['transaksi_harga'];
   $transaksi_jumlah   = $_POST['transaksi_jumlah'];
   $transaksi_total    = $_POST['transaksi_total'];
 
-  if (empty($transaksi_produk)) {
-    $errorMsg = "Silakan Masukkan Product";
-  } elseif (empty($transaksi_harga)) {
-    $errorMsg = "Silakan Masukkan Product";
-  } elseif (empty($transaksi_jumlah)) {
-    $errorMsg = "Silakan Masukkan Product";
-  } elseif (empty($transaksi_total)) {
-    $errorMsg = "Silakan Masukkan Product";
-  }
+
 
   $query = "SELECT * FROM tbltrxmutasisaldo WHERE field_rekening =:rekening ORDER BY field_id_saldo DESC LIMIT 1";
   $select = $db->prepare($query);
@@ -89,14 +83,17 @@ if (isset($_POST['payment'])) {
 
   $saldoAwal  = $result['field_total_saldo'];
   $saldoAkhir = $saldoAwal + $field_deposit_gold;
+
+
   echo '<br>';
-  echo $saldoAwal;
+  echo "Saldo Awal ==" . $saldoAwal;
   echo '<br>';
-  echo $saldoAkhir;
+  echo "Saldo Akhir ==" . $saldoAkhir;
   echo '<br>';
-  echo $data;
+  echo "Jumlah Select* ==" . $data;
 
   die();
+
 
 
   $db->beginTransaction();
@@ -209,7 +206,7 @@ if (isset($_POST['payment'])) {
   $db->commit();
 }
 
-
+// die();
 $Stmt = $db->prepare("SELECT * FROM tblcustomer");
 $Stmt->execute();
 $Result = $Stmt->fetchAll();
@@ -236,7 +233,7 @@ $result  = $stmt->fetchAll();
   }
   ?>
   <div class="row">
-    <form method="POST" class="form-horizontal" onSubmit="return cek(this)">
+    <form name="ftrx" method="POST" class="form-horizontal" onSubmit="return cek(this)">
       <div class="col-md-3">
         <div class="box box-primary">
 
@@ -341,7 +338,7 @@ $result  = $stmt->fetchAll();
                   <div class="row">
 
                     <div class="col-xs-3">
-                      <select class="form-control" name="txt_select">
+                      <select class="form-control" name="txt_select" required="required">
                         <option value="">--Pilih--</option>
                         <option value="Investasi">Investasi</option>
                         <option value="Investasi">Sampah</option>
@@ -350,12 +347,12 @@ $result  = $stmt->fetchAll();
                       </select>
                     </div>
                     <div class="col-xs-3">
-                      <input type="text" id="add_id" class="form-control" placeholder="IdCustomer" readonly>
-                      <input type="text" name="txt_rekening" id="add_account" class="form-control" placeholder="Rekening" readonly>
+                      <input type="text" id="add_id" required="required" class="form-control" placeholder="IdCustomer" readonly>
+                      <input type="text" name="txt_rekening" required="required" id="add_account" class="form-control" placeholder="Rekening" readonly>
                     </div>
                     <div class="col-xs-3">
-                      <input type="text" name="txt_memberid" id="add_memberid" class="form-control" placeholder="member_id" readonly>
-                      <input type="text" name="txt_customer" id="add_customer" class="form-control" placeholder="Customer" readonly>
+                      <input type="text" name="txt_memberid" required="required" id="add_memberid" class="form-control" placeholder="member_id" readonly>
+                      <input type="text" name="txt_customer" required="required" id="add_customer" class="form-control" placeholder="Customer" readonly>
                     </div>
                     <div class="col-xs-3">
                       <!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">

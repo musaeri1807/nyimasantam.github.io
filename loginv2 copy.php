@@ -241,19 +241,17 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
 
 <body>
   <div class="d-lg-flex half">
-    <div class="bg" style="background-image: url('');"></div>
+    <div class="bg" style="background-image: url('https://nyimasantam.my.id/image/18766459151.jpg');"></div>
     <div class="contents">
-
       <div class="container">
         <div class="row align-items-center justify-content-center">
           <div class="col-md-6">
             <div class="form mx-auto">
               <!--    <div class="form-block mx-auto"> -->
 
-              <div class="text-center mt-1">
-                <img src="image/login.png" width="200">
-                <br>
-                <h3> <strong>Officer</strong></h3>
+              <div class="text-center mb-1">
+                <img src="https://nyimasantam.my.id/image/logonyimas.png" width="300">
+                <h3>Login to <strong>Officer</strong></h3>
                 <!-- <p class="mb-1">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>  -->
 
                 <?php
@@ -274,10 +272,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                 <?php
                 }
                 ?>
-                <br>
-
               </div>
-
               <form method="post" class="form-horizontal">
                 <div class="form-group first">
                   <!-- <label for="username">Username</label> -->
@@ -320,10 +315,6 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                 <input type="submit" name="btn_login" class="btn btn-primary" value="Login">
 
               </form>
-
-              <hr>
-              Belum Punya Akun ? <a href="">Daftar Ke Bank Sampah terdekat</a>
-
               <br>
               <br>
               <br>
@@ -338,6 +329,8 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
         </div>
       </div>
     </div>
+
+
   </div>
 
   <script src='https://www.google.com/recaptcha/api.js'></script>

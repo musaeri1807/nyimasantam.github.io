@@ -75,10 +75,10 @@ $branchid = $rows['field_branch'];
       <!-- Logo -->
       <a href="#" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><img src="../uploads/iconnyimas.png"></span>
+        <span class="logo-mini"><img src="../uploads/Musaeri.png"></span>
         <!-- logo for regular state and mobile devices -->
 
-        <span class="logo-lg"><b><img src="../uploads/logonyimas.png"></b></span>
+        <span class="logo-lg"><b><img src="../uploads/Musaeri.png"></b></span>
       </a>
       <!-- Header Navbar: style can be found in header.less -->
       <nav class="navbar navbar-static-top">
@@ -1310,17 +1310,37 @@ $branchid = $rows['field_branch'];
 
     function cek() {
       var total = $(".total_pembelian").attr("id");
-      var name = $("#add_account").val();
-
-      console.log();
+      var s = $("#form-control select").attr("id");
+      let name = document.forms["ftrx"]["txt_rekening"].value;
+      let Select = document.forms["ftrx"]["txt_select"].value;
+      // if (x == "") {
+      //   alert("Name must be filled out");
+      //   return false;
+      // }
 
       if (total == 0) {
         alert("Pembelian Masih Kosong");
         return false;
+      } else if (name == "") {
+        alert("Rekening Kosong");
+        return false;
+      } else if (s == "") {
+        alert("Sumber Dana Kosong");
+        return false;
       } else {
         return confirm('Apakah anda yakin ingin memproses transaksi?');
-        // return true;
       }
+
+
+
+
+      // if (total == 0 || name == "" || select == "") {
+      //   alert("Pembelian Masih Kosong");
+      //   return false;
+      // } else {
+      //   return confirm('Apakah anda yakin ingin memproses transaksi?');
+      //   // return true;
+      // }
     }
   </script>
 
