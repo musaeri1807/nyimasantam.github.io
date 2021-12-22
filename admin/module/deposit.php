@@ -36,6 +36,7 @@ $no = 1;
           <table id="trxSemua" class="table table-bordered table-striped">
             <thead>
               <tr>
+                <th>Trx</th>
                 <th>Reff</th>
                 <th>Date</th>
                 <th>Account</th>
@@ -56,6 +57,7 @@ $no = 1;
               ?>
 
                 <tr>
+                  <td><strong><?php echo $row["field_trx_deposit"]; ?></strong></td>
                   <td><strong><?php echo $row["field_no_referensi"]; ?></strong></td>
                   <!-- <strong></strong> -->
                   <td><?php echo date("d-M-Y", strtotime($row["field_date_deposit"])); ?></td>

@@ -92,11 +92,11 @@ if (isset($_POST['payment'])) {
   echo '<br>';
   echo "Jumlah Select* ==" . $data;
 
-  die();
+  // die();
 
 
 
-  $db->beginTransaction();
+  // $db->beginTransaction();
   $insert = $db->prepare('INSERT INTO tbldeposit (field_no_referensi,
                                             field_date_deposit,
                                             field_rekening_deposit,
@@ -158,16 +158,16 @@ if (isset($_POST['payment'])) {
       $t_total    = $transaksi_total[$a];
 
       $insert = $db->prepare('INSERT INTO tbldepositdetail 
-                                          ( field_trx_deposit,
-                                            field_product,
-                                            field_price_product,
-                                            field_quantity,
-                                            field_total_price) 
-                                    VALUES( :trx_deposit,
-                                            :product,
-                                            :price_product,
-                                            :quantity,
-                                            :total_price)');
+                                              ( field_trx_deposit,
+                                                field_product,
+                                                field_price_product,
+                                                field_quantity,
+                                                field_total_price) 
+                                        VALUES( :trx_deposit,
+                                                :product,
+                                                :price_product,
+                                                :quantity,
+                                                :total_price)');
 
       $insert->execute(array(
         ':trx_deposit'        => $id,
@@ -203,7 +203,7 @@ if (isset($_POST['payment'])) {
   //   '$emas_anda',
   //   '$saldoAkhir')");
 
-  $db->commit();
+  //$db->commit();
 }
 
 // die();
@@ -492,7 +492,7 @@ $result  = $stmt->fetchAll();
                         <input class="total_fee" type="number" min="0" max="100" id="5" name="txt_free">
                         <span class="fee" id="0">0%</span>
 
-                        <input class="total_fee_rp" type="number" value="0" id="5" name="txt_free_rp">
+                        <input class="total_fee_rp" type="text" value="0" id="5" name="txt_free_rp">
                         <span class="fee_rp" id="0">Rp.0,-</span>
                       </td>
                     </tr>

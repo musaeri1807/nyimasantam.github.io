@@ -24,7 +24,7 @@ $branchid = $rows['field_branch'];
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>NYIMASANTAM | Dashboard</title>
+  <title>BANK SAMPAH PINTAR | Dashboard</title>
   <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="icon">
   <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="apple-touch-icon">
   <!-- Tell the browser to be responsive to screen width -->
@@ -1319,7 +1319,7 @@ $branchid = $rows['field_branch'];
       // }
 
       if (total == 0) {
-        alert("Pembelian Masih Kosong");
+        alert("Maaf Data Masih Kosong !!!");
         return false;
       } else if (name == "") {
         alert("Rekening Kosong");

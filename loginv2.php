@@ -236,7 +236,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
 
   <!-- Style -->
   <link rel="stylesheet" href="view/assetlogin/css/style.css">
-  <title>NYIMASANTAM</title>
+  <title>BANK SAMPAH PINTAR</title>
 </head>
 
 <body>
