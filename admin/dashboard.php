@@ -15,6 +15,9 @@ $select_stmt->execute(array(":uid" => $id));
 $rows = $select_stmt->fetch(PDO::FETCH_ASSOC);
 $branchid = $rows['field_branch'];
 
+echo $rows['field_user_id'];
+echo '<br>';
+echo $rows['field_branch'];
 ?>
 
 

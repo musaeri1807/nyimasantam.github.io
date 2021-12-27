@@ -8,21 +8,163 @@ if(!isset($_SESSION['userlogin'])) {
   header("location: ../index.php");
 }
 
-if (isset($_REQUEST['id'])) {
+// var_dump($id);
+// die();
 
-    $id=$_REQUEST['id'];    
-    $select_stmt= $db->prepare('SELECT * FROM tblgoldprice WHERE field_gold_id =:id'); //sql select query
-    $select_stmt->bindParam(':id',$id);
-    $select_stmt->execute();
-    $row=$select_stmt->fetch(PDO::FETCH_ASSOC);
+if (isset($_REQUEST['btn_insert2'])) {
+  $branchid   = $rows['field_branch'];
+	$hargajual	= $_REQUEST['txt_hargajual'];
+	$hargabeli	= $_REQUEST['txt_hargabeli'];
+	$date		    = date('Y-m-d');
+  $datetime   = date('Y-m-d H:i:s');
+  $users      = $rows['field_user_id'];
 
-    // echo $row['field_gold_id'];
-    $delete_stmt = $db->prepare('DELETE FROM tblgoldprice WHERE field_gold_id =:id');
-    $delete_stmt->bindParam(':id',$id);
-    $delete_stmt->execute();
+	if (empty($hargajual)) {
+		$errorMsg = "Silakan Masukkan Harga";
+	} else if (empty($hargabeli)) {
+		$errorMsg = "Silakan Masukkan Harga";
+	} elseif (strlen(is_numeric($hargajual)) == 0) {
+		$errorMsg = "Silakan Masukkan Harga Benar";
+	} elseif (strlen(is_numeric($hargabeli)) == 0) {
+		$errorMsg = "Silakan Masukkan Harga Benar";
+	} else
+		{
+		try
+		{
+			if(!isset($errorMsg))
+			{
+				$insert_stmt = $db->prepare('INSERT INTO tblgoldprice (field_branch,field_sell,field_buyback,field_datetime_gold,field_date_gold,field_officer_id)VALUES(:ubranch,:uhargajual,:uhargabeli,:udatetime,:udate,:users)'); //sql insert query				
+				$insert_stmt->bindParam(':ubranch', $branchid);
+        $insert_stmt->bindParam(':uhargajual', $hargajual);
+				$insert_stmt->bindParam(':uhargabeli', $hargabeli);
+				$insert_stmt->bindParam(':udate', $date);	
+        $insert_stmt->bindParam(':udatetime', $datetime);			  
+				$insert_stmt->bindParam(':users', $users);	  
+					
+				if($insert_stmt->execute())
+				{
+					$Msg="Successfully"; //execute query success message
+					echo '<META HTTP-EQUIV="Refresh" Content="1">';
+					
+				}
+			}
+		}
+		catch(PDOException $e)
+		{
+			echo $e->getMessage();
+		}
+	}
+}elseif(isset($_REQUEST['btn_update'])){
+  $idcategory=$_REQUEST['txt_idcategory'];
+  $category=$_REQUEST['txt_category'];
+	$typetrash=$_REQUEST['txt_group_category'];
+
+	if (empty($category)) {
+		$errorMsg="Silakan Masukkan Category";
+	}elseif ($typetrash=="Pilih") {
+		$errorMsg="Silakan Masukkan Type";
+	}else
+		{
+		try
+		{
+			if(!isset($errorMsg))
+			{
+				$update_stmt=$db->prepare('UPDATE tblcategory SET field_name_category=:category,field_type_product=:typetrash WHERE field_category_id=:idcategory'); //sql insert query					
+				$update_stmt->bindParam(':idcategory',$idcategory);
+        $update_stmt->bindParam(':category',$category);
+				$update_stmt->bindParam(':typetrash',$typetrash);				  
+					  
+					
+				if($update_stmt->execute())
+				{
+					$Msg="Successfully"; //execute query success message
+					echo '<META HTTP-EQUIV="Refresh" Content="1">';
+					
+				}
+			}
+		}
+		catch(PDOException $e)
+		{
+			echo $e->getMessage();
+		}
+	}
+
+}elseif(isset($_REQUEST['btn_aprovel'])){
+  $idprice=$_REQUEST['txt_idprice'];
+  $note=$_REQUEST['txt_note'];
+	$typeaprove=$_REQUEST['txt_aprovel'];
+  $id;
+
+	if (empty($note)) {
+		$errorMsg="Silakan Masukkan Note";
+	}elseif ($typeaprove=="Pilih") {
+		$errorMsg="Silakan Masukkan Type";
+	}else
+		{
+		try
+		{
+			if(!isset($errorMsg))
+			{
+				$update_stmt=$db->prepare('UPDATE tblgoldprice SET field_status=:typeaprove,field_note=:note,field_approve=:idaprovel WHERE field_gold_id=:idprice'); //sql insert query					
+				$update_stmt->bindParam(':idprice',$idprice);
+        $update_stmt->bindParam(':note',$note);
+				$update_stmt->bindParam(':typeaprove',$typeaprove);
+        $update_stmt->bindParam(':idaprovel',$id);
+					
+				if($update_stmt->execute())
+				{
+					$Msg="Successfully"; //execute query success message
+					echo '<META HTTP-EQUIV="Refresh" Content="100">';
+					
+				}
+			}
+		}
+		catch(PDOException $e)
+		{
+			echo $e->getMessage();
+		}
+	}
+
+}elseif(isset($_REQUEST['id'])){
+
+  $id=$_REQUEST['id'];  
+
+	if (empty($id)) {
+		$errorMsg="Silakan Id Category";
+	}else	{
+		try	{
+			if(!isset($errorMsg))	{
+
+        $select_stmt= $db->prepare('SELECT * FROM tblcategory WHERE field_category_id =:id'); //sql select query
+        $select_stmt->bindParam(':id',$id);
+        $select_stmt->execute();
+        $row=$select_stmt->fetch(PDO::FETCH_ASSOC);
+      
+        // echo $row['field_gold_id'];
+        $delete_stmt = $db->prepare('DELETE FROM tblcategory WHERE field_category_id =:id');
+        $delete_stmt->bindParam(':id',$id);
+        $delete_stmt->execute();					
+				// if($delete_stmt->execute()){
+				// 	$Msg="Successfully"; //execute query success message
+				// 	// echo '<META HTTP-EQUIV="Refresh" Content="1">';
+        //   echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
+					
+				// }
+			}
+		}catch(PDOException $e){
+			echo $e->getMessage();
+		}
+	}
+
 }
 
-$Sql = "SELECT * FROM tblgoldprice ORDER BY field_gold_id DESC";
+// $Sql = "SELECT * FROM tblgoldprice ORDER BY field_gold_id DESC";
+
+$Sql = "SELECT G.*,B.field_branch_id,B.field_branch_name,E.field_name_officer,E2.field_name_officer AS Aproval
+        FROM tblgoldprice G LEFT JOIN tblbranch B ON G.field_branch=B.field_branch_id 
+        LEFT JOIN tblemployeeslogin E ON G.field_officer_id=E.field_user_id
+        LEFT JOIN tblemployeeslogin E2 ON G.field_approve=E2.field_user_id
+        ORDER BY field_gold_id DESC";
 $Stmt = $db->prepare($Sql);
 $Stmt->execute();
 $result = $Stmt->fetchAll();
@@ -57,18 +199,81 @@ if ($Selisi > 1) {
 }
 
 
-?>
+
+
+
+// massege
+if(isset($errorMsg)){
+  echo'<div class="alert alert-danger"><strong>WRONG !'.$errorMsg.'</strong></div>';
+  echo '<META HTTP-EQUIV="Refresh" Content="1">';
+}
+if(isset($Msg)){
+  echo'<div class="alert alert-success"><strong>SUCCESS !'.$Msg.'</strong></div>';
+  echo '<META HTTP-EQUIV="Refresh" Content="1">';
+}
+?> 
     <section class="content">
       <div class="row">
         <div class="col-md-12">
           <div class="box box-primary">
             <div class="box-header">
               <i class="fa fa-edit"></i>
-              <h3 class="box-title">Gold Price</h3>
-              <!-- <button type="submit" class="btn btn-success pull-right">Add Transaction</button> -->
-              <a href="?module=addgold" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Add Price</a>          
+              <h3 class="box-title">Gold Price</h3>  
+                          
+              <a data-toggle="modal" data-target="#modal-default-category" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Add Price</a>        
             </div>     
-              <!-- Content -->                 
+              <!-- Content --> 
+              <!-- modal add -->
+              <div class="modal fade" id="modal-default-category">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title">Add Price</h4></center>
+                    </div>
+                    <div class="modal-body">
+                    <form method="post" class="form-horizontal">
+                      <div class="form-group">
+                      <label class="col-sm-3 control-label">Tanggal =</label>
+                      <div class="col-sm-5">
+                        <input type="text" name="txt_kodeproduk" class="form-control" value="<?php echo date("d F Y"); ?>" readonly />
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Harga Jual =</label>
+                      <div class="col-sm-7">
+                        <input type="text" name="txt_hargajual" class="form-control" placeholder="Masukkan Harga Jual" />
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Harga Beli =</label>
+                      <div class="col-sm-7">
+                        <input type="text" name="txt_hargabeli" class="form-control" placeholder="Masukkan Harga Buyback" />
+                      </div>
+                    </div>
+
+
+
+
+
+  
+												<div class="modal-footer">
+												<button type="button" class="btn btn-danger " data-dismiss="modal">Close</button>														                
+												<input type="submit"  name="btn_insert2" class="btn btn-success " value="Add">
+												</div>
+										</form>
+                    </div>
+                    </div>
+                    <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
+            <!-- /Content -->
             <div class="box-body">
               <table id="trxSemua" class="table table-bordered table-striped">
                 <thead>
@@ -76,17 +281,20 @@ if ($Selisi > 1) {
                   <th >No</th>
                   <th >Ratio</th>                               
                   <th >Name Gold</th>                 
-                  <th >Amount Price</th>                 
-                  <th>Action</th>         
+                  <th >Branch</th>
+                  <th >Amount Price</th> 
+                  <th >Status</th> 
+                  <th >Approval</th>                 
+                  <th >Action</th>               
                 </tr>
                 </thead>
                 <tbody>
-             <?php
+                <?php
              $no=1; 
               foreach(array_slice($result,0,2) as $row) {        
                 ?> 
              
-                 <tr>
+             <tr>
                   <td ><?php echo $no++ ;?></td>
                                 
                   <td>
@@ -102,38 +310,161 @@ if ($Selisi > 1) {
                      echo '<strong> '.rupiah($row["field_fluktuasi"]).'<strong>'; 
                    ?>                     
                    </td>
-                  <td data-title="Trx Id"><small>Harga Update <?php echo date("d F Y H:i:s",strtotime($row["field_date_gold"]));?></small><br><strong><?php echo $row["field_name"];?></strong></td>
+                  <td data-title="Trx Id"><small>Harga Update <?php echo date("d F Y H:i:s",strtotime($row["field_datetime_gold"]));?></small><br><strong><?php echo $row["field_name"];?></strong></td>
+                  <!-- <td data-title="Branchid"><small><?php echo $row["field_branch"];?></small><br><strong><?php echo $row["field_officer_id"];?></strong></td> -->
+                  <td data-title="Trx Id"><small><?php echo $row["field_branch_name"];?></small><br><strong><?php echo $row["field_name_officer"];?></strong></td>
                   <td data-title="Trx Id">Jual <strong><?php echo rupiah($row["field_buyback"]);?></strong><br>Beli <strong><?php echo rupiah($row["field_sell"]);?></strong></td>
-                 
-                  <td data-title="Trx Id" >                   
-
+                  <td data-title="Trx Id"><strong>
                     <?php 
                     
-                    if ($rows["field_role"]=="ADM") {
-                      echo '<a href="?module=updgold&id='.$row["field_gold_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';                      
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default'.$row["field_gold_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';                 
-                    }elseif ($rows["field_role"]=="MGR") {
-                      echo '<a href="?module=updgold&id='.$row["field_gold_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';                     
-                    }elseif ($rows["field_role"]=="SPV") {
-                      echo '';
-                    }elseif ($rows["field_role"]=="BCO") {
-                      echo '';
-                    }elseif ($rows["field_role"]=="CMS") {
-                      echo '';
+                    
+                    if ($row["field_status"]=="A") {
+                     
+                      echo '<span class="badge btn-success text-white">Approve</span>';                  
+                    }elseif ($row["field_status"]=="C") {                     
+                      echo '<span class="badge btn-info text-white">Cancel</span>';                      
+                    }elseif ($row["field_status"]=="P") {
+                      echo '<span class="badge btn-warning text-white">Pending</span>';                  
+                    }elseif ($row["field_status"]=="R") {                      
+                      echo '<span class="badge btn-danger text-white">Reject</span>';  
                     }
-                     ?>                    
+                     ?>         
                   
-                  </td> 
-                                      
-                </tr>
+                  
+                
+                
+                
+                </td>
+                  <td data-title="Trx Id"><strong><?php echo $row["Aproval"];?></td>
+                  
+                  <td data-title="Trx Id" >              
+                   <?php 
+                    if ($rows["field_role"]=="ADM") {
+                      // echo '<a href="?module=updproduct&id='.$row["field_category_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
+                      echo '<a data-toggle="modal" data-target="#modal-update-category'.$row["field_gold_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a> &nbsp';
+                      // echo '<a href="?module=product&id='.$row["field_product_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
+                      echo '<a data-toggle="modal" data-target="#modal-delete-category'.$row["field_gold_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';                    
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-approvel-price'.$row["field_gold_id"].'" class="text-white btn btn-info "><i class="fa fa-info-circle"></i> Detail </a> &nbsp';
+                    }elseif ($rows["field_role"]=="MGR") {
+                      if ($row["field_status"]=="P") {
+                        # code...
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-approvel-price'.$row["field_gold_id"].'" class="text-white btn btn-info "><i class="fa fa-info-circle"></i> Detail </a> &nbsp';
+                        
+                      } else {
+                        # code...
+                        echo "Complete";
+                      }             
 
-                    <div class="modal fade" id="modal-default<?php echo $row['field_gold_id'];?>">
+                                          
+                    }elseif ($rows["field_role"]=="SPV") {
+                      if ($row["field_status"]=="P") {
+                        # code...
+                        echo " No Complete";                        
+                      } else {
+                        # code...
+                        echo "Complete";
+                      }             
+                    }elseif ($rows["field_role"]=="BCO") {
+                      if ($row["field_status"]=="P") {
+                        # code...                        
+                        echo " No Complete";  
+                      } else {
+                        # code...
+                        echo "Complete";
+                      }             
+                    }
+                     ?>           
+                  </td>                                       
+                </tr>
+              
+              <!-- modal update-->
+              <div class="modal fade" id="modal-update-category<?php echo $row["field_gold_id"];?>">
                     <div class="modal-dialog">
                     <div class="modal-content">
                     <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                    <center><h4 class="modal-title">Yakin Menghapus Data</h4></center>
+                    <center><h4 class="modal-title">Update Price <?php echo $row["field_gold_id"]?></h4></center>
+                    </div>
+                    <div class="modal-body">
+                    <form method="post" class="form-horizontal">
+											<div class="form-group">
+											  <div class="box-header">
+                          <input type="hidden" name="txt_idcategory" value="<?php echo $row['field_gold_id']?>">
+													<input type="text" name="txt_category" class="form-control" value="<?php echo $row["field_gold_id"]?>" />
+												</div>
+												<div class="box-header">
+												<select class="form-control" name="txt_group_category">
+												<option value="<?php echo $row["field_gold_id"]?>"><?php echo $row["field_gold_id"]?></option>
+												<option value="Anorganic">Anorganic</option>
+												<option value="Organic">Organic</option>
+												<option value="B3">B3</option>
+												<option value="Rupiah">Rupiah</option>
+												</select>
+												</div>
+												</div>
+												<div class="modal-footer">
+												<button type="button" class="btn btn-danger " data-dismiss="modal">Close</button>														                
+												<input type="submit"  name="btn_update" class="btn btn-success " value="Update">
+												</div>
+										</form>
+                    </div>
+                    </div>
+                    <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
+
+                     <!-- modal update approvel-->
+                    <div class="modal fade" id="modal-approvel-price<?php echo $row["field_gold_id"];?>">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title">Approve Id <?php echo $row["field_gold_id"]?></h4></center>
+                    </div>
+                    <div class="modal-body">
+                    <form method="post" class="form-horizontal">
+											<div class="form-group">
+											  <div class="box-header">
+                          <input type="hidden" name="txt_idprice" value="<?php echo $row['field_gold_id']?>">
+													
+                          <textarea class="form-control" name="txt_note" id="textarea" rows="3"></textarea>
+												</div>
+												<div class="box-header">
+												<select class="form-control" name="txt_aprovel">
+                        <option value="Pilih">Pilih</option>
+												<option value="<?php echo $row["field_status"]?>"><?php echo $row["field_status"]?></option>
+												<option value="A">A</option>
+												<option value="R">R</option>
+												<option value="C">C</option>
+												
+												</select>
+												</div>
+												</div>
+												<div class="modal-footer">
+												<button type="button" class="btn btn-danger " data-dismiss="modal">Close</button>														                
+												<input type="submit"  name="btn_aprovel" class="btn btn-success " value="OK">
+												</div>
+										</form>
+                    </div>
+                    </div>
+                    <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
+            
+                <!-- modal delete-->
+                    <div class="modal fade" id="modal-delete-category<?php echo $row["field_gold_id"];?>">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title">Yakin Delete Data</h4></center>
                     </div>
                     <div class="modal-body">
                     <form method="post" class="form-horizontal">
@@ -143,7 +474,7 @@ if ($Selisi > 1) {
                     <center>
                     <h4>              
                     <?php 
-                      echo "Data Yang Didelete Harga Beli ".rupiah($row["field_buyback"])." Harga Jual ".rupiah($row["field_sell"]);                      
+                      echo "Nama product ".$row["field_gold_id"]." Dengan ".rupiah($row["field_gold_id"]);                      
                     ?>
                     </h4>   
                     </center> 
@@ -151,8 +482,8 @@ if ($Selisi > 1) {
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-default " data-dismiss="modal">No</button>
-                    <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
-                    <a href="?module=gold&id=<?php echo $row['field_gold_id']; ?>" type="submit" class="text-white btn btn-danger">YES</a>
+                    <!-- <input type="submit"  name="btn_delete" class="btn btn-success " value="YES"> -->
+                    <a href="?module=category&id=<?php echo $row['field_gold_id']; ?>" type="submit" class="text-white btn btn-danger">YES</a>
                     </div>
                     </form>
                     </div>
@@ -165,19 +496,22 @@ if ($Selisi > 1) {
                 
               <?php } ?>
                 </tbody>
-               <tfoot>
+                <tfoot>
                 <tr>
                   <th >No</th>
                   <th >Ratio</th>                               
                   <th >Name Gold</th>                 
-                  <th >Amount Price</th>                 
-                  <th>Action</th> 
+                  <th >Branch</th>
+                  <th >Amount Price</th> 
+                  <th >Status</th> 
+                  <th >Approval</th>                 
+                  <th >Action</th> 
                 </tr>
                 </tfoot>
               </table>                              
             </div>
               <!-- Content -->
-              </div>
+            </div>
         </div>
       </div>
     </section>

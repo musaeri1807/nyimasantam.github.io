@@ -27,7 +27,7 @@ if ($order['field_no_referensi'] == "") {
 
 
 
-$query = "SELECT * FROM tblgoldprice ORDER BY field_gold_id DESC LIMIT 1 ";
+$query = "SELECT * FROM tblgoldprice WHERE field_status='A' ORDER BY field_gold_id  DESC LIMIT 1 ";
 $Gold = $db->prepare($query);
 $Gold->execute();
 $Result = $Gold->fetch(PDO::FETCH_ASSOC);
