@@ -60,7 +60,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
       $errorMsg[] = "Silakan Memasukan Password"; //check "passowrd" textbox not empty 
     } else {
       try {
-        $select_stmt = $db->prepare('SELECT * FROM tblemployeeslogin WHERE field_email=:uemail OR field_username=:uname '); //sql select query
+        $select_stmt = $db->prepare('SELECT * FROM tblemployeeslogin LEFT JOIN tbldepartment ON field_role=field_department_id WHERE field_email=:uemail OR field_username=:uname '); //sql select query
         $select_stmt->execute(array(':uemail' => $email, ':uname' => $username)); //execute query with bind parameter
         $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
         $data = $select_stmt->rowCount();
@@ -94,7 +94,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   $_SESSION["rolelogin"]  = $row["field_role"];
                   $_SESSION["idlogin"]    = $row["field_user_id"];
                   $_SESSION["userlogin"]  = $row["field_email"];
-                  $loginMsg = "Administrator..Successfully Login";
+                  $loginMsg = $row['field_department_name']. " Successfully Login";
                   //header("refresh:1;../../superadmin/superadmin_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -106,7 +106,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   $_SESSION["rolelogin"]  = $row["field_role"];
                   $_SESSION["idlogin"]    = $row["field_user_id"];
                   $_SESSION["userlogin"]  = $row["field_email"];
-                  $loginMsg = "Manager..Successfully Login";
+                  $loginMsg = $row['field_department_name']. " Successfully Login";
                   //header("refresh:1;../../superadmin/superadmin_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -114,12 +114,24 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=home">';
                   }
                   break;
+                  case 'AMR':
+                    $_SESSION["rolelogin"]  = $row["field_role"];
+                    $_SESSION["idlogin"]    = $row["field_user_id"];
+                    $_SESSION["userlogin"]  = $row["field_email"];
+                    $loginMsg = $row['field_department_name']. " Successfully Login";
+                    //header("refresh:1;../../superadmin/superadmin_home.php");
+                    if ($_SERVER['SERVER_NAME'] == 'localhost') {
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
+                    } else {
+                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=home">';
+                    }
+                    break;
                 case 'SPV':
                   $_SESSION["rolelogin"]          = $row["field_role"];
                   $_SESSION["idlogin"]            = $row["field_user_id"];
                   $_SESSION["userlogin"]          = $row["field_email"];
                   $_SESSION["branchlogin"]        = $row["field_branch"];
-                  $loginMsg = "Supervisor..Successfully Login";
+                  $loginMsg = $row['field_department_name']. " Successfully Login";
                   //header("refresh:1;../../admin/admin_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -133,7 +145,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   $_SESSION["idlogin"]            = $row["field_user_id"];
                   $_SESSION["userlogin"]          = $row["field_email"];
                   $_SESSION["branchlogin"]        = $row["field_branch"];
-                  $loginMsg = "Back Office..Successfully Login";
+                  $loginMsg = $row['field_department_name']. " Successfully Login";
                   //header("refresh:1;../../admin/admin_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -147,7 +159,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   $_SESSION["idlogin"]            = $row["field_user_id"];
                   $_SESSION["userlogin"]          = $row["field_email"];
                   $_SESSION["branchlogin"]        = $row["field_branch"];
-                  $loginMsg = "Customer Service..Successfully Login";
+                  $loginMsg = $row['field_department_name']. " Successfully Login";
                   //header("refresh:1;../../officer/officer_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';

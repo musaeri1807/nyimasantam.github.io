@@ -110,7 +110,7 @@ if (isset($_POST['payment'])) {
                                             field_deposit_gold,
                                             field_gold_price,
                                             field_status,
-                                            field_approval) 
+                                            field_approve) 
                                       VALUES(:no_referensi,
                                             :date_deposit,
                                             :rekening_deposit,
@@ -139,7 +139,7 @@ if (isset($_POST['payment'])) {
     ':total_deposit'      => $field_total_deposit,
     ':deposit_gold'       => $field_deposit_gold,
     ':gold_price'         => $field_gold_price,
-    ':status'             => "Success",
+    ':status'             => "S",
     ':approval'           => "OKE"
   ));
 

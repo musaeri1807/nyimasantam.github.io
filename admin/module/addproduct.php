@@ -96,7 +96,8 @@ if(isset($_REQUEST['btn_insert']))
 	$namaproduk	= $_REQUEST['txt_nama'];	//textbox name "txt_lastname"
 	$hargaproduk= $_REQUEST['txt_harga'];
 	$beratsampah= $_REQUEST['txt_berat'];
-	$date		= date('Y-m-d H:i:s');
+	$datetime		= date('Y-m-d H:i:s');
+	$date			= date('Y-m-d');
 	$kategori	= $_REQUEST['txt_kategori'];
 	$cabang		= $_REQUEST['txt_cabang'];
 	$Keterangan = $_REQUEST['txt_keterangan'];
@@ -137,14 +138,16 @@ if(isset($_REQUEST['btn_insert']))
 													 field_product_name,
 													 field_unit,
 													 field_date_price,
+													 field_date,
 													 field_category,
 													 field_branch,
 													 field_price,
 													 field_note,
-													 field_officer) 
+													 field_officer_id) 
 											VALUES  (:kodeproduk,
 													 :namaproduk,
 													 :beratsampah,
+													 :udatetime,
 													 :udate,
 													 :kategori,
 													 :cabang,
@@ -155,6 +158,7 @@ if(isset($_REQUEST['btn_insert']))
 				$insert_stmt->bindParam(':kodeproduk',$kodeproduk);
 				$insert_stmt->bindParam(':namaproduk',$namaproduk); 
 				$insert_stmt->bindParam(':beratsampah',$beratsampah);
+				$insert_stmt->bindParam(':udatetime',$datetime); 
 				$insert_stmt->bindParam(':udate',$date); 
 				$insert_stmt->bindParam(':kategori',$kategori);   
 				$insert_stmt->bindParam(':cabang',$cabang);

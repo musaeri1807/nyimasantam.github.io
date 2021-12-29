@@ -95,8 +95,8 @@ if (isset($_REQUEST['btn_insert2'])) {
 	$typeaprove=$_REQUEST['txt_aprovel'];
   $id;
 
-	if (empty($note)) {
-		$errorMsg="Silakan Masukkan Note";
+	if (empty($idprice)) {
+		$errorMsg="Silakan Masukkan id";
 	}elseif ($typeaprove=="Pilih") {
 		$errorMsg="Silakan Masukkan Type";
 	}else
@@ -114,7 +114,7 @@ if (isset($_REQUEST['btn_insert2'])) {
 				if($update_stmt->execute())
 				{
 					$Msg="Successfully"; //execute query success message
-					echo '<META HTTP-EQUIV="Refresh" Content="100">';
+					echo '<META HTTP-EQUIV="Refresh" Content="1">';
 					
 				}
 			}
@@ -150,6 +150,69 @@ if (isset($_REQUEST['btn_insert2'])) {
         //   echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
 					
 				// }
+			}
+		}catch(PDOException $e){
+			echo $e->getMessage();
+		}
+	}
+
+}elseif(isset($_REQUEST['goldid'])){
+
+  $idgold=$_REQUEST['goldid'];  
+  $typeaprove="A";
+  $id;  
+
+	if (empty($id)) {
+		$errorMsg="Silakan Masukan Id ";
+	}else	{
+		try	{
+			if(!isset($errorMsg))	{        
+
+        $update_stmt=$db->prepare('UPDATE tblgoldprice SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_gold_id=:id'); //sql insert query					
+				       
+				$update_stmt->bindParam(':typeaprove',$typeaprove);
+        $update_stmt->bindParam(':idaprovel',$id);
+        $update_stmt->bindParam(':id',$idgold);
+					
+				if($update_stmt->execute())
+				{
+					$Msg="Successfully"; //execute query success message
+					echo '<META HTTP-EQUIV="Refresh" Content="1">';
+          
+					
+				}
+			
+			}
+		}catch(PDOException $e){
+			echo $e->getMessage();
+		}
+	}
+
+}elseif(isset($_REQUEST['idgold'])){
+
+  $idgold=$_REQUEST['idgold'];  
+  $typeaprove="R";
+  $id;  
+
+	if (empty($id)) {
+		$errorMsg="Silakan Masukan Id ";
+	}else	{
+		try	{
+			if(!isset($errorMsg))	{        
+
+        $update_stmt=$db->prepare('UPDATE tblgoldprice SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_gold_id=:id'); //sql insert query					
+				       
+				$update_stmt->bindParam(':typeaprove',$typeaprove);
+        $update_stmt->bindParam(':idaprovel',$id);
+        $update_stmt->bindParam(':id',$idgold);
+					
+				if($update_stmt->execute())
+				{
+					$Msg="Successfully"; //execute query success message
+					echo '<META HTTP-EQUIV="Refresh" Content="1">';        
+					
+				}
+			
 			}
 		}catch(PDOException $e){
 			echo $e->getMessage();
@@ -205,12 +268,24 @@ if ($Selisi > 1) {
 // massege
 if(isset($errorMsg)){
   echo'<div class="alert alert-danger"><strong>WRONG !'.$errorMsg.'</strong></div>';
-  echo '<META HTTP-EQUIV="Refresh" Content="1">';
+  //echo '<META HTTP-EQUIV="Refresh" Content="1">';
+  if ($_SERVER['SERVER_NAME'] == 'localhost') {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=gold">';
+  } else {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=gold">';
+  }
 }
 if(isset($Msg)){
   echo'<div class="alert alert-success"><strong>SUCCESS !'.$Msg.'</strong></div>';
-  echo '<META HTTP-EQUIV="Refresh" Content="1">';
+  //echo '<META HTTP-EQUIV="Refresh" Content="1">';
+  if ($_SERVER['SERVER_NAME'] == 'localhost') {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=gold">';
+  } else {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=gold">';
+  }
+
 }
+
 ?> 
     <section class="content">
       <div class="row">
@@ -284,7 +359,7 @@ if(isset($Msg)){
                   <th >Branch</th>
                   <th >Amount Price</th> 
                   <th >Status</th> 
-                  <th >Approval</th>                 
+                  <th >Submitter</th>                 
                   <th >Action</th>               
                 </tr>
                 </thead>
@@ -315,11 +390,10 @@ if(isset($Msg)){
                   <td data-title="Trx Id"><small><?php echo $row["field_branch_name"];?></small><br><strong><?php echo $row["field_name_officer"];?></strong></td>
                   <td data-title="Trx Id">Jual <strong><?php echo rupiah($row["field_buyback"]);?></strong><br>Beli <strong><?php echo rupiah($row["field_sell"]);?></strong></td>
                   <td data-title="Trx Id"><strong>
-                    <?php 
-                    
-                    
+
+                  <?php 
+                                        
                     if ($row["field_status"]=="A") {
-                     
                       echo '<span class="badge btn-success text-white">Approve</span>';                  
                     }elseif ($row["field_status"]=="C") {                     
                       echo '<span class="badge btn-info text-white">Cancel</span>';                      
@@ -328,7 +402,7 @@ if(isset($Msg)){
                     }elseif ($row["field_status"]=="R") {                      
                       echo '<span class="badge btn-danger text-white">Reject</span>';  
                     }
-                     ?>         
+                  ?>         
                   
                   
                 
@@ -337,40 +411,55 @@ if(isset($Msg)){
                 </td>
                   <td data-title="Trx Id"><strong><?php echo $row["Aproval"];?></td>
                   
-                  <td data-title="Trx Id" >              
+                  <td >              
                    <?php 
                     if ($rows["field_role"]=="ADM") {
                       // echo '<a href="?module=updproduct&id='.$row["field_category_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
                       echo '<a data-toggle="modal" data-target="#modal-update-category'.$row["field_gold_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a> &nbsp';
                       // echo '<a href="?module=product&id='.$row["field_product_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
-                      echo '<a data-toggle="modal" data-target="#modal-delete-category'.$row["field_gold_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';                    
+                      echo '<a data-toggle="modal" data-target="#modal-delete-category'.$row["field_gold_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $row["field_gold_id"] . '" class="text-white btn btn-warning "><i class="fa fa-check-square"></i> Approval </a> &nbsp';
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-reject' . $row["field_gold_id"] . '" class="text-white btn btn-danger "><i class="fa fa-window-close"></i> Reject </a> &nbsp';                    
                       echo '<a href="#" data-toggle="modal" data-target="#modal-approvel-price'.$row["field_gold_id"].'" class="text-white btn btn-info "><i class="fa fa-info-circle"></i> Detail </a> &nbsp';
                     }elseif ($rows["field_role"]=="MGR") {
                       if ($row["field_status"]=="P") {
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $row["field_gold_id"] . '" class="text-white btn btn-warning "><i class="fa fa-check-square"></i> Approval </a> &nbsp';
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-reject' . $row["field_gold_id"] . '" class="text-white btn btn-danger "><i class="fa fa-window-close"></i> Reject </a> &nbsp';
+                                               
+                      } else {
+                        echo '<span class="badge btn-info text-white">Complete</span>';
+                      }                  
+                    }elseif ($rows["field_role"]=="AMR") {
+                      if ($row["field_status"]=="P") {
                         # code...
-                        echo '<a href="#" data-toggle="modal" data-target="#modal-approvel-price'.$row["field_gold_id"].'" class="text-white btn btn-info "><i class="fa fa-info-circle"></i> Detail </a> &nbsp';
-                        
+                        // echo '<a href="#" data-toggle="modal" data-target="#modal-approvel-price'.$row["field_gold_id"].'" class="text-white btn btn-info "><i class="fa fa-info-circle"></i> Detail </a> &nbsp';
+                        echo '<span class="badge btn-dafault text-white">No Complete</span>'; 
                       } else {
                         # code...
-                        echo "Complete";
-                      }             
-
-                                          
+                        echo '<span class="badge btn-info text-white">Complete</span>';
+                      }                   
                     }elseif ($rows["field_role"]=="SPV") {
                       if ($row["field_status"]=="P") {
                         # code...
-                        echo " No Complete";                        
+                        echo '<span class="badge btn-dafault text-white">No Complete</span>';                        
                       } else {
                         # code...
-                        echo "Complete";
+                        echo '<span class="badge btn-info text-white">Complete</span>';
                       }             
                     }elseif ($rows["field_role"]=="BCO") {
-                      if ($row["field_status"]=="P") {
-                        # code...                        
-                        echo " No Complete";  
+                      if ($row["field_status"]=="P") {                       
+                        echo '<span class="badge btn-dafault text-white">No Complete</span>'; 
                       } else {
                         # code...
-                        echo "Complete";
+                        echo '<span class="badge btn-info text-white">Complete</span>';
+                      }             
+                    }elseif ($rows["field_role"]=="CMS") {
+                      if ($row["field_status"]=="P") {
+                        # code...                        
+                        echo '<span class="badge btn-dafault text-white">No Complete</span>'; 
+                      } else {
+                        # code...
+                        echo '<span class="badge btn-info text-white">Complete</span>';
                       }             
                     }
                      ?>           
@@ -436,11 +525,19 @@ if(isset($Msg)){
 												<div class="box-header">
 												<select class="form-control" name="txt_aprovel">
                         <option value="Pilih">Pilih</option>
-												<option value="<?php echo $row["field_status"]?>"><?php echo $row["field_status"]?></option>
-												<option value="A">A</option>
+                        <?php 
+                        foreach ($RESULT as $STATUS){
+
+                          echo '<br>';
+                          echo $STATUS['field_status'];
+                         
+                        ?>
+												<option value="<?php echo $STATUS["field_cdstatus"]?>"><?php echo $STATUS["field_status"]?></option>
+												<!-- <option value="A">A</option>
 												<option value="R">R</option>
 												<option value="C">C</option>
-												
+												<option value="P">P</option> -->
+                        <?php }?>
 												</select>
 												</div>
 												</div>
@@ -483,7 +580,7 @@ if(isset($Msg)){
                     <div class="modal-footer">
                     <button type="button" class="btn btn-default " data-dismiss="modal">No</button>
                     <!-- <input type="submit"  name="btn_delete" class="btn btn-success " value="YES"> -->
-                    <a href="?module=category&id=<?php echo $row['field_gold_id']; ?>" type="submit" class="text-white btn btn-danger">YES</a>
+                    <a href="?module=gold&id=<?php echo $row['field_gold_id']; ?>" type="submit" class="text-white btn btn-danger">YES</a>
                     </div>
                     </form>
                     </div>
@@ -493,6 +590,82 @@ if(isset($Msg)){
                     <!-- /.modal-dialog -->
                     </div>
                     <!-- /.modal -->
+
+                    <!-- Modal Approval -->
+                <div class="modal fade" id="modal-default-aproval<?php echo $row["field_gold_id"]; ?>">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                        <center>
+                          <h3 class="modal-title">Anda Yakin Untuk Approve</h3>
+                        </center>
+                      </div>
+                      <div class="modal-body">
+                        <form method="post" class="form-horizontal">
+                          <div class="form-group">
+                            <div class="box-header">                            
+                              <center>
+                                <h4>
+                                  <?php
+                                  echo 'Harga Jual '.rupiah($row["field_buyback"]).'<br>'.'Harga Beli '.rupiah($row["field_sell"]);                                  
+                                  ?>
+                                </h4>
+                              </center>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default " data-dismiss="modal">No</button>
+                            <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
+                            <a href=" ?module=gold&goldid=<?php echo $row['field_gold_id']; ?>" type="submit" class="text-white btn btn-success">&nbsp YES &nbsp</a>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+                <!-- Modal Reject -->
+                <div class="modal fade" id="modal-default-reject<?php echo $row["field_gold_id"]; ?>">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                        <center>
+                          <h3 class="modal-title">Anda Yakin Untuk Reject</h3>
+                        </center>
+                      </div>
+                      <div class="modal-body">
+                        <form method="post" class="form-horizontal">
+                          <div class="form-group">
+                            <div class="box-header">                            
+                              <center>
+                                <h4>
+                                  <?php
+                                  echo 'Harga Jual '.rupiah($row["field_buyback"]).'<br>'.'Harga Beli '.rupiah($row["field_sell"]);  
+                                  ?>
+                                </h4>
+                              </center>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default " data-dismiss="modal">No</button>
+                            <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
+                            <a href="?module=gold&idgold=<?php echo $row['field_gold_id']; ?>" type="submit" class="text-white btn btn-success">&nbsp YES &nbsp</a>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
                 
               <?php } ?>
                 </tbody>
@@ -504,7 +677,7 @@ if(isset($Msg)){
                   <th >Branch</th>
                   <th >Amount Price</th> 
                   <th >Status</th> 
-                  <th >Approval</th>                 
+                  <th >Submitter</th>                 
                   <th >Action</th> 
                 </tr>
                 </tfoot>

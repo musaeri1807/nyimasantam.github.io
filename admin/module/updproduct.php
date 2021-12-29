@@ -103,7 +103,7 @@ if(isset($_REQUEST['btn_update']))
 																 field_branch=:cabang,
 																 field_price=:hargaproduk,
 																 field_note=:Keterangan,
-																 field_officer=:petugas 
+																 field_officer_id=:petugas 
 																 WHERE field_product_id=:id');
 				$update_stmt->bindParam(':id',$id);				
 				$update_stmt->bindParam(':kodeproduk',$kodeproduk);

@@ -110,7 +110,7 @@ if (isset($_POST['payment'])) {
                                             field_deposit_gold,
                                             field_gold_price,
                                             field_status,
-                                            field_approval) 
+                                            field_approve) 
                                       VALUES(:no_referensi,
                                             :date_deposit,
                                             :rekening_deposit,
@@ -123,7 +123,7 @@ if (isset($_POST['payment'])) {
                                             :total_deposit,
                                             :deposit_gold,
                                             :gold_price,
-                                            :status,
+                                            :ustatus,
                                             :approval)');
 
   $insert->execute(array(
@@ -139,8 +139,8 @@ if (isset($_POST['payment'])) {
     ':total_deposit'      => $field_total_deposit,
     ':deposit_gold'       => $field_deposit_gold,
     ':gold_price'         => $field_gold_price,
-    ':status'             => "Success",
-    ':approval'           => "OKE"
+    ':ustatus'             => "S",
+    ':approval'           => $field_officer_id
   ));
 
 
@@ -211,7 +211,11 @@ $Stmt = $db->prepare("SELECT * FROM tblcustomer");
 $Stmt->execute();
 $Result = $Stmt->fetchAll();
 
-$sql    = "SELECT * FROM tblproduct";
+$sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
+          LEFT JOIN tblbranch B
+          ON P.field_branch=B.field_branch_id 
+
+WHERE field_status='A'";
 $stmt   = $db->prepare($sql);
 $stmt->execute();
 $result  = $stmt->fetchAll();
@@ -265,9 +269,10 @@ $result  = $stmt->fetchAll();
                               <th class="text-center">No</th>
                               <th>Code</th>
                               <th>Product</th>
-                              <th class="text-center">Unit</th>
                               <th class="text-center">Branch</th>
-                              <th class="text-center">Price</th>
+                              <th class="text-center">Unit</th>
+                              <th class="text-center">Price</th> 
+                              <th class="text-center">Approval</th> 
                               <th>Note</th>
                               <th></th>
                             </tr>
@@ -285,9 +290,25 @@ $result  = $stmt->fetchAll();
                                   <br>
                                   <small class="text-muted"><?php echo $rows['field_category']; ?></small>
                                 </td>
+                                <td width="1%" class="text-center"><?php echo $rows['field_branch_name']; ?></td>
                                 <td width="1%" class="text-center"><?php echo $rows['field_unit']; ?></td>
-                                <td width="1%" class="text-center"><?php echo $rows['field_branch']; ?></td>
                                 <td width="20%" class="text-center"><?php echo $rows['field_price']; ?></td>
+                                <td width="15%">
+
+                                      <?php 
+                                        
+                                        if ($rows["field_status"]=="A") {
+                                          echo '<span class="badge btn-success text-white">Approve</span>';                  
+                                        }elseif ($rows["field_status"]=="C") {                     
+                                          echo '<span class="badge btn-info text-white">Cancel</span>';                      
+                                        }elseif ($rows["field_status"]=="P") {
+                                          echo '<span class="badge btn-warning text-white">Pending</span>';                  
+                                        }elseif ($rows["field_status"]=="R") {                      
+                                          echo '<span class="badge btn-danger text-white">Reject</span>';  
+                                        }
+                                      ?>
+                              
+                              </td>
                                 <td width="15%"><?php echo $rows['field_note']; ?></td>
                                 <td width="1%">
 
