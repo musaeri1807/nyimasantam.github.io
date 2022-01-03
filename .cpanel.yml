@@ -13,6 +13,7 @@ deployment:
     - /bin/cp -R view $DEPLOYPATH
     - /bin/cp -R getphp $DEPLOYPATH
     - /bin/cp -R pay $DEPLOYPATH
+    - /bin/cp -R image $DEPLOYPATH
     - /bin/cp .cpanel.yml $DEPLOYPATH    
     - /bin/cp .htaccess $DEPLOYPATH
     - /bin/cp activasipdf.php $DEPLOYPATH
@@ -25,4 +26,5 @@ deployment:
     - /bin/cp logon.jpg $DEPLOYPATH
     - /bin/cp logout.php $DEPLOYPATH
     - /bin/cp mutasicustomerpdf.php $DEPLOYPATH
+    - /bin/cp depositcustomerpdf.php $DEPLOYPATH
     - /bin/cp settingdatabase.php $DEPLOYPATH
