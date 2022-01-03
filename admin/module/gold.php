@@ -310,14 +310,14 @@ if(isset($Msg)){
                     <div class="modal-body">
                     <form method="post" class="form-horizontal">
                       <div class="form-group">
-                      <label class="col-sm-3 control-label">Tanggal =</label>
+                      <label class="col-sm-4 control-label">Tanggal =</label>
                       <div class="col-sm-5">
                         <input type="text" name="txt_kodeproduk" class="form-control" value="<?php echo date("d F Y"); ?>" readonly />
                       </div>
                     </div>
 
                     <div class="form-group">
-                      <label class="col-sm-3 control-label">Harga Jual =</label>
+                      <label class="col-sm-4 control-label">Harga Jual =</label>
                       <div class="col-sm-7">
                         <input type="text" name="txt_hargajual" class="form-control" placeholder="Masukkan Harga Jual" />
                       </div>
@@ -325,7 +325,7 @@ if(isset($Msg)){
 
 
                     <div class="form-group">
-                      <label class="col-sm-3 control-label">Harga Beli =</label>
+                      <label class="col-sm-4 control-label">Harga Beli Buyback =</label>
                       <div class="col-sm-7">
                         <input type="text" name="txt_hargabeli" class="form-control" placeholder="Masukkan Harga Buyback" />
                       </div>
@@ -394,7 +394,7 @@ if(isset($Msg)){
                   <?php 
                                         
                     if ($row["field_status"]=="A") {
-                      echo '<span class="badge btn-success text-white">Approve</span>';                  
+                      echo '<span class="badge btn-success text-white">Approved</span>';                  
                     }elseif ($row["field_status"]=="C") {                     
                       echo '<span class="badge btn-info text-white">Cancel</span>';                      
                     }elseif ($row["field_status"]=="P") {
@@ -418,12 +418,12 @@ if(isset($Msg)){
                       echo '<a data-toggle="modal" data-target="#modal-update-category'.$row["field_gold_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a> &nbsp';
                       // echo '<a href="?module=product&id='.$row["field_product_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
                       echo '<a data-toggle="modal" data-target="#modal-delete-category'.$row["field_gold_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $row["field_gold_id"] . '" class="text-white btn btn-warning "><i class="fa fa-check-square"></i> Approval </a> &nbsp';
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $row["field_gold_id"] . '" class="text-white btn btn-warning "><i class="fa fa-check-square"></i> Approve </a> &nbsp';
                       echo '<a href="#" data-toggle="modal" data-target="#modal-default-reject' . $row["field_gold_id"] . '" class="text-white btn btn-danger "><i class="fa fa-window-close"></i> Reject </a> &nbsp';                    
                       echo '<a href="#" data-toggle="modal" data-target="#modal-approvel-price'.$row["field_gold_id"].'" class="text-white btn btn-info "><i class="fa fa-info-circle"></i> Detail </a> &nbsp';
                     }elseif ($rows["field_role"]=="MGR") {
                       if ($row["field_status"]=="P") {
-                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $row["field_gold_id"] . '" class="text-white btn btn-warning "><i class="fa fa-check-square"></i> Approval </a> &nbsp';
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $row["field_gold_id"] . '" class="text-white btn btn-warning "><i class="fa fa-check-square"></i> Approve </a> &nbsp';
                         echo '<a href="#" data-toggle="modal" data-target="#modal-default-reject' . $row["field_gold_id"] . '" class="text-white btn btn-danger "><i class="fa fa-window-close"></i> Reject </a> &nbsp';
                                                
                       } else {
@@ -433,7 +433,7 @@ if(isset($Msg)){
                       if ($row["field_status"]=="P") {
                         # code...
                         // echo '<a href="#" data-toggle="modal" data-target="#modal-approvel-price'.$row["field_gold_id"].'" class="text-white btn btn-info "><i class="fa fa-info-circle"></i> Detail </a> &nbsp';
-                        echo '<span class="badge btn-dafault text-white">No Complete</span>'; 
+                        echo '<span class="badge btn-dafault text-white">Waiting Approval</span>'; 
                       } else {
                         # code...
                         echo '<span class="badge btn-info text-white">Complete</span>';
@@ -441,14 +441,14 @@ if(isset($Msg)){
                     }elseif ($rows["field_role"]=="SPV") {
                       if ($row["field_status"]=="P") {
                         # code...
-                        echo '<span class="badge btn-dafault text-white">No Complete</span>';                        
+                        echo '<span class="badge btn-dafault text-white">Waiting Approval</span>';                        
                       } else {
                         # code...
                         echo '<span class="badge btn-info text-white">Complete</span>';
                       }             
                     }elseif ($rows["field_role"]=="BCO") {
                       if ($row["field_status"]=="P") {                       
-                        echo '<span class="badge btn-dafault text-white">No Complete</span>'; 
+                        echo '<span class="badge btn-dafault text-white">Waiting Approval</span>'; 
                       } else {
                         # code...
                         echo '<span class="badge btn-info text-white">Complete</span>';
@@ -456,7 +456,7 @@ if(isset($Msg)){
                     }elseif ($rows["field_role"]=="CMS") {
                       if ($row["field_status"]=="P") {
                         # code...                        
-                        echo '<span class="badge btn-dafault text-white">No Complete</span>'; 
+                        echo '<span class="badge btn-dafault text-white">Waiting Approval</span>'; 
                       } else {
                         # code...
                         echo '<span class="badge btn-info text-white">Complete</span>';

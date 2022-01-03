@@ -20,7 +20,7 @@ if(!isset($_SESSION['userlogin'])) {
 // $t=$row['field_token_otp'];
 
 $Sql = "SELECT DISTINCT(field_rekening),(SELECT field_total_saldo FROM tbltrxmutasisaldo aa 
-                                                                  WHERE aa.field_rekening = bb.field_rekening AND aa.field_status='Success'
+                                                                  WHERE aa.field_rekening = bb.field_rekening AND aa.field_status='S'
                                                                   ORDER BY field_id_saldo DESC LIMIT 1) 
             AS TotalSaldo,us.field_nama,us.field_member_id,B.field_branch_name
             FROM tbltrxmutasisaldo bb 
@@ -75,7 +75,7 @@ $no=1;
                   <td data-title="Trx Id" ><strong><?php echo $row["TotalSaldo"];?></strong></td> 
                   <td data-title="Trx Id" ><?php echo $row["field_branch_name"];?>             </td>  
                   <td data-title="Trx Id" >
-                    <a href="../mutasicustomerpdf.php?m=<?php echo $row['field_member_id'];?>" class="btn btn-sm btn-warning"><i class="fa fa-print o text-warning"></i></a>
+                    <a href="../mutasicustomerpdf.php?m=<?php echo $row['field_member_id'];?>&t=2022-01-01" class="btn btn-sm btn-warning"><i class="fa fa-print o text-warning"></i></a>
                   </td>                   
                 </tr>
 

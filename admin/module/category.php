@@ -227,11 +227,13 @@ if(isset($Msg)){
                       echo '<a data-toggle="modal" data-target="#modal-delete-category'.$row["field_category_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';                    
                      
                     }elseif ($rows["field_role"]=="MGR") {
-                      echo '<a href="?module=updproduct&id='.$row["field_category_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';                      
+                      echo '<a data-toggle="modal" data-target="#modal-update-category'.$row["field_category_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a> &nbsp';                     
+                    }elseif ($rows["field_role"]=="AMR") {
+                      echo '<a data-toggle="modal" data-target="#modal-update-category'.$row["field_category_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a> &nbsp';
                     }elseif ($rows["field_role"]=="SPV") {
-                      echo '<a href="?module=updproduct&id='.$row["field_category_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
+                      echo '<a data-toggle="modal" data-target="#modal-update-category'.$row["field_category_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a> &nbsp';
                     }elseif ($rows["field_role"]=="BCO") {
-                      echo "Proses";
+                      echo '<a data-toggle="modal" data-target="#modal-update-category'.$row["field_category_id"].'" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a> &nbsp';
                     }
                      ?>                    
                   

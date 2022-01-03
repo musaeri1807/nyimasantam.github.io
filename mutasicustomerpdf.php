@@ -16,14 +16,18 @@ require_once("config/koneksi.php");
 
 
 $member_id = $_GET['m'];
-//$tgl_dari    = '2020-07-01';
-$tgl_dari    = date('Y-m-d', strtotime("-3 months"));
+$tgl_dari    = $_GET['t'];
+$tgl_sampai  = $_GET['td'];
+// $tgl_dari    = date('Y-m-d', strtotime("-3 months"));
 $tgl_sampai  = date('Y-m-d');
 
 //$member_id   = '085799990456';
 
+echo $member_id;
+echo $tgl_dari;
+echo $tgl_sampai;
 $no=1;
-
+die();
 
 $sql= "SELECT * FROM tbltrxmutasisaldo M JOIN tbluserlogin U ON M.field_member_id=U.field_member_id 
                                            JOIN tblbranch B ON U.field_branch=B.field_branch_id 
@@ -52,7 +56,7 @@ function Header()
 {
    
     // Logo
-    $this->Image('logon.jpg',10,8,40);
+    // $this->Image('logon.jpg',10,8,40);
     // Arial bold 15
     $this->SetFont('Times','B',14);
     // Move to the right
@@ -207,6 +211,6 @@ if($Types=="200"){
   $pdf->Cell(167,7,$rows['field_total_saldo']." g",1,0,'R');
   $pdf->Cell(23,7,'',0,0,'C');
 
-$pdf->Output('D',$rows['field_rekening'].'.pdf');
-//$pdf->Output();
+// $pdf->Output('D',$rows['field_rekening'].'.pdf');
+$pdf->Output();
 ?>

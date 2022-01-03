@@ -384,6 +384,8 @@ echo $rows['field_branch'];
      &nbsp;&nbsp; Nyimas Community Development  Program (NCDP) PT. Antam UBPP Logam Mulia -->
       <center>
         <?php
+
+        $date=date('Y-m-d');
         $tanggal = mktime(date('m'), date("d"), date('Y'));
         echo "Tanggal : <b> " . date("d F Y", $tanggal) . "</b>";
         date_default_timezone_set("Asia/Jakarta");

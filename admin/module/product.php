@@ -170,8 +170,7 @@ if (isset($_REQUEST['btn_insert2'])) {
 		try	{
 			if(!isset($errorMsg))	{        
 
-        $update_stmt=$db->prepare('UPDATE tblproduct SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_product_id=:id'); //sql insert query					
-				       
+        $update_stmt=$db->prepare('UPDATE tblproduct SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_product_id=:id'); //sql insert query		
 				$update_stmt->bindParam(':typeaprove',$typeaprove);
         $update_stmt->bindParam(':idaprovel',$id);
         $update_stmt->bindParam(':id',$idproduct);
@@ -286,7 +285,7 @@ $no = 1;
                     <?php                     
                     
                     if ($row["field_status"]=="A") {                     
-                      echo '<span class="badge btn-success text-white">Approve</span>';                  
+                      echo '<span class="badge btn-success text-white">Approved</span>';                  
                     }elseif ($row["field_status"]=="C") {                     
                       echo '<span class="badge btn-info text-white">Cancel</span>';                      
                     }elseif ($row["field_status"]=="P") {
@@ -304,13 +303,14 @@ $no = 1;
                       echo '<a href="?module=updproduct&id=' . $row["field_product_id"] . '" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
                       // echo '<a href="?module=product&id='.$row["field_product_id"].'" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
                       echo '<a href="#" data-toggle="modal" data-target="#modal-default' . $row["field_product_id"] . '" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $row["field_product_id"] . '" class="text-white btn btn-warning "><i class="fa fa-check-square"></i> Approval </a> &nbsp';
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $row["field_product_id"] . '" class="text-white btn btn-warning "><i class="fa fa-check-square"></i> Approve </a> &nbsp';
                       echo '<a href="#" data-toggle="modal" data-target="#modal-default-reject' . $row["field_product_id"] . '" class="text-white btn btn-danger "><i class="fa fa-window-close"></i> Reject </a> &nbsp';
                       echo '<a href="#" data-toggle="modal" data-target="#modal-approvel-price'.$row["field_product_id"].'" class="text-white btn btn-info "><i class="fa fa-info-circle"></i> Detail </a> &nbsp';
                     } elseif ($rows["field_role"]=="MGR") {
                       if ($row["field_status"]=="P") {
                         # code...
-                        echo '<a href="#" data-toggle="modal" data-target="#modal-approvel-price'.$row["field_gold_id"].'" class="text-white btn btn-info "><i class="fa fa-info-circle"></i> Detail </a> &nbsp';                        
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $row["field_product_id"] . '" class="text-white btn btn-warning "><i class="fa fa-check-square"></i> Approve </a> &nbsp';
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-reject' . $row["field_product_id"] . '" class="text-white btn btn-danger "><i class="fa fa-window-close"></i> Reject </a> &nbsp';                        
                       } else {
                         echo '<span class="badge btn-info text-white">Complete</span>';
                       }                  
@@ -318,7 +318,7 @@ $no = 1;
                       
                       if ($row["field_status"]=="P") {
                         # code...
-                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $row["field_product_id"] . '" class="text-white btn btn-warning "><i class="fa fa-check-square"></i> Approval </a> &nbsp';
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $row["field_product_id"] . '" class="text-white btn btn-warning "><i class="fa fa-check-square"></i> Approve </a> &nbsp';
                         echo '<a href="#" data-toggle="modal" data-target="#modal-default-reject' . $row["field_product_id"] . '" class="text-white btn btn-danger "><i class="fa fa-window-close"></i> Reject </a> &nbsp';
                         
                         // echo " No Complete";
@@ -328,19 +328,19 @@ $no = 1;
                       }                   
                     }elseif ($rows["field_role"]=="SPV") {
                       if ($row["field_status"]=="P") {
-                        echo '<span class="badge btn-dafault text-white">No Complete</span>';                       
+                        echo '<span class="badge btn-dafault text-white">Waiting Approval</span>';                       
                       } else {
                         echo '<span class="badge btn-info text-white">Complete</span>';
                       }             
                     }elseif ($rows["field_role"]=="BCO") {
                       if ($row["field_status"]=="P") {
-                        echo '<span class="badge btn-dafault text-white">No Complete</span>';  
+                        echo '<span class="badge btn-dafault text-white">Waiting Approval</span>';  
                       } else {
                         echo '<span class="badge btn-info text-white">Complete</span>';
                       }             
                     }elseif ($rows["field_role"]=="CMS") {
                       if ($row["field_status"]=="P") {
-                        echo '<span class="badge btn-dafault text-white">No Complete</span>';  
+                        echo '<span class="badge btn-dafault text-white">Waiting Approval</span>';  
                       } else {
                         echo '<span class="badge btn-info text-white">Complete</span>';
                       }

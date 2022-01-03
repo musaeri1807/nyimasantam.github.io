@@ -9,37 +9,97 @@ if (!isset($_SESSION['userlogin'])) {
   header("location: ../loginv2.php");
 }
 
-if(isset($_REQUEST['iddeposit'])){
+if (isset($_REQUEST['iddepositp'])) {
 
-  $iddeposit=$_REQUEST['iddeposit'];  
-  $typeaprove="C";
-  $id;  
+  $iddeposit = $_REQUEST['iddepositp'];
+  $typeaprove = "P";
+  $id;
 
-	if (empty($id)) {
-		$errorMsg="Silakan Masukan Id ";
-	}else	{
-		try	{
-			if(!isset($errorMsg))	{        
+  if (empty($id)) {
+    $errorMsg = "Silakan Masukan Id ";
+  } else {
+    try {
+      if (!isset($errorMsg)) {
 
-        $update_stmt=$db->prepare('UPDATE tbldeposit SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_trx_deposit=:id'); //sql insert query					
-				       
-				$update_stmt->bindParam(':typeaprove',$typeaprove);
-        $update_stmt->bindParam(':idaprovel',$id);
-        $update_stmt->bindParam(':id',$iddeposit);
-					
-				if($update_stmt->execute())
-				{
-					$Msg="Successfully"; //execute query success message
-					echo '<META HTTP-EQUIV="Refresh" Content="1">';        
-					
-				}
-			
-			}
-		}catch(PDOException $e){
-			echo $e->getMessage();
-		}
-	}
+        $update_stmt = $db->prepare('UPDATE tbldeposit SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_trx_deposit=:id'); //sql insert query				
+        $update_stmt->bindParam(':typeaprove', $typeaprove);
+        $update_stmt->bindParam(':idaprovel', $id);
+        $update_stmt->bindParam(':id', $iddeposit);
+        if ($update_stmt->execute()) {
+          $update_saldo = $db->prepare('UPDATE tbltrxmutasisaldo SET field_status=:typeaprove WHERE field_trx_id=:id'); //sql insert query				
+          $update_saldo->bindParam(':typeaprove', $typeaprove);
+          $update_saldo->bindParam(':id', $iddeposit);
+          $update_saldo->execute();
+          $Msg = "Successfully"; //execute query success message field_trx_id
+          echo '<META HTTP-EQUIV="Refresh" Content="1">';
+        }
+      }
+    } catch (PDOException $e) {
+      echo $e->getMessage();
+    }
+  }
+} elseif (isset($_REQUEST['iddepositc'])) {
 
+  $iddeposit = $_REQUEST['iddepositc'];
+  $typeaprove = "C";
+  $id;
+
+  if (empty($id)) {
+    $errorMsg = "Silakan Masukan Id ";
+  } else {
+    try {
+      if (!isset($errorMsg)) {
+
+        $update_stmt = $db->prepare('UPDATE tbldeposit SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_trx_deposit=:id'); //sql insert query					
+
+        $update_stmt->bindParam(':typeaprove', $typeaprove);
+        $update_stmt->bindParam(':idaprovel', $id);
+        $update_stmt->bindParam(':id', $iddeposit);
+
+        if ($update_stmt->execute()) {
+          $update_saldo = $db->prepare('UPDATE tbltrxmutasisaldo SET field_status=:typeaprove WHERE field_trx_id=:id'); //sql insert query				
+          $update_saldo->bindParam(':typeaprove', $typeaprove);
+          $update_saldo->bindParam(':id', $iddeposit);
+          $update_saldo->execute();
+          $Msg = "Successfully"; //execute query success message
+          echo '<META HTTP-EQUIV="Refresh" Content="1">';
+        }
+      }
+    } catch (PDOException $e) {
+      echo $e->getMessage();
+    }
+  }
+} elseif (isset($_REQUEST['iddeposits'])) {
+
+  $iddeposit = $_REQUEST['iddeposits'];
+  $typeaprove = "S";
+  $id;
+
+  if (empty($id)) {
+    $errorMsg = "Silakan Masukan Id ";
+  } else {
+    try {
+      if (!isset($errorMsg)) {
+
+        $update_stmt = $db->prepare('UPDATE tbldeposit SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_trx_deposit=:id'); //sql insert query					
+
+        $update_stmt->bindParam(':typeaprove', $typeaprove);
+        $update_stmt->bindParam(':idaprovel', $id);
+        $update_stmt->bindParam(':id', $iddeposit);
+
+        if ($update_stmt->execute()) {
+          $update_saldo = $db->prepare('UPDATE tbltrxmutasisaldo SET field_status=:typeaprove WHERE field_trx_id=:id'); //sql insert query				
+          $update_saldo->bindParam(':typeaprove', $typeaprove);
+          $update_saldo->bindParam(':id', $iddeposit);
+          $update_saldo->execute();
+          $Msg = "Successfully"; //execute query success message
+          echo '<META HTTP-EQUIV="Refresh" Content="1">';
+        }
+      }
+    } catch (PDOException $e) {
+      echo $e->getMessage();
+    }
+  }
 }
 
 if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
@@ -49,24 +109,29 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   LEFT JOIN tblbranch B ON I.field_branch=B.field_branch_id
   LEFT JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id
   LEFT JOIN tblemployeeslogin E2 ON I.field_approve=E2.field_user_id
+  WHERE I.field_date_deposit=:datenow
   ORDER BY I.field_trx_deposit DESC";
 
   $Stmt = $db->prepare($Sql);
-  $Stmt->execute();
+  // $Stmt->execute();
+  $Stmt->execute(array(":datenow" => $date));
   $result = $Stmt->fetchAll();
 } else {
-  
+
   $Sql = "SELECT I.*,C.field_nama_customer,E.field_name_officer,E2.field_name_officer AS Approval,field_branch_name,(SELECT G.field_sell FROM tblgoldprice G WHERE G.field_date_gold=I.field_date_deposit ORDER BY field_gold_id DESC LIMIT 1) AS PriceGold 
   FROM tbldeposit I 
   LEFT JOIN tblcustomer C ON I.field_rekening_deposit=C.field_rekening
   LEFT JOIN tblbranch B ON I.field_branch=B.field_branch_id
   LEFT JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id
   LEFT JOIN tblemployeeslogin E2 ON I.field_approve=E2.field_user_id
-  WHERE I.field_branch=:idbranch
+  WHERE I.field_branch=:idbranch AND I.field_date_deposit=:datenow
   ORDER BY I.field_trx_deposit DESC";
-  
+
   $Stmt = $db->prepare($Sql);
-  $Stmt->execute(array(":idbranch" => $branchid));
+  $Stmt->execute(array(
+    ":idbranch" => $branchid,
+    ":datenow" => $date
+  ));
   $result = $Stmt->fetchAll();
 }
 
@@ -74,8 +139,8 @@ $no = 1;
 
 
 // massege
-if(isset($errorMsg)){
-  echo'<div class="alert alert-danger"><strong>WRONG !'.$errorMsg.'</strong></div>';
+if (isset($errorMsg)) {
+  echo '<div class="alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
   //echo '<META HTTP-EQUIV="Refresh" Content="1">';
   if ($_SERVER['SERVER_NAME'] == 'localhost') {
     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=deposit">';
@@ -83,15 +148,14 @@ if(isset($errorMsg)){
     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=deposit">';
   }
 }
-if(isset($Msg)){
-  echo'<div class="alert alert-success"><strong>SUCCESS !'.$Msg.'</strong></div>';
+if (isset($Msg)) {
+  echo '<div class="alert alert-success"><strong>SUCCESS !' . $Msg . '</strong></div>';
   //echo '<META HTTP-EQUIV="Refresh" Content="1">';
   if ($_SERVER['SERVER_NAME'] == 'localhost') {
     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=deposit">';
   } else {
     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=deposit">';
   }
-
 }
 
 ?>
@@ -109,7 +173,7 @@ if(isset($Msg)){
         <div class="box-body">
           <table id="trxSemua" class="table table-bordered table-striped">
             <thead>
-              <tr>                
+              <tr>
                 <th></th>
                 <th>Reff</th>
                 <th>Account Customer</th>
@@ -122,76 +186,152 @@ if(isset($Msg)){
                 <th>Officer</th>
                 <th>Status</th>
                 <th>Submitter</th>
-                <th>Action</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               <?php
-              foreach (array_slice($result,0,10) as $row) {
+              foreach (array_slice($result, 0, 100) as $row) {
               ?>
 
                 <tr>
-                  <td><?php echo '<a href="../mutasicustomerpdf.php?m='.$row["field_trx_deposit"].' "class="text-white btn btn-default"><i class="fa fa-print"></i></a>';?>
+                  <td>
+                    <?php
+                    // echo $row['field_trx_deposit'];
+                    if ($row['field_status'] == "S") {
+                      echo '<a href="../depositcustomerpdf?d=' . $row["field_trx_deposit"] . ' "class="text-white btn btn-default"><i class="fa fa-print"></i></a> &nbsp <br>';
+                    } elseif ($row['field_status'] == "C") {
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-pending' . $row["field_trx_deposit"] . '" class="text-white btn btn-info "><i class="fa fa-info"></i> </a> &nbsp';
+                    } elseif ($row['field_status'] == "P") {
+                    }
+
+                    ?>
+
 
                   </td>
-                  <td><strong><?php echo $row["field_no_referensi"]; ?></strong> <br><?php echo date("d-M-Y", strtotime($row["field_date_deposit"])); ?></td>                  
+                  <td><strong><?php echo $row["field_no_referensi"]; ?></strong> <br><?php echo date("d-M-Y", strtotime($row["field_date_deposit"])); ?></td>
                   <!-- <td><?php echo date("d-M-Y", strtotime($row["field_date_deposit"])); ?></td> -->
                   <td><?php echo $row["field_rekening_deposit"]; ?><br><?php echo $row["field_nama_customer"]; ?></td>
                   <!-- <td><?php echo $row["field_nama_customer"]; ?></td> -->
                   <!-- <td><strong><?php echo rupiah($row["PriceGold"]); ?></strong></td> -->
-                  
+
                   <td><?php echo rupiah($row["field_sub_total"]); ?></td>
                   <td><?php echo rupiah($row["field_operation_fee_rp"]); ?></td>
                   <td><?php echo rupiah($row["field_total_deposit"]); ?></td>
                   <td><strong><?php echo $row["field_deposit_gold"]; ?></strong></td>
                   <td><?php echo $row["field_name_officer"]; ?> <br><?php echo $row["field_branch_name"]; ?> </td>
                   <td>
-                    
-                    <?php 
+
+                    <?php
                     // echo $row["Approval"];
                     if ($row['field_status'] == "P") {
-                      echo '<span class="label pull-center bg-yellow"><strong>pending</strong></span>';
+                      echo '<span class="label pull-center bg-yellow"><strong>Pending</strong></span>';
                     } elseif ($row['field_status'] == "C") {
-                      echo '<span class="label pull-center bg-red"><strong>cancel</strong></span>';
+                      echo '<span class="label pull-center bg-red"><strong>Cancel</strong></span>';
                     } elseif ($row['field_status'] == "S") {
-                      echo '<span class="label pull-center bg-green"><strong>success</strong></span>';
+                      echo '<span class="label pull-center bg-green"><strong>Success</strong></span>';
                     }
                     ?>
                   </td>
                   <td><strong><?php echo $row["Approval"]; ?></strong></td>
 
                   <td>
+
+
                     <?php
-                    if ($row['field_status'] == "P") {
-                      echo '<span class="label pull-center bg-yellow"><strong>pending</strong></span>';
-                    } elseif ($row['field_status'] == "C") {
-                      // echo '<span class="label pull-center bg-red"><strong>cancel</strong></span>';
-                    } elseif ($row['field_status'] == "S") {
-                      // echo '<span class="label pull-center bg-green"><strong>success</strong></span>';
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-cancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-danger "><i class="fa fa-window-close"></i> Cancel </a> &nbsp';
+                    if ($rows["field_role"] == "ADM") {
+                      if ($row["field_status"] == "P") {
+                        # code...
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-rejectcancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-info "><i class="fa fa-check-square"></i> Reject Cancel </a> &nbsp';
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-aprovalcancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-success "><i class="fa fa-window-close"></i> Approve Cancel </a> &nbsp';
+                      } elseif ($row["field_status"] == "C") {
+                        # code...
+                        echo '<span class="badge btn-danger text-white">Cancelled Complete</span>';
+                      } elseif ($row["field_status"] == "S") {
+                        # code...
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-submitcancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-warning "><i class="fa fa-window-close"></i> Submit Cancel </a> &nbsp';
+                      }
+                    } elseif ($rows["field_role"] == "MGR") {
+                      if ($row["field_status"] == "P") {
+                        # code...                        
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-aprovalcancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-success "><i class="fa fa-window-close"></i> Approve Cancel </a> &nbsp';
+                      } elseif ($row["field_status"] == "C") {
+                        # code...
+                        echo '<span class="badge btn-danger text-white">Cancelled Complete</span>';
+                      } elseif ($row["field_status"] == "S") {
+                        # code...
+                        //echo '<a href="#" data-toggle="modal" data-target="#modal-default-submitcancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-warning "><i class="fa fa-window-close"></i> Submit Cancel </a> &nbsp';
+                      }
+                    } elseif ($rows["field_role"] == "AMR") {
+                      if ($row["field_status"] == "P") {
+                        # code...                        
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-aprovalcancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-success "><i class="fa fa-window-close"></i> Approve Cancel </a> &nbsp';
+                      } elseif ($row["field_status"] == "C") {
+                        # code...
+                        echo '<span class="badge btn-danger text-white">Cancelled Complete</span>';
+                      } elseif ($row["field_status"] == "S") {
+                        # code...
+                        //echo '<a href="#" data-toggle="modal" data-target="#modal-default-submitcancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-warning "><i class="fa fa-window-close"></i> Submit Cancel </a> &nbsp';
+                      }
+                    } elseif ($rows["field_role"] == "SPV") {
+                      if ($row["field_status"] == "P") {
+                        # code...                        
+                        echo '<span class="badge btn-dafault text-white">Waiting Approval</span>';
+                      } elseif ($row["field_status"] == "C") {
+                        # code...
+                        echo '<span class="badge btn-danger text-white">Cancelled Complete</span>';
+                      } elseif ($row["field_status"] == "S") {
+                        # code...
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-submitcancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-warning "><i class="fa fa-window-close"></i> Submit Cancel </a> &nbsp';
+                      }
+                    } elseif ($rows["field_role"] == "BCO") {
+                      if ($row["field_status"] == "P") {
+                        # code...                        
+                        echo '<span class="badge btn-dafault text-white">Waiting Approval</span>';
+                      } elseif ($row["field_status"] == "C") {
+                        # code...
+                        echo '<span class="badge btn-danger text-white">Cancelled Complete</span>';
+                      } elseif ($row["field_status"] == "S") {
+                        # code...
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-default-submitcancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-warning "><i class="fa fa-window-close"></i> Submit Cancel </a> &nbsp';
+                      }
+                    } elseif ($rows["field_role"] == "CMS") {
+                      if ($row["field_status"] == "P") {
+                        # code...                        
+                        echo '<span class="badge btn-dafault text-white">Waiting Approval</span>';
+                      } elseif ($row["field_status"] == "C") {
+                        # code...
+                        echo '<span class="badge btn-danger text-white">Cancelled Complete</span>';
+                      } elseif ($row["field_status"] == "S") {
+                        # code...
+                        if ($row['field_approve'] == $row['field_officer_id']) {
+
+                          echo '<a href="#" data-toggle="modal" data-target="#modal-default-submitcancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-warning "><i class="fa fa-window-close"></i> Submit Cancel </a> &nbsp';
+                        } else {
+                          echo '<span class="badge btn-success text-white">Saldo dikembalikan</span>';
+                        }
+                      }
                     }
-                    
-                    
-                    
                     ?>
+
                   </td>
                 </tr>
 
-                <!-- Modal CANCEL -->
-                <div class="modal fade" id="modal-default-cancel<?php echo $row["field_trx_deposit"]; ?>">
+                <!-- Modal aproval CANCEL -->
+                <div class="modal fade" id="modal-default-aprovalcancel<?php echo $row["field_trx_deposit"]; ?>">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span></button>
                         <center>
-                          <h3 class="modal-title">Anda Yakin Untuk Cancel</h3>
+                          <h3 class="modal-title">Anda Yakin Untuk Setuju Cancel</h3>
                         </center>
                       </div>
                       <div class="modal-body">
                         <form method="post" class="form-horizontal">
                           <div class="form-group">
-                            <div class="box-header">                            
+                            <div class="box-header">
                               <center>
                                 <h4>
                                   <?php
@@ -204,7 +344,7 @@ if(isset($Msg)){
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default " data-dismiss="modal">No</button>
                             <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
-                            <a href="?module=deposit&iddeposit=<?php echo $row['field_trx_deposit']; ?>" type="submit" class="text-white btn btn-success">&nbsp YES &nbsp</a>
+                            <a href="?module=deposit&iddepositc=<?php echo $row['field_trx_deposit']; ?>" type="submit" class="text-white btn btn-success">&nbsp YES &nbsp</a>
                           </div>
                         </form>
                       </div>
@@ -215,10 +355,87 @@ if(isset($Msg)){
                 </div>
                 <!-- /.modal -->
 
+                <!-- Modal submit CANCEL -->
+                <div class="modal fade" id="modal-default-submitcancel<?php echo $row["field_trx_deposit"]; ?>">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                        <center>
+                          <h3 class="modal-title">Anda Yakin Untuk Mengajukan Cancel</h3>
+                        </center>
+                      </div>
+                      <div class="modal-body">
+                        <form method="post" class="form-horizontal">
+                          <div class="form-group">
+                            <div class="box-header">
+                              <center>
+                                <h4>
+                                  <?php
+                                  // echo 'Harga Jual '.rupiah($row["field_buyback"]).'<br>'.'Harga Beli '.rupiah($row["field_sell"]);  
+                                  ?>
+                                </h4>
+                              </center>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default " data-dismiss="modal">No</button>
+                            <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
+                            <a href="?module=deposit&iddepositp=<?php echo $row['field_trx_deposit']; ?>" type="submit" class="text-white btn btn-success">&nbsp YES &nbsp</a>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+                <!-- Modal Batal CANCEL -->
+                <div class="modal fade" id="modal-default-rejectcancel<?php echo $row["field_trx_deposit"]; ?>">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                        <center>
+                          <h3 class="modal-title">Saldo Nasabah Akan Kembali</h3>
+                        </center>
+                      </div>
+                      <div class="modal-body">
+                        <form method="post" class="form-horizontal">
+                          <div class="form-group">
+                            <div class="box-header">
+                              <center>
+                                <h4>
+                                  <?php
+                                  // echo 'Harga Jual '.rupiah($row["field_buyback"]).'<br>'.'Harga Beli '.rupiah($row["field_sell"]);  
+                                  ?>
+                                </h4>
+                              </center>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default " data-dismiss="modal">No</button>
+                            <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
+                            <a href="?module=deposit&iddeposits=<?php echo $row['field_trx_deposit']; ?>" type="submit" class="text-white btn btn-success">&nbsp YES &nbsp</a>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+
               <?php } ?>
             </tbody>
             <tfoot>
-              <tr>                
+              <tr>
                 <th></th>
                 <th>Reff</th>
                 <th>Account Customer</th>
@@ -230,8 +447,8 @@ if(isset($Msg)){
                 <th>Gold</th>
                 <th>Officer</th>
                 <th>Status</th>
-                <th >Submitter</th>
-                <th>Action</th>
+                <th>Submitter</th>
+                <th></th>
               </tr>
             </tfoot>
           </table>
