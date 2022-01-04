@@ -75,7 +75,7 @@ $no=1;
                   <td data-title="Trx Id" ><strong><?php echo $row["TotalSaldo"];?></strong></td> 
                   <td data-title="Trx Id" ><?php echo $row["field_branch_name"];?>             </td>  
                   <td data-title="Trx Id" >
-                    <a href="../mutasicustomerpdf.php?m=<?php echo $row['field_member_id'];?>&t=2022-01-01" class="btn btn-sm btn-warning"><i class="fa fa-print o text-warning"></i></a>
+                    <a href="../mutasicustomerpdf.php?m=<?php echo $row['field_member_id'];?>" class="btn btn-sm btn-warning"><i class="fa fa-print o text-warning"></i></a>
                   </td>                   
                 </tr>
 

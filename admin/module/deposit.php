@@ -177,8 +177,8 @@ if (isset($Msg)) {
                 <th></th>
                 <th>Reff</th>
                 <th>Account Customer</th>
-                <!-- <th>Customer</th> -->
-                <!-- <th>Price Gold</th> -->
+                <th>Customer</th>
+                <th>Date</th>
                 <th>Sub Total</th>
                 <th>Free</th>
                 <th>Total</th>
@@ -209,19 +209,19 @@ if (isset($Msg)) {
 
 
                   </td>
-                  <td><strong><?php echo $row["field_no_referensi"]; ?></strong> <br><?php echo date("d-M-Y", strtotime($row["field_date_deposit"])); ?></td>
-                  <!-- <td><?php echo date("d-M-Y", strtotime($row["field_date_deposit"])); ?></td> -->
-                  <td><?php echo $row["field_rekening_deposit"]; ?><br><?php echo $row["field_nama_customer"]; ?></td>
-                  <!-- <td><?php echo $row["field_nama_customer"]; ?></td> -->
+                  <td><strong><?php echo $row["field_no_referensi"]; ?></strong></td>
+                  <td><?php echo date("l,d-m-Y", strtotime($row["field_date_deposit"])); ?></td>
+                  <td><?php echo $row["field_rekening_deposit"]; ?></td>
+                  <td><?php echo $row["field_nama_customer"]; ?></td>
                   <!-- <td><strong><?php echo rupiah($row["PriceGold"]); ?></strong></td> -->
 
                   <td><?php echo rupiah($row["field_sub_total"]); ?></td>
                   <td><?php echo rupiah($row["field_operation_fee_rp"]); ?></td>
                   <td><?php echo rupiah($row["field_total_deposit"]); ?></td>
                   <td><strong><?php echo $row["field_deposit_gold"]; ?></strong></td>
-                  <td><?php echo $row["field_name_officer"]; ?> <br><?php echo $row["field_branch_name"]; ?> </td>
+                  <td><?php echo $row["field_name_officer"]; ?></td>
                   <td>
-
+                    <!-- <br><?php echo $row["field_branch_name"]; ?>  -->
                     <?php
                     // echo $row["Approval"];
                     if ($row['field_status'] == "P") {
@@ -439,8 +439,8 @@ if (isset($Msg)) {
                 <th></th>
                 <th>Reff</th>
                 <th>Account Customer</th>
-                <!-- <th></th> -->
-                <!-- <th>Price Gold</th> -->
+                <th>Customer</th>
+                <th>Date</th>
                 <th>Sub Total</th>
                 <th>Free</th>
                 <th>Total</th>

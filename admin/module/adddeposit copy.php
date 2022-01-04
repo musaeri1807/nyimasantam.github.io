@@ -1,12 +1,26 @@
 <?php
+// // ini_set('display_errors', 0);
+date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
 require_once("../php/function.php");
+
+
+if (!isset($_SESSION['userlogin'])) {
+  header("location: ../loginv2.php");
+}
+
+
+
+// var_dump($e);
+
+// die();
 
 //noReff
 $sql = "SELECT field_no_referensi FROM tbltrxmutasisaldo ORDER BY field_no_referensi DESC LIMIT 1";
 $stmt = $db->prepare($sql);
 $stmt->execute();
 $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
 if ($order['field_no_referensi'] == "") {
   $no = 1;
   $thn = date('Y');
@@ -25,24 +39,246 @@ if ($order['field_no_referensi'] == "") {
   $noReff = $char . sprintf("%09s", $no);
 }
 
+// $Year    = date('Y-m-d', strtotime("-1 months"));
+// $Yearold=substr($Year,0,4);
+
+// if ($Yearold==date('Y')) {
+//   echo "Lanjut";
+// } else {
+//   echo "Reset";
+// }
 
 
-$query = "SELECT * FROM tblgoldprice ORDER BY field_gold_id DESC LIMIT 1 ";
-$Gold = $db->prepare($query);
+// // $buah = array(date('Y'));
+// // //count() untuk menghitung isi array.
+// // for($x=0;$x<count($buah);$x++){
+// // 	echo $buah[$x]."<br/>";
+// // }
+// print_r($Yearold);
+// // ;
+// // print_r($order['field_no_referensi']);
+// die();
+
+$query        = "SELECT * FROM tblgoldprice WHERE field_status='A' ORDER BY field_gold_id  DESC LIMIT 1 ";
+$Gold         = $db->prepare($query);
 $Gold->execute();
-$Result = $Gold->fetch(PDO::FETCH_ASSOC);
-$goldprice = $Result['field_sell'];
+$Result       = $Gold->fetch(PDO::FETCH_ASSOC);
+$goldprice    = $Result['field_sell'];
 
 // echo $goldprice;
 // die();
 
+if (isset($_REQUEST['payment'])) {
+
+  $memberid                 = $_REQUEST['txt_memberid'];
+  $field_no_referensi       = $noReff;
+  $field_date_deposit       = date('Y-m-d');
+  $time                     = date('H:i:s');
+  $field_rekening_deposit   = $_POST['txt_rekening'];
+  $field_sumber_dana        = $_POST['txt_select'];
+  $field_branch             = $branchid;
+  $field_officer_id         = $id;
+  $field_sub_total          = $_POST['txt_subtotal'];
+  $field_operation_fee      = $_POST['txt_free'];
+  $field_operation_fee_rp   = $field_sub_total * $field_operation_fee / 100;
+  $field_operation_fee_rp   = $_POST['txt_free_rp'];
+  $field_total_deposit      = $_POST['txt_total'];
+  $field_deposit_gold       = $_POST['txt_gold'];
+  $field_gold_price         = $goldprice;
+
+  $transaksi_produk         = $_POST['transaksi_produk'];
+  $transaksi_harga          = $_POST['transaksi_harga'];
+  $transaksi_jumlah         = $_POST['transaksi_jumlah'];
+  $transaksi_total          = $_POST['transaksi_total'];
+
+  if (empty($memberid)) {
+    $errorMsg             = "Mmember ID Belum Ada";
+  } else {
+    try {
+      $query2         = "SELECT field_status FROM tbltrxmutasisaldo WHERE field_rekening =:rekening ORDER BY field_id_saldo DESC LIMIT 1";
+      $select2        = $db->prepare($query2);
+      $select2->execute(array(':rekening' => $field_rekening_deposit));
+      $result2        = $select2->fetch(PDO::FETCH_ASSOC);
+      // echo "SELECT DATA SALDO";
+      if ($result2['field_status'] !== "P") {
+        # code...
+
+        $query        = "SELECT * FROM tbltrxmutasisaldo WHERE field_rekening =:rekening  AND field_status='S' ORDER BY field_id_saldo DESC LIMIT 1";
+        $select       = $db->prepare($query);
+        $select->execute(array(':rekening' => $field_rekening_deposit));
+        $result       = $select->fetch(PDO::FETCH_ASSOC);
+        $saldoAwal    = $result['field_total_saldo'];
+        $saldoAkhir   = $saldoAwal + $field_deposit_gold;
+        $data         = $select->rowCount();
+
+        // echo $data    = $select2->rowCount();
+        if ($data = 1) { //memastikan rekening hanya satu yang ter insert
+          # code...
+          // echo $field_no_referensi;
+          // die();
+          $insert = $db->prepare('INSERT INTO tbldeposit (
+                field_no_referensi,
+                field_date_deposit,
+                field_rekening_deposit,
+                field_sumber_dana,
+                field_branch,
+                field_officer_id,
+                field_sub_total,
+                field_operation_fee,
+                field_operation_fee_rp,
+                field_total_deposit,
+                field_deposit_gold,
+                field_gold_price,
+                field_status,
+                field_approve) 
+              VALUES(   
+                :no_referensi,
+                :date_deposit,
+                :rekening_deposit,
+                :sumber_dana,
+                :branch,
+                :officer_id,
+                :sub_total,
+                :operation_fee,
+                :operation_fee_rp,
+                :total_deposit,
+                :deposit_gold,
+                :gold_price,
+                :ustatus,
+                :approval)');
+
+          $insert->execute(array(
+            ':no_referensi'       => $field_no_referensi,
+            ':date_deposit'       => $field_date_deposit,
+            ':rekening_deposit'   => $field_rekening_deposit,
+            ':sumber_dana'        => $field_sumber_dana,
+            ':branch'             => $field_branch,
+            ':officer_id'         => $field_officer_id,
+            ':sub_total'          => $field_sub_total,
+            ':operation_fee'      => $field_operation_fee,
+            ':operation_fee_rp'   => $field_operation_fee_rp,
+            ':total_deposit'      => $field_total_deposit,
+            ':deposit_gold'       => $field_deposit_gold,
+            ':gold_price'         => $field_gold_price,
+            ':ustatus'             => "S",
+            ':approval'           => $field_officer_id
+          ));
+          $id = $db->lastinsertid();
+          if ($id) {
+            $jumlah_pembelian = count($transaksi_produk);
+            for ($a = 0; $a < $jumlah_pembelian; $a++) {
+
+              $t_produk   = $transaksi_produk[$a];
+              $t_harga    = $transaksi_harga[$a];
+              $t_jumlah   = $transaksi_jumlah[$a];
+              $t_total    = $transaksi_total[$a];
+
+              $insert = $db->prepare('INSERT INTO tbldepositdetail( 
+                                                              field_trx_deposit,
+                                                              field_product,
+                                                              field_price_product,
+                                                              field_quantity,
+                                                              field_total_price) 
+                                                      VALUES( :trx_deposit,
+                                                              :product,
+                                                              :price_product,
+                                                              :quantity,
+                                                              :total_price)');
+
+              $insert->execute(array(
+                ':trx_deposit'        => $id,
+                ':product'            => $t_produk,
+                ':price_product'      => $t_harga,
+                ':quantity'           => $t_jumlah,
+                ':total_price'        => $t_total
+              ));
+            } //tutup
+
+          } else {
+            $errorMsg = "id Deposit Transaksi tidak ditemukan";
+          } //tututp             
+
+          $in = $db->prepare('INSERT INTO tbltrxmutasisaldo 
+                              (
+              field_trx_id,
+              field_member_id,
+              field_no_referensi,
+              field_rekening,
+              field_tanggal_saldo,
+              field_time,
+              field_type_saldo,
+              field_kredit_saldo,
+              field_total_saldo,
+              field_status) 
+                        VALUES 
+              (
+              :trx_id,   
+              :memberid,  
+              :no_referensi,
+              :rekening,
+              :tanggal_saldo,    
+              :times,
+              :type_saldo,
+              :kredit_saldo,
+              :total_saldo,
+              :status)');
+          $in->execute(array(
+            ':trx_id'             => $id,
+            ':memberid'           => $memberid,
+            ':no_referensi'       => $field_no_referensi,
+            ':rekening'           => $field_rekening_deposit,
+            ':tanggal_saldo'      => $field_date_deposit,
+            ':times'              => $time,
+            ':type_saldo'         => 100,
+            ':kredit_saldo'       => $field_deposit_gold,
+            ':total_saldo'        => $saldoAkhir,
+            ':status'              => "S"
+          ));
+          $Msg      = " Transaction Saldo Successfully"; //execute query success message
+        } else {
+          # code...
+          $errorMsg = "Rekening lebih dari Satu";
+        }
+      } else {
+        # code...
+        // echo "TOLAK INSERT";
+        // echo "<br>";
+        $errorMsg     = "Transaksi Sebelumnya Masih Pending";
+      }
 
 
-if (isset($_POST['payment'])) {
+      // if(!isset($errorMsg))	{        
+
+      //   $update_stmt=$db->prepare('UPDATE  SET  WHERE '); //sql insert query					
+
+      // 	$update_stmt->bindParam(':typeaprove',$typeaprove);
+      //   $update_stmt->bindParam(':idaprovel',$id);
+      //   $update_stmt->bindParam(':id',$idgold);					
+      // 	if($update_stmt->execute()){
+      // 		$Msg="Successfully"; //execute query success message
+      // 		echo '<META HTTP-EQUIV="Refresh" Content="1">';
+      // 	}
+
+      // }
+
+    } catch (PDOException $e) {
+      echo $e->getMessage();
+    }
+  }
+}
+
+//batas
+// die();
+
+if (isset($_POST['payment1'])) {
   # code...
+  echo "member Id ==" . $memberid = $_REQUEST['txt_memberid'];
+  echo '<br>';
   echo "Nomor Reff ==" . $field_no_referensi       = $noReff;
   echo '<br>';
   echo "Tanggal Trx ==" . $field_date_deposit       = date('Y-m-d');
+  echo '<br>';
+  echo "Time Trx ==" . $time  = date('H:i:s');
   echo '<br>';
   echo "Nomor Rekening ==" . $field_rekening_deposit   = $_POST['txt_rekening'];
   echo '<br>';
@@ -73,14 +309,14 @@ if (isset($_POST['payment'])) {
 
 
 
-  $query = "SELECT * FROM tbltrxmutasisaldo WHERE field_rekening =:rekening ORDER BY field_id_saldo DESC LIMIT 1";
-  $select = $db->prepare($query);
-  $select->execute(array(
-    ':rekening' => $field_rekening_deposit
-  ));
-  $result = $select->fetch(PDO::FETCH_ASSOC);
-  $data   = $select->rowCount();
+  $query    = "SELECT * FROM tbltrxmutasisaldo WHERE field_rekening =:rekening  AND field_status='S' ORDER BY field_id_saldo DESC LIMIT 1";
+  $select   = $db->prepare($query);
+  $select->execute(array(':rekening' => $field_rekening_deposit));
+  $result   = $select->fetch(PDO::FETCH_ASSOC);
 
+
+
+  $data   = $select->rowCount();
   $saldoAwal  = $result['field_total_saldo'];
   $saldoAkhir = $saldoAwal + $field_deposit_gold;
 
@@ -93,129 +329,193 @@ if (isset($_POST['payment'])) {
   echo "Jumlah Select* ==" . $data;
 
   // die();
+  //jika saldo status pending 
+  $query2 = "SELECT field_status FROM tbltrxmutasisaldo WHERE field_rekening =:rekening ORDER BY field_id_saldo DESC LIMIT 1";
+  $select2 = $db->prepare($query2);
+  $select2->execute(array(':rekening' => $field_rekening_deposit));
+  $result2 = $select2->fetch(PDO::FETCH_ASSOC);
 
+  if ($result2['field_status'] !== "P") {
+    # code...
+    //echo " SUKSES";
 
+    $insert = $db->prepare('INSERT INTO tbldeposit (
+                                              field_no_referensi,
+                                              field_date_deposit,
+                                              field_rekening_deposit,
+                                              field_sumber_dana,
+                                              field_branch,
+                                              field_officer_id,
+                                              field_sub_total,
+                                              field_operation_fee,
+                                              field_operation_fee_rp,
+                                              field_total_deposit,
+                                              field_deposit_gold,
+                                              field_gold_price,
+                                              field_status,
+                                              field_approve) 
+                                        VALUES(   : no_referensi,
+                                                  : date_deposit,
+                                                  : rekening_deposit,
+                                                  : sumber_dana,
+                                                  : branch,
+                                                  : officer_id,
+                                                  : sub_total,
+                                                  : operation_fee,
+                                                  : operation_fee_rp,
+                                                  : total_deposit,
+                                                  : deposit_gold,
+                                                  : gold_price,
+                                                  : ustatus,
+                                                  : approval)');
 
-  // $db->beginTransaction();
-  $insert = $db->prepare('INSERT INTO tbldeposit (field_no_referensi,
-                                            field_date_deposit,
-                                            field_rekening_deposit,
-                                            field_sumber_dana,
-                                            field_branch,
-                                            field_officer_id,
-                                            field_sub_total,
-                                            field_operation_fee,
-                                            field_operation_fee_rp,
-                                            field_total_deposit,
-                                            field_deposit_gold,
-                                            field_gold_price,
-                                            field_status,
-                                            field_approve) 
-                                      VALUES(:no_referensi,
-                                            :date_deposit,
-                                            :rekening_deposit,
-                                            :sumber_dana,
-                                            :branch,
-                                            :officer_id,
-                                            :sub_total,
-                                            :operation_fee,
-                                            :operation_fee_rp,
-                                            :total_deposit,
-                                            :deposit_gold,
-                                            :gold_price,
-                                            :status,
-                                            :approval)');
+    $insert->execute(array(
+      ' : no_referensi'       => $field_no_referensi,
+      ' : date_deposit'       => $field_date_deposit,
+      ' : rekening_deposit'   => $field_rekening_deposit,
+      ' : sumber_dana'        => $field_sumber_dana,
+      ' : branch'             => $field_branch,
+      ' : officer_id'         => $field_officer_id,
+      ' : sub_total'          => $field_sub_total,
+      ' : operation_fee'      => $field_operation_fee,
+      ' : operation_fee_rp'   => $field_operation_fee_rp,
+      ' : total_deposit'      => $field_total_deposit,
+      ' : deposit_gold'       => $field_deposit_gold,
+      ' : gold_price'         => $field_gold_price,
+      ' : ustatus'             => "S",
+      ' : approval'           => $field_officer_id
+    ));
+    $id = $db->lastinsertid();
+    if ($id) {
+      $jumlah_pembelian = count($transaksi_produk);
+      for ($a = 0; $a < $jumlah_pembelian; $a++) {
 
-  $insert->execute(array(
-    ':no_referensi'       => $field_no_referensi,
-    ':date_deposit'       => $field_date_deposit,
-    ':rekening_deposit'   => $field_rekening_deposit,
-    ':sumber_dana'        => $field_sumber_dana,
-    ':branch'             => $field_branch,
-    ':officer_id'         => $field_officer_id,
-    ':sub_total'          => $field_sub_total,
-    ':operation_fee'      => $field_operation_fee,
-    ':operation_fee_rp'   => $field_operation_fee_rp,
-    ':total_deposit'      => $field_total_deposit,
-    ':deposit_gold'       => $field_deposit_gold,
-    ':gold_price'         => $field_gold_price,
-    ':status'             => "S",
-    ':approval'           => "OKE"
-  ));
+        $t_produk   = $transaksi_produk[$a];
+        $t_harga    = $transaksi_harga[$a];
+        $t_jumlah   = $transaksi_jumlah[$a];
+        $t_total    = $transaksi_total[$a];
 
+        $insert = $db->prepare('INSERT INTO tbldepositdetail 
+                                                ( field_trx_deposit,
+                                                  field_product,
+                                                  field_price_product,
+                                                  field_quantity,
+                                                  field_total_price) 
+                                          VALUES( :trx_deposit,
+                                                  :product,
+                                                  :price_product,
+                                                  :quantity,
+                                                  :total_price)');
 
-  $id = $db->lastinsertid();
-  echo '<br>';
-  echo $id;
-
-  if ($id) {
-    $jumlah_pembelian = count($transaksi_produk);
-    for ($a = 0; $a < $jumlah_pembelian; $a++) {
-
-      $t_produk   = $transaksi_produk[$a];
-      $t_harga    = $transaksi_harga[$a];
-      $t_jumlah   = $transaksi_jumlah[$a];
-      $t_total    = $transaksi_total[$a];
-
-      $insert = $db->prepare('INSERT INTO tbldepositdetail 
-                                              ( field_trx_deposit,
-                                                field_product,
-                                                field_price_product,
-                                                field_quantity,
-                                                field_total_price) 
-                                        VALUES( :trx_deposit,
-                                                :product,
-                                                :price_product,
-                                                :quantity,
-                                                :total_price)');
-
-      $insert->execute(array(
-        ':trx_deposit'        => $id,
-        ':product'            => $t_produk,
-        ':price_product'      => $t_harga,
-        ':quantity'           => $t_jumlah,
-        ':total_price'        => $t_total
+        $insert->execute(array(
+          ':trx_deposit'        => $id,
+          ':product'            => $t_produk,
+          ':price_product'      => $t_harga,
+          ':quantity'           => $t_jumlah,
+          ':total_price'        => $t_total
+        ));
+      }
+      $in = $db->prepare('INSERT INTO tbltrxmutasisaldo 
+                                        (
+      field_trx_id,
+      field_member_id,
+      field_no_referensi,
+      field_rekening,
+      field_tanggal_saldo,
+      field_time,
+      field_type_saldo,
+      field_kredit_saldo,
+      field_total_saldo,
+      field_status) 
+                                  VALUES 
+      (
+        :trx_id,   
+        :memberid,  
+        :no_referensi,
+        :rekening,
+        :tanggal_saldo,    
+        :times,
+        :type_saldo,
+        :kredit_saldo,
+        :total_saldo,
+        :status)');
+      $in->execute(array(
+        ':trx_id'             => $id,
+        ':memberid'           => $memberid,
+        ':no_referensi'       => $field_no_referensi,
+        ':rekening'           => $field_rekening_deposit,
+        ':tanggal_saldo'      => $field_date_deposit,
+        ':times'              => $time,
+        ':type_saldo'         => 100,
+        ':kredit_saldo'       => $field_deposit_gold,
+        ':total_saldo'        => $saldoAkhir,
+        ':status'              => "S"
       ));
+      $Msg = "Successfully"; //execute query success message
+      echo '<META HTTP-EQUIV="Refresh" Content="1">';
+    } else {
+      # code...
+      //echo " PENDING";
+      $errorMsg = "Transaksi Masih ada yang pending ";
+      echo '<META HTTP-EQUIV="Refresh" Content="1">';
     }
   }
-
-
-  //   $data = mysqli_query($koneksi, $query);
-  //   $result  = mysqli_fetch_assoc($data);
-
-
-  //   mysqli_query($koneksi, "INSERT INTO tbltrxmutasisaldo
-  //  (field_member_id,
-  //   field_no_referensi,
-  //   field_rekening,
-  //   field_tanggal_saldo,
-  //   field_time,
-  //   field_type_saldo,
-  //   field_kredit_saldo,
-  //   field_total_saldo)
-  //  VALUES 
-  //  ('$member_id',
-  //   '$nomor',
-  //   '$nasabah',
-  //   '$tanggal',
-  //   '$time',
-  //   '$type',
-  //   '$emas_anda',
-  //   '$saldoAkhir')");
-
-  //$db->commit();
-}
+}//batas
 
 // die();
 $Stmt = $db->prepare("SELECT * FROM tblcustomer");
 $Stmt->execute();
 $Result = $Stmt->fetchAll();
 
-$sql    = "SELECT * FROM tblproduct";
-$stmt   = $db->prepare($sql);
-$stmt->execute();
-$result  = $stmt->fetchAll();
 
+
+
+if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
+
+  $Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
+  LEFT JOIN tblbranch B
+  ON P.field_branch=B.field_branch_id 
+  WHERE field_status='A'
+  ORDER BY P.field_product_id DESC ";
+
+  $Stmt = $db->prepare($Sql);
+  $Stmt->execute();
+  $result = $Stmt->fetchAll();
+} else {
+
+  $Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
+  LEFT JOIN tblbranch B
+  ON P.field_branch=B.field_branch_id 
+  WHERE field_status='A'
+  AND P.field_branch=:idbranch
+  ORDER BY P.field_product_id DESC ";
+
+
+  $Stmt = $db->prepare($Sql);
+  $Stmt->execute(array(":idbranch" => $branchid));
+  $result = $Stmt->fetchAll();
+}
+
+
+// massege
+if (isset($errorMsg)) {
+  echo '<div class="alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
+  //echo '<META HTTP-EQUIV="Refresh" Content="1">';
+  if ($_SERVER['SERVER_NAME'] == 'localhost') {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=deposit">';
+  } else {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=deposit">';
+  }
+}
+if (isset($Msg)) {
+  echo '<div class="alert alert-success"><strong>SUCCESS !' . $Msg . '</strong></div>';
+  //echo '<META HTTP-EQUIV="Refresh" Content="1">';
+  if ($_SERVER['SERVER_NAME'] == 'localhost') {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=deposit">';
+  } else {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=deposit">';
+  }
+}
 
 ?>
 
@@ -224,14 +524,14 @@ $result  = $stmt->fetchAll();
 <!-- Main content -->
 <section class="content">
   <!-- Content -->
-  <?php
-  if (isset($errorMsg)) {
-    echo '<div class="alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
-  }
-  if (isset($insertMsg)) {
-    echo '<div class="alert alert-success"><strong>SUCCESS !' . $insertMsg . '</strong></div>';
-  }
-  ?>
+  <!-- <?php
+        if (isset($errorMsg)) {
+          echo '<div class="alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
+        }
+        if (isset($insertMsg)) {
+          echo '<div class="alert alert-success"><strong>SUCCESS !' . $insertMsg . '</strong></div>';
+        }
+        ?> -->
   <div class="row">
     <form name="ftrx" method="POST" class="form-horizontal" onSubmit="return cek(this)">
       <div class="col-md-3">
@@ -265,9 +565,10 @@ $result  = $stmt->fetchAll();
                               <th class="text-center">No</th>
                               <th>Code</th>
                               <th>Product</th>
-                              <th class="text-center">Unit</th>
                               <th class="text-center">Branch</th>
+                              <th class="text-center">Unit</th>
                               <th class="text-center">Price</th>
+                              <th class="text-center">Approval</th>
                               <th>Note</th>
                               <th></th>
                             </tr>
@@ -285,9 +586,25 @@ $result  = $stmt->fetchAll();
                                   <br>
                                   <small class="text-muted"><?php echo $rows['field_category']; ?></small>
                                 </td>
+                                <td width="1%" class="text-center"><?php echo $rows['field_branch_name']; ?></td>
                                 <td width="1%" class="text-center"><?php echo $rows['field_unit']; ?></td>
-                                <td width="1%" class="text-center"><?php echo $rows['field_branch']; ?></td>
                                 <td width="20%" class="text-center"><?php echo $rows['field_price']; ?></td>
+                                <td width="15%">
+
+                                  <?php
+
+                                  if ($rows["field_status"] == "A") {
+                                    echo '<span class="badge btn-success text-white">Approve</span>';
+                                  } elseif ($rows["field_status"] == "C") {
+                                    echo '<span class="badge btn-info text-white">Cancel</span>';
+                                  } elseif ($rows["field_status"] == "P") {
+                                    echo '<span class="badge btn-warning text-white">Pending</span>';
+                                  } elseif ($rows["field_status"] == "R") {
+                                    echo '<span class="badge btn-danger text-white">Reject</span>';
+                                  }
+                                  ?>
+
+                                </td>
                                 <td width="15%"><?php echo $rows['field_note']; ?></td>
                                 <td width="1%">
 
