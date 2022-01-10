@@ -1,6 +1,14 @@
 <?php
 // $svrname=$_SERVER['SERVER_NAME'];
 
+if ($_SERVER['SERVER_NAME'] == 'localhost') {
+  # code...
+  echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/loginv2">';
+} else {
+  echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://apps.musaeri.my.id/loginv2">';
+}
+die();
+
 if (isset($_REQUEST['button'])) {
 
   $password = $_REQUEST['password'];

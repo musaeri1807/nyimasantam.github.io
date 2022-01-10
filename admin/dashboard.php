@@ -159,7 +159,7 @@ echo $rows['field_branch'];
                   <a href="#"><i class="fa fa-gear"></i>Settings</a>
                 </li>
                 <li>
-                  <a href="#"><i class="fa fa-shield"></i> Keamanan</a>
+                  <a href="?module=changepassword"><i class="fa fa-shield"></i> Keamanan</a>
                 </li>
                 <li class="divider"></li>
                 <li>
@@ -469,6 +469,8 @@ echo $rows['field_branch'];
         include "module/formcustomer.php";
       } elseif ($_GET['module'] == "payment") {
         include "module/payment.php";
+      }elseif ($_GET['module'] == "changepassword") {
+        include "module/newpassword.php";
       } else {
         echo "<script>
                               

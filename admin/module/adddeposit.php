@@ -100,6 +100,8 @@ if (isset($_REQUEST['payment'])) {
     $errorMsg             = "Member ID Belum Ada";
   } else if (empty($field_gold_price)) {
     $errorMsg             = "Harga Emas Belum Update";
+  } else if ($field_deposit_gold == "Infinity") {
+    $errorMsg             = "Harga Emas Belum Update";
   } else {
     try {
       $query2         = "SELECT field_status FROM tbltrxmutasisaldo WHERE field_rekening =:rekening ORDER BY field_id_saldo DESC LIMIT 1";
@@ -304,18 +306,18 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
     echo '<div class            = "alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
     //echo '<META HTTP-EQUIV="Refresh" Content="1">';
     if ($_SERVER['SERVER_NAME'] == 'localhost') {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=deposit">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=adddeposit">';
     } else {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=deposit">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=adddeposit">';
     }
   }
   if (isset($Msg)) {
     echo '<div class            = "alert alert-success"><strong>SUCCESS !' . $Msg . '</strong></div>';
     //echo '<META HTTP-EQUIV="Refresh" Content="1">';
     if ($_SERVER['SERVER_NAME'] == 'localhost') {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=deposit">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=deposit">';
     } else {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=deposit">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=deposit">';
     }
   }
   ?>
@@ -583,7 +585,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                     $goldprice = 0;
                   } else {
                     # code...
-                    echo '<div class= "alert alert-success"><strong></strong></div>';
+                    echo '<div class= "alert alert-success"><strong> Harga Sudah Update</strong></div>';
                     $goldprice;
                   }
                 } else {

@@ -267,6 +267,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                 <br>
                 <h3> <strong>Officer</strong></h3>
                 <!-- <p class="mb-1">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>  -->
+                <b>Development </b>
 
                 <?php
                 if (isset($errorMsg)) {

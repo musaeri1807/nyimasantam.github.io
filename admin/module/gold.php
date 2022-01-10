@@ -388,7 +388,7 @@ if(isset($Msg)){
                   <td data-title="Trx Id"><small>Harga Update <?php echo date("d M Y /H:i:s",strtotime($row["field_datetime_gold"]));?></small><br><strong><?php echo $row["field_name"];?></strong></td>
                   <!-- <td data-title="Branchid"><small><?php echo $row["field_branch"];?></small><br><strong><?php echo $row["field_officer_id"];?></strong></td> -->
                   <td data-title="Trx Id"><small><?php echo $row["field_branch_name"];?></small><br><strong><?php echo $row["field_name_officer"];?></strong></td>
-                  <td data-title="Trx Id">Jual <strong><?php echo rupiah($row["field_buyback"]);?></strong><br>Beli <strong><?php echo rupiah($row["field_sell"]);?></strong></td>
+                  <td data-title="Trx Id">Jual <strong><?php echo rupiah($row["field_sell"]);?></strong><br>Beli <strong><?php echo rupiah($row["field_buyback"]);?></strong></td>
                   <td data-title="Trx Id"><strong>
 
                   <?php 
