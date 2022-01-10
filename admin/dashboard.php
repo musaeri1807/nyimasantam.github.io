@@ -153,13 +153,13 @@ echo $rows['field_branch'];
               </a>
               <ul class="dropdown-menu dropdown-user">
                 <li>
-                  <a href="#"><i class="fa fa-user"></i>Profile</a>
+                  <a href="?module=profileadmin"><i class="fa fa-user"></i>Profile</a>
                 </li>
-                <li>
+                <!-- <li>
                   <a href="#"><i class="fa fa-gear"></i>Settings</a>
-                </li>
+                </li> -->
                 <li>
-                  <a href="?module=changepassword"><i class="fa fa-shield"></i> Keamanan</a>
+                  <a href="?module=changepassword"><i class="fa fa-shield"></i>Settings Security</a>
                 </li>
                 <li class="divider"></li>
                 <li>
@@ -189,6 +189,8 @@ echo $rows['field_branch'];
               echo '<img src="../uploads/avatar5.png" class="img-circle" alt="User Image">';
             } elseif ($rows['field_gender'] == 'P') {
               echo '<img src="../uploads/avatar2.png" class="img-circle" alt="User Image">';
+            }else{
+              echo '<img src="../uploads/1.png" class="img-circle" alt="User Image">';
             }
             ?>
           </div>
@@ -218,23 +220,10 @@ echo $rows['field_branch'];
 
           </li>
 
+          
           <li class="treeview">
             <a href="#">
-              <i class="fa fa-th"></i> <span>List Product</span>
-              <span class="pull-right-container">
-                <small class="label pull-right bg-green">new</small>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="?module=gold"><i class="fa fa-diamond"></i>Price Gold</a></li>
-              <li><a href="?module=product"><i class="fa fa-recycle"></i>Price Trash</a></li>
-              <li><a href="?module=category"><i class="fa fa-object-group"></i>Category</a></li>
-            </ul>
-          </li>
-
-          <li class="treeview">
-            <a href="#">
-              <i class="fa fa-exchange"></i> <span>Transaction</span>
+              <i class="fa fa-money"></i> <span>Transaction</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -246,7 +235,22 @@ echo $rows['field_branch'];
             </ul>
           </li>
 
-          <li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-user"></i> <span>Customer</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="#"><i class="fa fa-window-maximize"></i>List Customer</a></li>
+              <li><a href="?module=activation"><i class="fa fa fa-plus"></i>Activation Customer</a></li>              
+              <li><a href="?module=customer"><i class="fa fa-user-plus"></i>Login Customer </a></li>
+              <li><a href="#"><i class="fa fa-server"></i>History Transaction</a></li>
+            </ul>
+          </li>
+          
+          <!-- <li>
             <a href="?module=payment">
               <i class="fa fa-plus"></i> <span>Extra</span>
               <span class="pull-right-container">
@@ -254,8 +258,9 @@ echo $rows['field_branch'];
                 <small class="label pull-right bg-blue">17</small>
               </span>
             </a>
-          </li>
-
+          </li> -->
+          
+         
           <!--       <li>
           <a href="setting">
             <i class="fa fa-gears"></i> <span>Setting</span>
@@ -266,7 +271,7 @@ echo $rows['field_branch'];
           </a>
         </li> -->
 
-          <li>
+          <!-- <li>
             <a href="?module=mailbox">
               <i class="fa fa-envelope"></i> <span>Mailbox</span>
               <span class="pull-right-container">
@@ -275,7 +280,7 @@ echo $rows['field_branch'];
                 <small class="label pull-right bg-red">5</small>
               </span>
             </a>
-          </li>
+          </li> -->
 
           <li class="treeview">
             <a href="#">
@@ -291,12 +296,12 @@ echo $rows['field_branch'];
                 echo '<li><a href="?module=adminoffice"><i class="fa fa-user-secret"></i>Login Admin Office</a></li> ';
               }
               ?>
-              <li><a href="?module=customer"><i class="fa fa-user-plus"></i>Login Customer </a></li>
-              <li><a href="?module=activation"><i class="fa fa fa-plus"></i>Activation Customer</a></li>
+              <li><a href="#"><i class="fa fa-cog"></i>Setting Admin Office</a></li>
+              <!-- <li><a href="?module=activation"><i class="fa fa fa-plus"></i>Activation Customer</a></li> -->
             </ul>
           </li>
 
-          <li class="treeview">
+          <!-- <li class="treeview">
             <a href="#">
               <i class="fa fa-share"></i> <span>Multilevel</span>
               <span class="pull-right-container">
@@ -327,12 +332,11 @@ echo $rows['field_branch'];
                 </ul>
               </li>
             </ul>
-
-          </li>
+          </li> -->
 
           <li class="treeview">
             <a href="#">
-              <i class="fa fa-book"></i> <span>Report Transaction</span>
+              <i class="fa fa-book"></i> <span>Report</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -356,6 +360,21 @@ echo $rows['field_branch'];
               <li><a href="#"><i class="fa fa-server"></i>Connection </a></li>
               <li><a href="?module=formcustomer"><i class="fa fa-window-restore"></i> Restore</a></li>
               <li><a href="?module=backupdatabase"><i class="fa fa-clone"></i>Backup</a></li>
+            </ul>
+          </li>
+
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-cogs"></i> <span>Setting</span>
+              <span class="pull-right-container">
+                <!-- <small class="label pull-right bg-green">new</small> -->
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="?module=gold"><i class="fa fa-diamond"></i>Price Gold</a></li>
+              <li><a href="?module=product"><i class="fa fa-recycle"></i>Price Trash</a></li>
+              <li><a href="?module=category"><i class="fa fa-object-group"></i>Category</a></li>
             </ul>
           </li>
 
@@ -463,7 +482,7 @@ echo $rows['field_branch'];
         include "module/withdraw.php";
       } elseif ($_GET['module'] == "mailbox") {
         include "module/mailbox.php";
-      } elseif ($_GET['module'] == "adddeposit") {
+      } elseif ($_GET['module'] == "adddeposit") { 
         include "module/adddeposit.php";
       } elseif ($_GET['module'] == "formcustomer") {
         include "module/formcustomer.php";
@@ -471,7 +490,9 @@ echo $rows['field_branch'];
         include "module/payment.php";
       }elseif ($_GET['module'] == "changepassword") {
         include "module/newpassword.php";
-      } else {
+      }elseif ($_GET['module'] == "profileadmin") {
+        include "module/updadminofficeprofile.php";
+      }else {
         echo "<script>
                               
                                 swal({

@@ -218,7 +218,16 @@ if (isset($_REQUEST['btn_insert'])) {
 		}
 	}
 }
+$Stmt = $db->prepare("SELECT * FROM tblcustomer");
+$Stmt->execute();
+$Result = $Stmt->fetchAll();
 
+foreach( $Result As $rows){
+
+	echo $rows['field_customer_id'];
+	echo '<br>';
+}
+die();
 ?>
 <section class="content">
 	<div class="row">

@@ -634,7 +634,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                       <th>Gold Customer</th>
                       <td>
                         <input type="text" name="txt_gold" class="gold_form" value="0">
-                        <span class="total_gold" id="0">0,gram</span>
+                        <span class="total_gold" id="0">0,Gram</span>
                       </td>
                     </tr>
                   </table>
