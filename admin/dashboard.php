@@ -7,22 +7,47 @@ session_start();
 if (!isset($_SESSION['userlogin'])) {
   header("location: ../loginv2.php");
 }
-$id = $_SESSION['idlogin'];
+$idemploye = $_SESSION['idlogin'];
 $select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin E JOIN tbldepartment D ON E.field_role=D.field_department_id
                                                                JOIN tblbranch B ON E.field_branch=B.field_branch_id
-                                                                WHERE E.field_user_id=:uid");
-$select_stmt->execute(array(":uid" => $id));
+                                                               JOIN tblpermissions P ON E.field_role=P.role_id
+                                                              WHERE E.field_user_id=:uid");
+$select_stmt->execute(array(":uid" => $idemploye));
 $rows = $select_stmt->fetch(PDO::FETCH_ASSOC);
+$permission = $rows['add'];
 $branchid = $rows['field_branch'];
+echo $branchid;
 
-$SQL="SELECT * FROM tblstatus ";
+
+$SQL = "SELECT * FROM tblstatus ";
 $STMT = $db->prepare($SQL);
 $STMT->execute();
-$RESULT = $STMT->fetchAll();
+$ST = $STMT->fetchAll();
 
-echo $rows['field_user_id'];
-echo '<br>';
-echo $rows['field_branch'];
+
+$Sqlmenu = "SELECT * FROM tblmenu M JOIN tblemployeaccessmenu AM ON M.field_idmenu=AM.field_idmenu
+WHERE AM.field_role_id=:roleid AND M.field_is_active='Y'
+ORDER BY AM.field_idmenu ASC ";
+$Stmtmenu = $db->prepare($Sqlmenu);
+$Stmtmenu->execute(array(":roleid" => $rows['field_role']));
+$menu = $Stmtmenu->fetchAll();
+
+// foreach ($menu as $menusub) {
+//   echo $menusub['field_menu'];
+
+//   $id = $menusub['field_idmenu'];
+//   $Sqlsubmenu = "SELECT * FROM tblmenusub SM JOIN tblmenu M ON SM.field_idmenusub=M.field_idmenu
+//   WHERE SM.field_idmenu=:menuid AND field_isactive='Y'";
+//   $Stmtsubmenu  = $db->prepare($Sqlsubmenu);
+//   $Stmtsubmenu->execute(array(":menuid" => $id));
+//   $submenu = $Stmtsubmenu->fetchAll();
+
+//   foreach ($submenu as $menusub) {
+//     echo $menusub['field_submenu'];
+//     echo '<br>';
+//   }
+// }
+// die();
 ?>
 
 
@@ -159,7 +184,7 @@ echo $rows['field_branch'];
                   <a href="#"><i class="fa fa-gear"></i>Settings</a>
                 </li> -->
                 <li>
-                  <a href="?module=changepassword"><i class="fa fa-shield"></i>Settings Security</a>
+                  <a href="?module=changepassword"><i class="fa fa-shield"></i>Security</a>
                 </li>
                 <li class="divider"></li>
                 <li>
@@ -189,7 +214,7 @@ echo $rows['field_branch'];
               echo '<img src="../uploads/avatar5.png" class="img-circle" alt="User Image">';
             } elseif ($rows['field_gender'] == 'P') {
               echo '<img src="../uploads/avatar2.png" class="img-circle" alt="User Image">';
-            }else{
+            } else {
               echo '<img src="../uploads/1.png" class="img-circle" alt="User Image">';
             }
             ?>
@@ -202,7 +227,6 @@ echo $rows['field_branch'];
         </div>
         <!-- search form -->
 
-
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
@@ -210,6 +234,8 @@ echo $rows['field_branch'];
             <center>Menu <?php echo $rows["field_department_name"] ?></center>
           </li>
           <!--  <li class="active treeview">--- -->
+
+
           <li>
             <a href="?module=home">
               <i class="fa fa-dashboard"></i> <span> |<?php echo $rows["field_department_name"] ?></span>
@@ -217,139 +243,37 @@ echo $rows['field_branch'];
                 <!--  <i class="fa fa-angle-left pull-right">Dashboard</i> -->
               </span>
             </a>
-
           </li>
 
-          
-          <li class="treeview">
-            <a href="#">
-              <i class="fa fa-money"></i> <span>Transaction</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="?module=balance"><i class="fa fa-window-maximize"></i>Balance</a></li>
-              <li><a href="?module=deposit"><i class="fa fa-window-restore"></i>Deposit</a></li>
-              <li><a href="?module=withdraw"><i class="fa fa-server"></i>Withdraw</a></li>
-            </ul>
-          </li>
+          <?php foreach ($menu as $menusidebar) { ?>
+            <li class="treeview">
+              <a href="#">
+                <i class="<?php echo $menusidebar['field_icons']; ?>"></i> <span><?php echo $menusidebar['field_menu']; ?></span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <?php
+                $id = $menusidebar['field_idmenu'];
+                $Sqlsubmenu = "SELECT * FROM tblmenusub SM JOIN tblmenu M ON SM.field_idmenusub=M.field_idmenu
+                WHERE SM.field_idmenu=:menuid AND field_isactive='Y'";
+                $Stmtsubmenu = $db->prepare($Sqlsubmenu);
+                $Stmtsubmenu->execute(array(":menuid" => $id));
+                $submenu = $Stmtsubmenu->fetchAll();
 
-          <li class="treeview">
-            <a href="#">
-              <i class="fa fa-user"></i> <span>Customer</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="#"><i class="fa fa-window-maximize"></i>List Customer</a></li>
-              <li><a href="?module=activation"><i class="fa fa fa-plus"></i>Activation Customer</a></li>              
-              <li><a href="?module=customer"><i class="fa fa-user-plus"></i>Login Customer </a></li>
-              <li><a href="#"><i class="fa fa-server"></i>History Transaction</a></li>
-            </ul>
-          </li>
-          
-          <!-- <li>
-            <a href="?module=payment">
-              <i class="fa fa-plus"></i> <span>Extra</span>
-              <span class="pull-right-container">
-                <small class="label pull-right bg-red">3</small>
-                <small class="label pull-right bg-blue">17</small>
-              </span>
-            </a>
-          </li> -->
-          
-         
-          <!--       <li>
-          <a href="setting">
-            <i class="fa fa-gears"></i> <span>Setting</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-red">3</small>
-              <small class="label pull-right bg-blue">17</small>
-            </span>
-          </a>
-        </li> -->
+                foreach ($submenu as $menusub) { ?>
+                  <li><a href="<?php echo $menusub['field_url']; ?>"><i class="<?php echo $menusub['field_icon']; ?>"></i><?php echo $menusub['field_submenu']; ?></a></li>
+                <?php
+                }
+                ?>
 
-          <!-- <li>
-            <a href="?module=mailbox">
-              <i class="fa fa-envelope"></i> <span>Mailbox</span>
-              <span class="pull-right-container">
-                <small class="label pull-right bg-yellow">12</small>
-                <small class="label pull-right bg-green">16</small>
-                <small class="label pull-right bg-red">5</small>
-              </span>
-            </a>
-          </li> -->
+              </ul>
+            </li>
+          <?php  } ?>
 
-          <li class="treeview">
-            <a href="#">
-              <i class="fa fa-users"></i> <span>Users Management</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <!-- <li><a href="development"><i class="fa fa-user"></i>Profile</a></li>  -->
-              <?php
-              if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR' or $_SESSION['rolelogin'] == 'SPV') {
-                echo '<li><a href="?module=adminoffice"><i class="fa fa-user-secret"></i>Login Admin Office</a></li> ';
-              }
-              ?>
-              <li><a href="#"><i class="fa fa-cog"></i>Setting Admin Office</a></li>
-              <!-- <li><a href="?module=activation"><i class="fa fa fa-plus"></i>Activation Customer</a></li> -->
-            </ul>
-          </li>
 
           <!-- <li class="treeview">
-            <a href="#">
-              <i class="fa fa-share"></i> <span>Multilevel</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li class="treeview">
-                <a href="#"><i class="fa fa-users"></i> Officer
-                  <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                  </span>
-                </a>
-                <ul class="treeview-menu">
-                  <li><a href="#"><i class="fa fa-circle-o"></i>Login</a></li>
-                  <li><a href="#"><i class="fa fa-circle-o"></i>Register</a></li>
-                </ul>
-              </li>
-              <li class="treeview">
-                <a href="#"><i class="fa fa-users"></i> Customer
-                  <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                  </span>
-                </a>
-                <ul class="treeview-menu">
-                  <li><a href="#"><i class="fa fa-circle-o"></i>Login</a></li>
-                  <li><a href="#"><i class="fa fa-circle-o"></i>Register</a></li>
-                </ul>
-              </li>
-            </ul>
-          </li> -->
-
-          <li class="treeview">
-            <a href="#">
-              <i class="fa fa-book"></i> <span>Report</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="?module=exporttrash"><i class="fa fa-trash"></i>Report Trash </a></li>
-              <!-- <li><a href="#"><i class="fa fa-credit-card"></i>Report Deposit</a></li>
-            <li><a href="#"><i class="fa fa-credit-card"></i>Report withdraw</a></li> -->
-              <li><a href="?module=mutation"><i class="fa fa-window-maximize"></i>Report Mutation</a></li>
-            </ul>
-          </li>
-
-          <li class="treeview">
             <a href="#">
               <i class="fa fa-database"></i> <span>Database</span>
               <span class="pull-right-container">
@@ -359,24 +283,11 @@ echo $rows['field_branch'];
             <ul class="treeview-menu">
               <li><a href="#"><i class="fa fa-server"></i>Connection </a></li>
               <li><a href="?module=formcustomer"><i class="fa fa-window-restore"></i> Restore</a></li>
-              <li><a href="?module=backupdatabase"><i class="fa fa-clone"></i>Backup</a></li>
+              <li><a href="?module=backupdatabase"><i class="fa fa-clone">  </i>Backup</a></li>
             </ul>
-          </li>
+          </li> -->
 
-          <li class="treeview">
-            <a href="#">
-              <i class="fa fa-cogs"></i> <span>Setting</span>
-              <span class="pull-right-container">
-                <!-- <small class="label pull-right bg-green">new</small> -->
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="?module=gold"><i class="fa fa-diamond"></i>Price Gold</a></li>
-              <li><a href="?module=product"><i class="fa fa-recycle"></i>Price Trash</a></li>
-              <li><a href="?module=category"><i class="fa fa-object-group"></i>Category</a></li>
-            </ul>
-          </li>
+
 
           <li>
             <a href="../logout">
@@ -404,7 +315,7 @@ echo $rows['field_branch'];
       <center>
         <?php
 
-        $date=date('Y-m-d');
+        $date = date('Y-m-d');
         $tanggal = mktime(date('m'), date("d"), date('Y'));
         echo "Tanggal : <b> " . date("d F Y", $tanggal) . "</b>";
         date_default_timezone_set("Asia/Jakarta");
@@ -440,6 +351,8 @@ echo $rows['field_branch'];
 
       if ($_GET['module'] == "home") {
         include "module/home.php";
+      } elseif ($_GET['module'] == "menu") {
+        include "module/menu.php";
       } elseif ($_GET['module'] == "product") {
         include "module/product.php";
       } elseif ($_GET['module'] == "category") {
@@ -482,17 +395,17 @@ echo $rows['field_branch'];
         include "module/withdraw.php";
       } elseif ($_GET['module'] == "mailbox") {
         include "module/mailbox.php";
-      } elseif ($_GET['module'] == "adddeposit") { 
+      } elseif ($_GET['module'] == "adddeposit") {
         include "module/adddeposit.php";
       } elseif ($_GET['module'] == "formcustomer") {
         include "module/formcustomer.php";
       } elseif ($_GET['module'] == "payment") {
         include "module/payment.php";
-      }elseif ($_GET['module'] == "changepassword") {
+      } elseif ($_GET['module'] == "changepassword") {
         include "module/newpassword.php";
-      }elseif ($_GET['module'] == "profileadmin") {
+      } elseif ($_GET['module'] == "profileadmin") {
         include "module/updadminofficeprofile.php";
-      }else {
+      } else {
         echo "<script>
                               
                                 swal({
@@ -918,13 +831,13 @@ echo $rows['field_branch'];
   <!-- get wilayah -->
   <script type="text/javascript">
     $(document).ready(function() {
-      $("#provinsi").append('<option value="">Pilih</option>');
+      $("#provinsi").append('<option value="<?php echo $DataUsers["Provinsi_N"]; ?>"><?php echo $DataUsers["Provinsi_N"]; ?></option>');
       $("#kabupaten").html('');
       $("#kecamatan").html('');
       $("#kelurahan").html('');
-      $("#kabupaten").append('<option value="">Pilih</option>');
-      $("#kecamatan").append('<option value="">Pilih</option>');
-      $("#kelurahan").append('<option value="">Pilih</option>');
+      $("#kabupaten").append('<option value="<?php echo $DataUsers["Kabupaten_N"]; ?>"><?php echo $DataUsers["Kabupaten_N"]; ?></option>');
+      $("#kecamatan").append('<option value="<?php echo $DataUsers["Kecamatan_N"]; ?>"><?php echo $DataUsers["Kecamatan_N"]; ?></option>');
+      $("#kelurahan").append('<option value="<?php echo $DataUsers["Kelurahan_N"]; ?>"><?php echo $DataUsers["Kelurahan_N"]; ?></option>');
       url = '../getphp/get_provinsi.php';
       $.ajax({
         url: url,

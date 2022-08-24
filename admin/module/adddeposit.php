@@ -80,7 +80,7 @@ if (isset($_REQUEST['payment'])) {
   $field_rekening_deposit   = $_POST['txt_rekening'];
   $field_sumber_dana        = $_POST['txt_select'];
   $field_branch             = $branchid;
-  $field_officer_id         = $id;
+  $field_officer_id         = $rows['field_user_id'];
   $field_sub_total          = $_POST['txt_subtotal'];
   $field_operation_fee      = $_POST['txt_free'];
   $field_operation_fee_rp   = $field_sub_total * $field_operation_fee / 100;

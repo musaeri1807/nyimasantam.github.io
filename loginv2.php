@@ -26,31 +26,31 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
   $ipaddress  = $_SERVER['REMOTE_ADDR'];
   $satu     = "1";
 
-  //$username = $_POST['username']; nyimasantam.my.id
-  if ($_SERVER['SERVER_NAME'] == 'localhost') {
-    $secretKey = "6LfJec4ZAAAAACG1-fmobe88erF72OdXbAFN71jj"; //local        
-  } elseif ($_SERVER['SERVER_NAME'] == 'urunanmu.my.id') {
-    $secretKey = "6Ldi1lsaAAAAAELsOlpS__1jUbNTuXv0bbjhpD6L"; //urunanmu.my.id
-  } elseif ($_SERVER['SERVER_NAME'] == 'nyimasantam.com') {
-    $secretKey = "6Lf6eR0aAAAAABFKOeUrFysV3fvrrWcoTayg3R2j"; //nyimasantam.com
-  } elseif ($_SERVER['SERVER_NAME'] == 'nyimasantam.my.id') {
-    $secretKey = "6Lc9f84ZAAAAAEBSnQvoHzWcPvD0Tqcn0HD0izsO"; //nyimasantam.my.id
-  } elseif ($_SERVER['SERVER_NAME'] == 'musaeri.my.id') {
-    $secretKey = "6LdCXhcbAAAAABj_ExKExLI_0h_1uz7tSCYdDHM-"; //musaeri.my.id
-  } elseif ($_SERVER['SERVER_NAME'] == 'apps.musaeri.my.id') {
-    $secretKey = "6LfkGOsbAAAAAGNct9U_gqaj7-FkyhZ9fmqocSJt"; //apps.musaeri.my.id
-  }
+  
+  // if ($_SERVER['SERVER_NAME'] == 'localhost') {
+  //   $secretKey = "6LfJec4ZAAAAACG1-fmobe88erF72OdXbAFN71jj"; //local        
+  // } elseif ($_SERVER['SERVER_NAME'] == 'urunanmu.my.id') {
+  //   $secretKey = "6Ldi1lsaAAAAAELsOlpS__1jUbNTuXv0bbjhpD6L"; //urunanmu.my.id
+  // } elseif ($_SERVER['SERVER_NAME'] == 'nyimasantam.com') {
+  //   $secretKey = "6Lf6eR0aAAAAABFKOeUrFysV3fvrrWcoTayg3R2j"; //nyimasantam.com
+  // } elseif ($_SERVER['SERVER_NAME'] == 'nyimasantam.my.id') {
+  //   $secretKey = "6Lc9f84ZAAAAAEBSnQvoHzWcPvD0Tqcn0HD0izsO"; //nyimasantam.my.id
+  // } elseif ($_SERVER['SERVER_NAME'] == 'musaeri.my.id') {
+  //   $secretKey = "6LdCXhcbAAAAABj_ExKExLI_0h_1uz7tSCYdDHM-"; //musaeri.my.id
+  // } elseif ($_SERVER['SERVER_NAME'] == 'apps.musaeri.my.id') {
+  //   $secretKey = "6LfkGOsbAAAAAGNct9U_gqaj7-FkyhZ9fmqocSJt"; //apps.musaeri.my.id
+  // }
 
-  $responseKey = $_POST['g-recaptcha-response'];
-  $userIP = $_SERVER['REMOTE_ADDR'];
-  $url = "https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$responseKey&remoteip=$userIP";
-  $response1 = file_get_contents($url);
-  $response = json_decode($response1);
-  if ($responseKey == 0) {
-    $errorMsg[] = "Harap Periksa reCAPTCHA";
-  }
+  // $responseKey = $_POST['g-recaptcha-response'];
+  // $userIP = $_SERVER['REMOTE_ADDR'];
+  // $url = "https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$responseKey&remoteip=$userIP";
+  // $response1 = file_get_contents($url);
+  // $response = json_decode($response1);
+  // if ($responseKey == 0) {
+  //   $errorMsg[] = "Harap Periksa reCAPTCHA";
+  // }
 
-  if ($response->success) {
+  // if ($response->success) {
 
     if (empty($username)) {
       $errorMsg[] = "Silakan Memasukan Akun Username Or Email"; //check "username/email" textbox not empty 
@@ -94,7 +94,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   $_SESSION["rolelogin"]  = $row["field_role"];
                   $_SESSION["idlogin"]    = $row["field_user_id"];
                   $_SESSION["userlogin"]  = $row["field_email"];
-                  $loginMsg = $row['field_department_name']. " Successfully Login";
+                  $loginMsg = $row['field_department_name'] . " Successfully Login";
                   //header("refresh:1;../../superadmin/superadmin_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -106,7 +106,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   $_SESSION["rolelogin"]  = $row["field_role"];
                   $_SESSION["idlogin"]    = $row["field_user_id"];
                   $_SESSION["userlogin"]  = $row["field_email"];
-                  $loginMsg = $row['field_department_name']. " Successfully Login";
+                  $loginMsg = $row['field_department_name'] . " Successfully Login";
                   //header("refresh:1;../../superadmin/superadmin_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -114,24 +114,24 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=home">';
                   }
                   break;
-                  case 'AMR':
-                    $_SESSION["rolelogin"]  = $row["field_role"];
-                    $_SESSION["idlogin"]    = $row["field_user_id"];
-                    $_SESSION["userlogin"]  = $row["field_email"];
-                    $loginMsg = $row['field_department_name']. " Successfully Login";
-                    //header("refresh:1;../../superadmin/superadmin_home.php");
-                    if ($_SERVER['SERVER_NAME'] == 'localhost') {
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
-                    } else {
-                      echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=home">';
-                    }
-                    break;
+                case 'AMR':
+                  $_SESSION["rolelogin"]  = $row["field_role"];
+                  $_SESSION["idlogin"]    = $row["field_user_id"];
+                  $_SESSION["userlogin"]  = $row["field_email"];
+                  $loginMsg = $row['field_department_name'] . " Successfully Login";
+                  //header("refresh:1;../../superadmin/superadmin_home.php");
+                  if ($_SERVER['SERVER_NAME'] == 'localhost') {
+                    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
+                  } else {
+                    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=home">';
+                  }
+                  break;
                 case 'SPV':
                   $_SESSION["rolelogin"]          = $row["field_role"];
                   $_SESSION["idlogin"]            = $row["field_user_id"];
                   $_SESSION["userlogin"]          = $row["field_email"];
                   $_SESSION["branchlogin"]        = $row["field_branch"];
-                  $loginMsg = $row['field_department_name']. " Successfully Login";
+                  $loginMsg = $row['field_department_name'] . " Successfully Login";
                   //header("refresh:1;../../admin/admin_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -145,7 +145,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   $_SESSION["idlogin"]            = $row["field_user_id"];
                   $_SESSION["userlogin"]          = $row["field_email"];
                   $_SESSION["branchlogin"]        = $row["field_branch"];
-                  $loginMsg = $row['field_department_name']. " Successfully Login";
+                  $loginMsg = $row['field_department_name'] . " Successfully Login";
                   //header("refresh:1;../../admin/admin_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -159,7 +159,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   $_SESSION["idlogin"]            = $row["field_user_id"];
                   $_SESSION["userlogin"]          = $row["field_email"];
                   $_SESSION["branchlogin"]        = $row["field_branch"];
-                  $loginMsg = $row['field_department_name']. " Successfully Login";
+                  $loginMsg = $row['field_department_name'] . " Successfully Login";
                   //header("refresh:1;../../officer/officer_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -214,7 +214,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
       //input   
 
     }
-  } //google c
+  // } //google c
 
   //$loginMsgCapcha = " Login...";
 
@@ -267,7 +267,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                 <br>
                 <h3> <strong>Officer</strong></h3>
                 <!-- <p class="mb-1">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>  -->
-                <b>Development </b>
+                <b>Development</b>
 
                 <?php
                 if (isset($errorMsg)) {
@@ -335,7 +335,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
               </form>
 
               <hr>
-              Belum Punya Akun ? <a href="">Daftar Ke Bank Sampah terdekat</a>
+              <!-- Belum Punya Akun ? <a href="">Daftar Ke Bank Sampah terdekat</a> -->
 
               <br>
               <br>

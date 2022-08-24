@@ -16,15 +16,15 @@ require 'phpmailer/SMTP.php';
 $mail = new PHPMailer;
 //$mail->SMTPDebug = 3;                               // Enable verbose debug output
 $mail->isSMTP();                                      // Set mailer to use SMTP
-$mail->Host       = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+$mail->Host       = 'mail.bspintar.id';  // Specify main and backup SMTP servers
 $mail->SMTPAuth   = true;                               // Enable SMTP authentication
-$mail->Username   = 'nyimasantam@gmail.com';                 // SMTP username
-$mail->Password   = 'P@55w.rdnyimasantam';                           // SMTP password
+$mail->Username   = 'noreply@bspintar.id';                 // SMTP username
+$mail->Password   = 'TiKg-VYIywA+';                           // SMTP password
 $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-$mail->Port       = 587;                                    // TCP port to connect to
-$mail->setFrom('nyimasantam@gmail.com','NYIMASANTAM');
+$mail->Port       = 465;                                    // TCP port to connect to
+$mail->setFrom('noreply@bspintar.id', 'Register');
 //$mail->addAddress($_POST['txt_email'],$_POST['txt_username']);     // Add a recipient
-$mail->addAddress($email,$nama); // Name is optional
+$mail->addAddress($email, $nama); // Name is optional
 
 // $mail->addReplyTo('info@example.com', 'Information');
 
@@ -42,7 +42,7 @@ $mail->Subject = 'Aktivasi Akun';
 // $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
 $mail->Body =
 
-'
+  '
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -338,7 +338,7 @@ ul.social li{
                 <td class="logo" style="text-align: center;">
                   
                   <h1 class="a">Selamat...! </h1>
-                  <h2>'.$nama.'</h2> 
+                  <h2>' . $nama . '</h2> 
                   <P><h3>Anda telah melakukan registrasi Aplikasi Nyimasantam <br>
                   Klik link di bawah untuk mengaktifkan akun anda:</h3></P>
                 </td>
@@ -351,13 +351,13 @@ ul.social li{
             <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
               <tr>
                 <td style="padding: 1 1.5em; text-align: center; padding-bottom: 0em;">
-                 <a href="https://nyimasantam.my.id/activ?t='.$tokenn.'" class="btn btn-primary">Aktifkan Akun</a>
+                 <a href="https://nyimasantam.my.id/activ?t=' . $tokenn . '" class="btn btn-primary">Aktifkan Akun</a>
                 </td>                  
               </tr>
               <tr>
                 <td style="text-align: center;">
                   <div>                   
-                    <p><a href="https://nyimasantam.my.id/activ?t='.$tokenn.'" >https://nyimasantam.my.id/activ?t='.$tokenn.'</a></p>
+                    <p><a href="https://nyimasantam.my.id/activ?t=' . $tokenn . '" >https://nyimasantam.my.id/activ?t=' . $tokenn . '</a></p>
                   </div>
                 </td>
               </tr>
@@ -426,7 +426,7 @@ ul.social li{
   </center>
 </body>
 </html>
-' ;
+';
 
 
 
@@ -443,6 +443,3 @@ $mail->send();
 //     echo 'Message has been sent';
 
 // }
-
-
-

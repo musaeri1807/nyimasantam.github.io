@@ -4,161 +4,62 @@ date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
 require_once("../php/function.php");
 
-$Sql ="SELECT * FROM tblbranch WHERE field_branch_id=:idbranch";
+$Sql = "SELECT * FROM tblbranch WHERE field_branch_id=:idbranch";
 $Stmt = $db->prepare($Sql);
-$Stmt->execute(array(":idbranch"=>$branchid));
+$Stmt->execute(array(":idbranch" => $branchid));
 $result = $Stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 
 
 <div style="margin-right:10%;margin-left:15%" class="alert alert-info alert-dismissable">
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-<Center>
-<h3><i class="icon fa fa-info"></i>
-Welcome ! <?php echo $rows["field_name_officer"]; ?> &nbsp;&nbsp;
-Anda berada di halaman "<?php echo $rows["field_department_name"]; ?>"
-<?php 
-if ($_SESSION['rolelogin']=='ADM' OR $_SESSION['rolelogin']=='MGR') {
-  # code...
-} else {
-  # code...
-  echo 'Cabang '.  $result['field_branch_name'];
-}
-?>
-</h3>
-</Center>
-</div> 
-<!-- <div class="box box-solid box-danger">
-<div class="box-header">
-<i class="fa fa-info"></i>Informasi
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <Center>
+    <h3><i class="icon fa fa-info"></i>
+      Welcome ! <?php echo $rows["field_name_officer"]; ?> &nbsp;&nbsp;
+      Anda berada di halaman "<?php echo $rows["field_department_name"]; ?>"
+      <?php
+      if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
+        # code...
+      } else {
+        # code...
+        echo 'Cabang ' .  $result['field_branch_name'];
+      }
+      ?>
+    </h3>
+  </Center>
 </div>
-<div class="box-body">
-<h4>Hak Akses sebagai Admin:</h4>
-<li>Mengelola data User</li>
-<li>Mengelola data master lokasi kerja</li>
-<li>Mengelola data master unit kerja</li>
-<li>Mengelola data master jabatan</li>
-<li>Mengelola data master pangkat</li>
-
-  <h2>Style Social Media Buttons</h2>
-
-
-Add font awesome icons -->
-<!-- <a href="#" class="fa fa-facebook"></a>
-<a href="#" class="fa fa-twitter"></a>
-<a href="#" class="fa fa-google"></a>
-<a href="#" class="fa fa-linkedin"></a>
-<a href="#" class="fa fa-youtube"></a>
-<a href="#" class="fa fa-instagram"></a>
-<a href="#" class="fa fa-pinterest"></a>
-<a href="#" class="fa fa-snapchat-ghost"></a>
-<a href="#" class="fa fa-skype"></a>
-<a href="#" class="fa fa-android"></a>
-<a href="#" class="fa fa-dribbble"></a>
-<a href="#" class="fa fa-vimeo"></a>
-<a href="#" class="fa fa-tumblr"></a>
-<a href="#" class="fa fa-vine"></a>
-<a href="#" class="fa fa-foursquare"></a>
-<a href="#" class="fa fa-stumbleupon"></a>
-<a href="#" class="fa fa-flickr"></a>
-<a href="#" class="fa fa-yahoo"></a>
-<a href="#" class="fa fa-reddit"></a>
-<a href="#" class="fa fa-rss"></a>
-
-</div>
-</div> -->
 
 
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-md-6">
-          <!-- AREA CHART -->
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Area Chart</h3>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body">
-              <div class="chart">
-                <canvas id="areaChart" style="height:250px"></canvas>
-              </div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-md-12">
 
-          <!-- DONUT CHART -->
-          <div class="box box-danger">
-            <div class="box-header with-border">
-              <h3 class="box-title">Customer All Branch</h3>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body">
-              <canvas id="pieChart" style="height:250px"></canvas>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+      <!-- Content -->
+      <div class="box box-solid box-primary">
+        <div class="box-header">
+          <i class="fa fa-info"></i>Informasi
+        </div>
+        <div class="box-body">
+          <h4>Hak Akses sebagai Admin:</h4>
+          <li>Mengelola data User</li>
+          <li>Mengelola data master lokasi kerja</li>
+          <li>Mengelola data master unit kerja</li>
+          <li>Mengelola data master jabatan</li>
+          <li>Mengelola data master pangkat</li>
 
         </div>
-        <!-- /.col (LEFT) -->
-        <div class="col-md-6">
-          <!-- LINE CHART -->
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Line Chart</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body">
-              <div class="chart">
-                <canvas id="lineChart" style="height:250px"></canvas>
-              </div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-
-          <!-- BAR CHART -->
-          <div class="box box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">Bar Chart</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body">
-              <div class="chart">
-                <canvas id="barChart" style="height:230px"></canvas>
-              </div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-
-        </div>
-        <!-- /.col (RIGHT) -->
       </div>
-      <!-- /.row -->
+      <!-- /Content -->
+      <div class="box-body">
 
-    </section>
-    <!-- /.content -->
+      </div>
+      <!-- Content -->
+
+    </div>
+  </div>
+</section>
+<!-- /.content -->

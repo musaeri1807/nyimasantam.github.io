@@ -222,12 +222,12 @@ $Stmt = $db->prepare("SELECT * FROM tblcustomer");
 $Stmt->execute();
 $Result = $Stmt->fetchAll();
 
-foreach( $Result As $rows){
+// foreach( $Result As $rows){
 
-	echo $rows['field_customer_id'];
-	echo '<br>';
-}
-die();
+// 	echo $rows['field_customer_id'];
+// 	echo '<br>';
+// }
+// die();
 ?>
 <section class="content">
 	<div class="row">

@@ -80,9 +80,9 @@ if (!isset($_SESSION['userlogin'])) {
 
 if (isset($_REQUEST['btn_password'])) {
 
-	$oldpassword		= $_REQUEST['txt_oldpassword'];	
+	$oldpassword		= $_REQUEST['txt_oldpassword'];
 	//$oldpassword		= "P@ssw0rd1";	
-	$newpassword		= $_REQUEST['txt_newpassword'];	
+	$newpassword		= $_REQUEST['txt_newpassword'];
 	$confirmpassword	= $_REQUEST['txt_confirmpassword'];
 	// $email  	= $_REQUEST['txt_email'];
 
@@ -104,29 +104,26 @@ if (isset($_REQUEST['btn_password'])) {
 		$errorMsg = "Silakan Masukkan New Password";
 	} elseif (empty($confirmpassword)) {
 		$errorMsg = "Silakan Masukkan Confirm Password";
-	} elseif ($newpassword!==$confirmpassword) {
-		$errorMsg = "Silakan Masukkan Password Valid";	
+	} elseif ($newpassword !== $confirmpassword) {
+		$errorMsg = "Silakan Masukkan Password Valid";
 	} else {
 		try {
 
-			
+
 			if (password_verify($oldpassword, $rows["field_password"])) {
 				//$errorMsg = "Password old tidak sesuai";	//check co	ndition email already exists 
 				$new_password = password_hash($newpassword, PASSWORD_DEFAULT);
 				$sql_stmt	= " UPDATE tblemployeeslogin SET field_password=:newpassword,Password=:confirmpassword  WHERE field_user_id=:ide";
 				$insert_stmt = $db->prepare($sql_stmt);
-				$insert_stmt->bindParam(':ide', $uid);				
+				$insert_stmt->bindParam(':ide', $uid);
 				$insert_stmt->bindParam(':newpassword', $new_password);
 				$insert_stmt->bindParam(':confirmpassword', $confirmpassword);
 				// $insert_stmt->bindParam(':token', $tokenn);
 				if ($insert_stmt->execute()) {
-					$insertMsg="Password Success di Ubah";
+					$insertMsg = "Password Success di Ubah";
 					echo '<META HTTP-EQUIV="Refresh" Content="3;">';
 				}
-				
-				
-			
-			} else{
+			} else {
 
 				$errorMsg = "Password old tidak sesuai";	//check co	ndition email already exists 
 
@@ -139,15 +136,15 @@ if (isset($_REQUEST['btn_password'])) {
 
 ?>
 <section class="content">
-				<!-- Content -->
-				<?php
-				if (isset($errorMsg)) {
-					echo '<div class="alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
-				}
-				if (isset($insertMsg)) {
-					echo '<div class="alert alert-success"><strong>SUCCESS !' . $insertMsg . '</strong></div>';
-				}
-				?>
+	<!-- Content -->
+	<?php
+	if (isset($errorMsg)) {
+		echo '<div class="alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
+	}
+	if (isset($insertMsg)) {
+		echo '<div class="alert alert-success"><strong>SUCCESS !' . $insertMsg . '</strong></div>';
+	}
+	?>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="box box-primary">
@@ -155,7 +152,7 @@ if (isset($_REQUEST['btn_password'])) {
 					<i class="fa fa-edit"></i>
 					<h3 class="box-title">New Password</h3>
 				</div>
-				
+
 
 				<div class="box-body">
 					<form method="post" class="form-horizontal">
@@ -188,7 +185,7 @@ if (isset($_REQUEST['btn_password'])) {
 						<div class="form-group">
 							<div class="col-sm-offset-3 col-sm-9 m-t-15">
 								<input type="submit" name="btn_password" class="btn btn-success " value="Save">
-								<a href="?module=adminoffice" class="btn btn-danger">Cancel</a>
+								<!-- <a href="?module=adminoffice" class="btn btn-danger">Cancel</a> -->
 							</div>
 						</div>
 
