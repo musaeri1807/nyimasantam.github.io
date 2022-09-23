@@ -16,17 +16,17 @@ require 'phpmailer/SMTP.php';
 $mail = new PHPMailer;
 //$mail->SMTPDebug = 3;                               // Enable verbose debug output
 $mail->isSMTP();                                      // Set mailer to use SMTP
-$mail->Host       = 'mail.bspintar.id';  // Specify main and backup SMTP servers
+$mail->Host       = 'mx.mailspace.id';  // Specify main and backup SMTP servers
 $mail->SMTPAuth   = true;                               // Enable SMTP authentication
-$mail->Username   = 'noreply@bspintar.id';                 // SMTP username
-$mail->Password   = 'TiKg-VYIywA+';                           // SMTP password
+$mail->Username   = 'noreply@miga.co.id';                 // SMTP username
+$mail->Password   = 'gDSg8oHGOC3iB';                           // SMTP password
 $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
 $mail->Port       = 465;                                    // TCP port to connect to
-$mail->setFrom('noreply@bspintar.id', 'Register');
+$mail->setFrom('noreply@miga.co.id', 'Register');
 //$mail->addAddress($_POST['txt_email'],$_POST['txt_username']);     // Add a recipient
 $mail->addAddress($email, $nama); // Name is optional
 
-// $mail->addReplyTo('info@example.com', 'Information');
+$mail->addReplyTo('', 'Information');
 
 // $mail->addCC('cc@example.com');
 

@@ -52,6 +52,56 @@ if (isset($_REQUEST['btn_insert'])) {
       } else if ($row["Field_handphone"] == $angka) {
         $errorMsg = "Maaf Nomor Hp Sudah Ada";  //check condition email already exists 
       } elseif (!isset($errorMsg)) {
+        //rekening
+
+        $cabang; //data cabanng daftar
+        $cabangid = $db->prepare("SELECT * FROM tblbranch B
+                                                  WHERE B.field_branch_id=:ubranch
+                                                  ORDER BY B.field_branch_id DESC");
+        $cabangid->execute(array(':ubranch' => $cabang));
+        $kode_cabang               = $cabangid->fetch(PDO::FETCH_ASSOC);
+
+        $Query_cabang            = $db->prepare("SELECT * FROM tbluserlogin U
+                                                  JOIN tblnasabah N ON U.field_user_id=N.id_UserLogin
+                                                  JOIN tblbranch B ON U.field_branch=B.field_branch_id
+                                                  WHERE B.field_branch_id=:ubranch
+                                                  ORDER BY U.field_user_id DESC LIMIT 1");
+        $Query_cabang->execute(array(':ubranch' => $cabang));
+        $idaccount               = $Query_cabang->fetch(PDO::FETCH_ASSOC);
+
+        if (empty($idaccount)) {
+          $code                   = $kode_cabang["field_account_numbers"]; //cabang masing-masing
+          $thn                    = substr(date("Y", strtotime($date)), -2);
+          $bln                    = date("m", strtotime($date));
+          $no                     = 1;
+          $char                   = $code . $thn . $bln;
+          $norek                  = $char . sprintf("%04s", $no);
+          $norekening = $norek;
+        } else {
+          $ambildate = substr($idaccount['No_Rekening'], 4, 2);
+
+          if ($ambildate !== date("m", strtotime($date))) {
+            # code...
+            $code                   = $kode_cabang["field_account_numbers"]; //cabang masing-masing
+            $thn                    = substr(date("Y", strtotime($date)), -2);
+            $bln                    = date("m", strtotime($date));
+            $no                     = 1;
+            $char                   = $code . $thn . $bln;
+            $norek                  = $char . sprintf("%04s", $no);
+            $norekening = $norek;
+          } else {
+            # code...
+            $code                   = $kode_cabang["field_account_numbers"];
+            $noseri                 = $idaccount['No_Rekening'];
+            $noUrut                 = substr($noseri, 6);
+            $thn                    = substr(date("Y", strtotime($date)), -2);
+            $bln                    = date("m", strtotime($date));
+            $no     = $noUrut + 1;
+            $char   = $code . $thn . $bln;
+            $norek  = $char . sprintf("%04s", $no);
+            $norekening = $norek;
+          }
+        }
         $new_password = password_hash($password, PASSWORD_DEFAULT);
         $insert_stmt = $db->prepare("INSERT INTO tbluserlogin
 											(field_nama,field_email,field_handphone,field_password,Password,field_tanggal_reg,field_token,field_member_id,field_time_reg,field_ipaddress,field_token_otp,field_branch) VALUES
@@ -72,17 +122,15 @@ if (isset($_REQUEST['btn_insert'])) {
           ':branch'  => $cabang
 
         ));
-
         $idusers = $db->lastinsertid();
-
         if ($idusers) {
-          $nasabah = $db->prepare('INSERT INTO tblnasabah (id_UserLogin)VALUES(:idusers)');
-          $nasabah->execute(array(':idusers' => $idusers));
+          $nasabah = $db->prepare('INSERT INTO tblnasabah (id_UserLogin,No_Rekening)VALUES(:idusers,:rekening)');
+          $nasabah->execute(array(':idusers' => $idusers, ':rekening' => $norekening));
 
           $pewaris = $db->prepare('INSERT INTO tblpewaris (id_UserLogin)VALUES(:idusers)');
           $pewaris->execute(array(':idusers' => $idusers));
         }
-        // die();
+
         $Msg = "Insert Successfully";
         echo '<META HTTP-EQUIV="Refresh" Content="1">';
         // email
@@ -90,9 +138,9 @@ if (isset($_REQUEST['btn_insert'])) {
 
         // if (!$mail->send()) {
 
-        //   $insertMsg = "Daftar Berhasil ..... Pesan idak dapat dikirim." . $mail->ErrorInfo;
+        //   $Msg = "Daftar Berhasil ..... Pesan idak dapat dikirim." . $mail->ErrorInfo;
         // } else {
-        //   $insertMsg = "Register Successfully, Please Check Your Inbox Email " . $email;
+        //   $Msg = "Register Successfully, Please Check Your Inbox Email " . $email;
         // }
 
       }
@@ -175,145 +223,141 @@ if (isset($_REQUEST['btn_insert'])) {
   }
 } elseif (isset($_REQUEST['btn_aproval'])) { //account
 
-  echo $idaccount = $_REQUEST['txt_account'];
-  die();
+  $idaccount = $_REQUEST['txt_account'];
 
   $status = 0;
-  if (empty($Token)) {
-    $errorMsg = "Silakan Masukkan Token";
-  } elseif (strlen(is_numeric($Token)) == 0) {
-    $errorMsg = "Silakan Masukkan Token Yang Sesuai";
+  if (empty($idaccount)) {
+    $errorMsg = "Silakan Masukkan ID";
+  } elseif (strlen(is_numeric($idaccount)) == 0) {
+    $errorMsg = "Silakan Masukkan ID Yang Sesuai";
   } else {
     try {
-      $select_stmt = $db->prepare("SELECT * FROM tbluserlogin u JOIN tblbranch b ON u.field_branch=b.field_branch_id WHERE field_status_aktif=:statuse AND field_token_otp =:idtoken ORDER BY field_user_id DESC "); //sql select query
-      $select_stmt->bindParam(':idtoken', $Token);
+
+      $select_stmt = $db->prepare("SELECT U.*,B.field_account_numbers AS idcabang FROM tbluserlogin U 
+                JOIN tblbranch B ON U.field_branch=B.field_branch_id
+                WHERE U.field_status_aktif=:statuse AND U.field_user_id =:id 
+                ORDER BY U.field_user_id DESC LIMIT 1 "); //sql select query
+      $select_stmt->bindParam(':id', $idaccount);
       $select_stmt->bindParam(':statuse', $status);
       $select_stmt->execute();
       $data = $select_stmt->fetch(PDO::FETCH_ASSOC);
       $Num  = $select_stmt->rowCount();
+      if ($Num == 1) {
+
+        $no                     = 1;
+        $thn                    = substr(date("Y", strtotime($data['field_tanggal_reg'])), -2);
+        $bln                    = date("m", strtotime($data['field_tanggal_reg']));
+        $code                   = $data["idcabang"]; //cabang masing-masing
+        $char                   = $code . $thn . $bln;
+        $nomor                  = $char . sprintf("%04s", $no);
 
 
-      //echo $Num;
-      if ($data['field_token_otp'] !== $Token) {
-        $errorMsg = "Token Belum Sesuai";
-      } elseif ($data['field_status_aktif'] !== $status) {
-        $errorMsg = "Status Tidak Sesuai";
-      } elseif (!isset($errorMsg)) {
-        if ($Num == 1) {
-          //echo "1";
+        $cabangid = $data["field_branch"]; //data cabanng daftar
+        $Query_Rekening               = $db->prepare("SELECT U.field_branch,N.* FROM tbluserlogin U 
+                                                JOIN tblnasabah N ON U.field_user_id=N.id_UserLogin
+                                                -- JOIN tblbranch B ON U.field_branch=B.field_branch_id
+                                                WHERE U.field_branch=:ubranch
+                                                ORDER BY U.field_user_id ASC LIMIT 1,1");
+        $Query_Rekening->execute(array(':ubranch' => $cabangid));
+        $Rekening               = $Query_Rekening->fetch(PDO::FETCH_ASSOC);
+        $DataNum = $Query_Rekening->rowCount();
+        $noseri                 = $Rekening['No_Rekening'];
 
-
+        // echo empty($noseri);
+        // echo '<br>';
+        // // echo $DataNum;
+        // echo '<br>';
+        if (empty($noseri)) {
           $no                     = 1;
-          $thn                    = substr(date('Y'), -2);
-          $bln                    = date("m");
-          $branch                 = substr($data["field_member_id"], 0, 10);
-          $code                   = $data["field_account_numbers"];
+          $thn                    = substr(date("Y", strtotime($data['field_tanggal_reg'])), -2);
+          $bln                    = date("m", strtotime($data['field_tanggal_reg']));
+          $code                   = $data["idcabang"]; //cabang masing-masing
           $char                   = $code . $thn . $bln;
-          $nomor                  = $char . sprintf("%04s", $no);
+          $norek                  = $char . sprintf("%04s", $no);
+          $norekening = $norek;
+        } else {
+          $noseri = $Rekening['No_Rekening'];
+          $noUrut = substr($noseri, 6);
+          $no     = $noUrut + 1;
+          $thn    = substr(date("Y", strtotime($data['field_tanggal_reg'])), -2);
+          $bln    = date("m", strtotime($data['field_tanggal_reg']));
+          $code   = $data["idcabang"];
+          $char   = $code . $thn . $bln;
+          $norek  = $char . sprintf("%04s", $no);
+          $norekening = $norek;
+        }
 
+        // echo $norekening;
+        // die();
 
-          $select_stmt = $db->prepare('SELECT field_rekening FROM tblcustomer WHERE field_rekening=:unomor'); //sql select query
-          $select_stmt->execute(array(':unomor' => $nomor)); //execute query with bind parameter
-          $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
-          $DataNum = $select_stmt->rowCount();
+        $member_id    = $data['field_member_id'];
+        $nama_lg      = $data["field_nama"];
+        $handphone    = $data["field_handphone"];
+        $date     = date('Y-m-d');
+        $time     = date('H:i:s');
+        // echo $norekening;
+        // die();
 
-          $stmt_rek               = $db->prepare("SELECT field_branch,field_rekening FROM tblcustomer WHERE field_branch=:ubranch ORDER BY field_customer_id DESC LIMIT 1");
-          $stmt_rek->execute(array(':ubranch' => $branch));
-          $rows_rek               = $stmt_rek->fetch(PDO::FETCH_ASSOC);
-          $noseri                 = $rows_rek['field_rekening'];
+        $UpdateNasabah = $db->prepare("UPDATE tblnasabah N, tbluserlogin U SET N.No_Rekening=:rekening ,N.Tgl_Nasabah=:tanggal,U.field_status_aktif=:satu 
+                                        WHERE N.id_UserLogin=U.field_user_id AND U.field_user_id=:id");
+        $UpdateNasabah->execute(array(':id' => $idaccount, ':rekening' => $norekening, ':tanggal' => $date, ':satu' => 1));
 
+        die();
 
-
-          if ($DataNum == 0) {
-            $no     = 1;
-            $thn    = date('Y');
-            $thn    = substr($thn, -2);
-            $bln    = date('m');
-            $code   = $data["field_account_numbers"];
-            $char   = $code . $thn . $bln;
-            $norek  = $char . sprintf("%04s", $no);
-            $norekening = $norek;
-          } else {
-            $noseri = $rows_rek['field_rekening'];
-            $noUrut = substr($noseri, 6);
-            $no     = $noUrut + 1;
-            $thn    = date('Y');
-            $thn    = substr($thn, -2);
-            $bln    = date('m');
-            $code   = $data["field_account_numbers"];
-            $char   = $code . $thn . $bln;
-            $norek  = $char . sprintf("%04s", $no);
-            $norekening = $norek;
-          }
-
-
-
-          $member_id    = $data['field_member_id'];
-          $nama_lg      = $data["field_nama"];
-          $handphone    = $data["field_handphone"];
-          $date     = date('Y-m-d');
-          $time     = date('H:i:s');
-          // echo $norekening;
-          // die();
-
-          $update_stmt = $db->prepare("UPDATE tbluserlogin SET field_status_aktif='1' WHERE field_token_otp=:token AND field_status_aktif='0'");
-          $update_stmt->execute(array(':token' => $Token));
-
-          $select_stmt = $db->prepare("SELECT * FROM tbluserlogin WHERE field_token_otp=:token AND field_status_aktif='1'"); //sql select query
-          $select_stmt->execute(array(':token' => $Token)); //execute query with bind parameter
-          $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
-          //Jika Status Rekening N akan di ubah menjadi Y dan Insert Rekening Ke tblcustomer
-          if ($row['field_rekening_status'] == 'N') {
-            //Update Status Rekening Menjadi Y
-            $update_stmt = $db->prepare("UPDATE tbluserlogin SET field_rekening_status='Y' WHERE field_token_otp=:token AND field_status_aktif='1'");
-            $update_stmt->execute(array(':token' => $Token));
-            //Insert tblcustomer
-            $querynasabah = $db->prepare("INSERT INTO tblcustomer (field_branch,field_member_id,field_rekening,field_nama,field_handphone) 
+        $select_stmt = $db->prepare("SELECT * FROM tbluserlogin WHERE field_user_id=:id AND field_status_aktif='1'"); //sql select query
+        $select_stmt->execute(array(':id' => $idaccount)); //execute query with bind parameter
+        $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
+        //Jika Status Rekening N akan di ubah menjadi Y dan Insert Rekening Ke tblnasabah
+        if ($row['field_rekening_status'] == 'N') {
+          //Update Status Rekening Menjadi Y
+          $update_stmt = $db->prepare("UPDATE tbluserlogin SET field_rekening_status='Y' WHERE field_user_id=:id AND field_status_aktif='1'");
+          $update_stmt->execute(array(':id' => $idaccount));
+          //update tblnasabah
+          $querynasabah = $db->prepare("INSERT INTO tblcustomer (field_branch,field_member_id,field_rekening,field_nama,field_handphone) 
                                                       VALUES (:ubranch,:id_member,:rek,:aman,:hp)");
-            $querynasabah->execute(array(':ubranch' => $branch, ':id_member' => $member_id, ':rek' => $norekening, ':aman' => $nama_lg, ':hp' => $handphone));
+          $querynasabah->execute(array(':ubranch' => $branch, ':id_member' => $member_id, ':rek' => $norekening, ':aman' => $nama_lg, ':hp' => $handphone));
+        }
+        if ($row['field_status_aktif'] == 1 and $row['field_token_otp'] = $Token) {
+          //noReff
+          $sql = "SELECT field_no_referensi FROM tbltrxmutasisaldo ORDER BY field_no_referensi DESC LIMIT 1";
+          $stmt = $db->prepare($sql);
+          $stmt->execute();
+          $order = $stmt->fetch(PDO::FETCH_ASSOC);
+          if ($order['field_no_referensi'] == "") {
+            $no = 1;
+            $thn = date('Y');
+            $thn = substr($thn, -2);
+            $reff = "Reff";
+            $char = $thn . $reff;
+            $noReff = $char . sprintf("%09s", $no);
+          } else {
+            $noreff = $order['field_no_referensi'];
+            $noUrut = substr($noreff, 6);
+            $no = $noUrut + 1;
+            $thn = date('Y');
+            $thn = substr($thn, -2);
+            $reff = "Reff";
+            $char = $thn . $reff;
+            $noReff = $char . sprintf("%09s", $no);
           }
-          if ($row['field_status_aktif'] == 1 and $row['field_token_otp'] = $Token) {
-            //noReff
-            $sql = "SELECT field_no_referensi FROM tbltrxmutasisaldo ORDER BY field_no_referensi DESC LIMIT 1";
-            $stmt = $db->prepare($sql);
-            $stmt->execute();
-            $order = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($order['field_no_referensi'] == "") {
-              $no = 1;
-              $thn = date('Y');
-              $thn = substr($thn, -2);
-              $reff = "Reff";
-              $char = $thn . $reff;
-              $noReff = $char . sprintf("%09s", $no);
-            } else {
-              $noreff = $order['field_no_referensi'];
-              $noUrut = substr($noreff, 6);
-              $no = $noUrut + 1;
-              $thn = date('Y');
-              $thn = substr($thn, -2);
-              $reff = "Reff";
-              $char = $thn . $reff;
-              $noReff = $char . sprintf("%09s", $no);
-            }
 
 
-            $querysaldo = $db->prepare("INSERT INTO tbltrxmutasisaldo 
+          $querysaldo = $db->prepare("INSERT INTO tbltrxmutasisaldo 
                                     (field_member_id,field_no_referensi,field_rekening,field_tanggal_saldo,field_time,field_comments) VALUES
                                     (:id_member,:reff,:rek,:tgl,:timee,:comment)");
-            $querysaldo->execute(array(
-              ':id_member' => $member_id,
-              ':reff'   => $noReff,
-              ':rek'    => $norekening,
-              ':tgl'    => $date,
-              ':timee'  => $time,
-              ':comment'  => "Balance"
-            )); //
-            $insertMsg = "Token! Valid";
-            echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://' . $_SERVER["SERVER_NAME"] . '/Login-Register-PHP-PDO/admin/dashboard.php?module=activation">';
-          }
-        } else {
-          echo "2";
+          $querysaldo->execute(array(
+            ':id_member' => $member_id,
+            ':reff'   => $noReff,
+            ':rek'    => $norekening,
+            ':tgl'    => $date,
+            ':timee'  => $time,
+            ':comment'  => "Balance"
+          )); //
+          $insertMsg = "Token! Valid";
+          echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://' . $_SERVER["SERVER_NAME"] . '/Login-Register-PHP-PDO/admin/dashboard.php?module=activation">';
         }
+      } else {
+        echo "2";
       }
     } catch (PDOException $e) {
       echo $e->getMessage();
@@ -416,21 +460,23 @@ if (isset($_REQUEST['btn_insert'])) {
     }
   }
 }
+// WHERE U.field_status_aktif!="1" ORDER BY field_user_id DESC';
 
-
-
+//show all data nasabah yang tidak sama dengan satu
 if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   # code...
-  $SQL_User = 'SELECT U.*,N.No_Rekening,B.field_branch_name AS Cabang FROM tbluserlogin U 
+  $SQL_User = 'SELECT U.*,N.No_Rekening,N.Konfirmasi,B.field_branch_name AS Cabang FROM tbluserlogin U 
                 JOIN tblnasabah N ON U.field_user_id=N.id_UserLogin
                 JOIN tblbranch B ON U.field_branch=B.field_branch_id
-                WHERE U.field_status_aktif!="1" ORDER BY field_user_id DESC';
+              
+                ORDER BY U.field_user_id DESC';
+
   $Stmt = $db->prepare($SQL_User);
   $Stmt->execute();
   $User = $Stmt->fetchAll();
 } elseif ($_SESSION['rolelogin'] == 'SPV' or $_SESSION['rolelogin'] == 'BCO' or $_SESSION['rolelogin'] == 'CMS') {
   # code...
-  $SQL_User = 'SELECT U.*,N.No_Rekening,B.field_branch_name AS Cabang FROm tbluserlogin U 
+  $SQL_User = 'SELECT U.*,N.Konfirmasi,B.field_branch_name AS Cabang FROm tbluserlogin U 
                 JOIN tblnasabah N ON U.field_user_id=N.id_UserLogin
                 JOIN tblbranch B ON U.field_branch=B.field_branch_id 
                 WHERE U.field_status_aktif!="1" AND U.field_branch=:idbranch ORDER BY field_user_id DESC';
@@ -597,13 +643,13 @@ if (isset($Msg)) {
                     <?php
 
                     if ($rows['edit'] == "Y") {
-                      echo '<a data-toggle="modal" data-target="#modal-nasabah-update' . $users["field_user_id"] . '"class="btn btn-success btn-sm"><i class="fa fa-refresh"></i></a> &nbsp';
+                      echo '<a data-toggle="modal" data-target="#modal-nasabah-update' . $users["field_user_id"] . '"class="btn btn-success btn-sm"><i class="fa fa-refresh"></i></a>&nbsp';
                     }
                     if ($rows['view'] == "Y") {
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-nasabah-view' . $users["field_user_id"] . '"class="btn btn-primary btn-sm"><i class="fa fa-info-circle"></i></a> &nbsp';
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-nasabah-view' . $users["field_user_id"] . '"class="btn btn-primary btn-sm"><i class="fa fa-info-circle"></i></a>&nbsp';
                     }
                     if ($rows['delete'] == "Y") {
-                      echo '<a data-toggle="modal" data-target="#modal-delete' . $users["field_user_id"] . '"class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a> &nbsp';
+                      echo '<a data-toggle="modal" data-target="#modal-delete' . $users["field_user_id"] . '"class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>&nbsp';
                     }
 
                     ?>
@@ -618,7 +664,11 @@ if (isset($Msg)) {
                     <?php
                     $status = $users["field_status_aktif"];
                     if ($status == "0") {
-                      echo '<span class="badge btn-danger text-white">Verifikasi</span>';
+                      if ($users['Konfirmasi'] !== "Y") {
+                        echo '<span class="badge btn-danger text-white">Lengkapi Data</span>';
+                      } else {
+                        echo '<span class="badge btn-warning text-white">Menunggu Rilis</span>';
+                      }
                     } elseif ($status == "1") {
                       echo '<span class="badge btn-info text-white">Aktif</span>';
                     } elseif ($status == "2") {
@@ -630,14 +680,15 @@ if (isset($Msg)) {
                     <?php
                     $status = $users["field_status_aktif"];
                     if ($status == "0") {
-                      echo '<a href="../activasipdf.php?m=' . $users['field_user_id'] . '" class="btn btn-warning btn-sm"><i class="fa fa-download"></i></a>&nbsp';
-                    } elseif ($status == "1") {
-                      echo '<span class="badge btn-info text-white">Aktif</span>';
-                    } elseif ($status == "2") {
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $users["field_member_id"] . '" class="btn btn-default btn-sm"><i class="fa fa-envelope-o "></i> Send Password </a> &nbsp';
+                      if ($users['Konfirmasi'] !== "Y") {
+                        echo '<a href="?module=updcustomer&id=' . $users["field_user_id"] . '" class="btn btn-success btn-sm "><i class="fa fa-refresh"></i> Memperbarui</a>&nbsp';
+                      } else {
+                        echo '<a href="../formulirpdf.php?m=' . $users['field_user_id'] . '" class="btn btn-warning btn-sm"><i class="fa fa-download"></i></a>&nbsp';
+                        if ($rows['approval'] == "Y") {
+                          echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $users["field_user_id"] . '" class="btn btn-info btn-sm"><i class="fa fa-user-circle-o"></i> Setujui</a> &nbsp';
+                        }
+                      }
                     }
-                    echo '<a href="?module=updcustomer&id=' . $users["field_user_id"] . '" class="btn btn-success btn-sm "><i class="fa fa-refresh"></i> Memperbarui</a>&nbsp';
-                    echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $users["field_user_id"] . '" class="btn btn-info btn-sm"><i class="fa fa-user-circle-o"></i> Setujui</a> &nbsp';
 
                     ?>
                   </td>

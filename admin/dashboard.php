@@ -16,7 +16,7 @@ $select_stmt->execute(array(":uid" => $idemploye));
 $rows = $select_stmt->fetch(PDO::FETCH_ASSOC);
 $permission = $rows['add'];
 $branchid = $rows['field_branch'];
-echo $branchid;
+// echo $branchid;
 
 
 $SQL = "SELECT * FROM tblstatus ";
@@ -32,8 +32,11 @@ $Stmtmenu = $db->prepare($Sqlmenu);
 $Stmtmenu->execute(array(":roleid" => $rows['field_role']));
 $menu = $Stmtmenu->fetchAll();
 
+
+
 // foreach ($menu as $menusub) {
 //   echo $menusub['field_menu'];
+//   echo '<br>';
 
 //   $id = $menusub['field_idmenu'];
 //   $Sqlsubmenu = "SELECT * FROM tblmenusub SM JOIN tblmenu M ON SM.field_idmenusub=M.field_idmenu
@@ -41,6 +44,13 @@ $menu = $Stmtmenu->fetchAll();
 //   $Stmtsubmenu  = $db->prepare($Sqlsubmenu);
 //   $Stmtsubmenu->execute(array(":menuid" => $id));
 //   $submenu = $Stmtsubmenu->fetchAll();
+//   // $submenu =$Stmtmenu->fetch(PDO::FETCH_ASSOC);
+
+//   // while ($submenu =$Stmtmenu->fetch(PDO::FETCH_ASSOC)){
+//   //   echo $submenu['field_submenu'];
+//   //   echo '<br>';
+//   //   }
+//   // //   die();
 
 //   foreach ($submenu as $menusub) {
 //     echo $menusub['field_submenu'];
@@ -57,9 +67,11 @@ $menu = $Stmtmenu->fetchAll();
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>BANK SAMPAH PINTAR | Dashboard</title>
-  <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="icon">
-  <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="apple-touch-icon">
+  <title>BSP| Dashboard</title>
+  <!-- <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="icon">
+  <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="apple-touch-icon"> -->
+  <link href="../image/PT_MSI.png" rel="icon">
+  <link href="../image/PT_MSI.png" rel="apple-touch-icon">
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -108,10 +120,10 @@ $menu = $Stmtmenu->fetchAll();
       <!-- Logo -->
       <a href="#" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><img src="../uploads/Musaeri.png"></span>
+        <span class="logo-mini"><img src="../uploads/PT_MSI.png"></span>
         <!-- logo for regular state and mobile devices -->
 
-        <span class="logo-lg"><b><img src="../uploads/Musaeri.png"></b></span>
+        <span class="logo-lg"><b><img src="../uploads/PT_MSI.png"></b></span>
       </a>
       <!-- Header Navbar: style can be found in header.less -->
       <nav class="navbar navbar-static-top">
@@ -405,7 +417,9 @@ $menu = $Stmtmenu->fetchAll();
         include "module/newpassword.php";
       } elseif ($_GET['module'] == "profileadmin") {
         include "module/updadminofficeprofile.php";
-      } else {
+      } elseif ($_GET['module'] == "goldbar") {
+        include "module/goldbar.php";
+      }else {
         echo "<script>
                               
                                 swal({

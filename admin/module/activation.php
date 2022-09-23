@@ -206,10 +206,27 @@ $Stmt = $db->prepare($Sql);
 //$Stmt->execute(array(":statuse"=> $s,":idtoken"=>$t));
 $Stmt->execute();
 $result = $Stmt->fetchAll();
-
-
-
 $no = 1;
+
+// massege
+if (isset($errorMsg)) {
+  echo '<div class="alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
+  //echo '<META HTTP-EQUIV="Refresh" Content="1">';
+  if ($_SERVER['SERVER_NAME'] == 'localhost') {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=customer">';
+  } else {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=customer">';
+  }
+}
+if (isset($Msg)) {
+  echo '<div class="alert alert-success"><strong>SUCCESS !' . $Msg . '</strong></div>';
+  //echo '<META HTTP-EQUIV="Refresh" Content="1">';
+  if ($_SERVER['SERVER_NAME'] == 'localhost') {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=customer">';
+  } else {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=customer">';
+  }
+}
 
 
 
@@ -220,39 +237,11 @@ $no = 1;
       <div class="box box-primary">
         <div class="box-header">
           <i class="fa fa-edit"></i>
-          <h3 class="box-title">Activation</h3>
+          <h3 class="box-title">Nasabah</h3>
 
         </div>
         <!-- Content -->
-        <?php
-        if (isset($errorMsg)) {
-          echo '<div class="alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
-        }
-        if (isset($insertMsg)) {
-          echo '<div class="alert alert-success"><strong>SUCCESS !' . $insertMsg . '</strong></div>';
-        }
-        ?>
 
-        <div class="box-body">
-          <form method="post" class="form-horizontal">
-
-            <div class="form-group">
-              <label class="col-sm-4 control-label"></label>
-              <div class="row">
-                <div class="col-sm-2">
-                  <input type="text" name="token" class="form-control" placeholder="Masukkan Token" />
-                </div>
-                <div class="col-sm-1">
-
-                  <input type="submit" name="btn_activ" class="btn btn-success " value="Activ">
-                </div>
-              </div>
-            </div>
-
-
-          </form>
-          </center>
-        </div>
         <!-- /.box-header -->
         <div class="box-body">
 
@@ -260,11 +249,10 @@ $no = 1;
             <thead>
               <tr>
                 <th>#</th>
-                <th>#</th>
                 <th>Users</th>
+                <th>Account</th>
                 <th>Name</th>
                 <th>ID Number</th>
-                <th>Account</th>
                 <th>Status</th>
                 <th>Action</th>
 
@@ -278,24 +266,9 @@ $no = 1;
 
                 <tr>
                   <td><?php echo $no++ ?></td>
-                  <td>
-                    <?php
-                    if ($row["field_document"] == "N") {
-                      echo '<a href="?module=updcustomer&id=' . $row["field_customer_id"] . '" class="btn btn-success btn-sm "><i class="fa fa-refresh"></i></a>&nbsp';
 
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default' . $row["field_customer_id"] . '" class="text-white btn btn-danger btn-sm"><i class="fa fa-trash"></i></a> &nbsp';
-                    } elseif ($row["field_document"] == "Y") {
-
-                      echo '<a href="?module=updcustomer&id=' . $row["field_customer_id"] . '" class="btn btn-success adjoined-bottombtn-sm "><i class="fa fa-refresh"></i></a>&nbsp';
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default' . $row["field_customer_id"] . '" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
-                    } elseif ($row["field_document"] == "0") {
-                      echo '<a href="?module=updcustomer&id=' . $row["field_customer_id"] . '" class="btn btn-primary btn-sm"><i class="fa fa-play "></i></a>&nbsp';
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default' . $row["field_customer_id"] . '" class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></a> &nbsp';
-                    }
-                    ?>
-                  </td>
                   <td><img src="../uploads/<?php echo $row['field_photo'] ?>" width="30" height="30" class="img-circle" alt="User Image"></td>
-
+                  <td><strong><?php echo $row["field_rekening"]; ?></strong></td>
                   <td data-title="Trx Id"><strong><?php echo $row["field_nama"]; ?></strong><br><?php echo $row["field_member_id"]; ?></td>
                   <td data-title="Trx Id"><strong><?php echo $row["field_ktp"]; ?> | <?php echo $row["field_handphone"]; ?></strong><br>
                     <?php
@@ -309,7 +282,7 @@ $no = 1;
                     ?>
                     <strong><?php echo $row["field_ktp"]; ?></strong>
                   </td>
-                  <td><strong><?php echo $row["field_rekening"]; ?></strong></td>
+
                   <td>
                     <?php
                     $status = $row["field_status"];
@@ -334,11 +307,10 @@ $no = 1;
             <tfoot>
               <tr>
                 <th>#</th>
-                <th>#</th>
                 <th>Users</th>
+                <th>Account</th>
                 <th>Name</th>
                 <th>ID Number</th>
-                <th>Account</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>

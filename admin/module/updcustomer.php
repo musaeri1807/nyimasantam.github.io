@@ -13,31 +13,18 @@ echo $_REQUEST['id'];
 
 $idusers = $_REQUEST['id'];
 
-
-$select_stmt = $db->prepare("SELECT U.field_user_id,U.field_member_id,U.field_branch,U.field_nama,U.field_email,U.field_handphone,N.* ,W.* 
-FROM tbluserlogin U JOIN tblnasabah N ON U.field_user_id=N.id_UserLogin
-JOIN tblpewaris W ON U.field_user_id=W.id_UserLogin WHERE U.field_user_id=:id ORDER BY U.field_user_id DESC"); //sql select query		
+$select_stmt = $db->prepare("SELECT U.field_user_id,U.field_member_id,U.field_branch,U.field_nama,U.field_email,U.field_handphone,N.* ,W.*,B.field_account_numbers AS idcabang
+                            FROM tbluserlogin U 
+                            JOIN tblbranch B ON U.field_branch=B.field_branch_id
+                            JOIN tblnasabah N ON U.field_user_id=N.id_UserLogin
+                            JOIN tblpewaris W ON U.field_user_id=W.id_UserLogin 
+                            WHERE U.field_user_id=:id ORDER BY U.field_user_id DESC"); //sql select query		
 $select_stmt->bindParam(':id', $idusers);
 $select_stmt->execute();
 $DataUsers = $select_stmt->fetch(PDO::FETCH_ASSOC);
-echo $DataUsers['field_nama'];
-// echo $_REQUEST['btn_update'];
 
+// var_dump($DataUsers);
 // die();
-
-// if (isset($_REQUEST['id'])) {
-//   try {
-//     $id = $_REQUEST['id']; //get "update_id" from index.php page through anchor tag operation and store in "$id" variable
-//     $select_stmt = $db->prepare("SELECT * FROM  tblcustomer n JOIN tbluserlogin u ON n.field_member_id=u.field_member_id  WHERE field_customer_id =:id "); //sql select query		
-//     $select_stmt->bindParam(':id', $id);
-//     $select_stmt->execute();
-//     $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
-//     //extract($row);
-//     $idcabang = substr($row["field_member_id"], 0, 10);
-//   } catch (PDOException $e) {
-//     $e->getMessage();
-//   }
-// }
 
 //echo $idcabang;
 $select_stmt = $db->prepare("SELECT * FROM  tblbranch WHERE field_branch_id =:id "); //sql select query
@@ -53,7 +40,10 @@ $result = $Stmt->fetchAll();
 //extract($row);                
 
 if (isset($_REQUEST['btn_update'])) {
-  echo $_REQUEST['id'];
+  // $_REQUEST['id'];
+  // echo $_REQUEST['txt_lengkap'];
+  // die();
+  $konfirmasi = $_REQUEST['txt_lengkap'];
   $id = $_REQUEST['id'];
   $nik  = $_REQUEST['txt_nik'];
   $gender = $_REQUEST['txt_gender'];
@@ -65,25 +55,49 @@ if (isset($_REQUEST['btn_update'])) {
   $agama = $_REQUEST['txt_agama'];
   $status = $_REQUEST['txt_status'];
 
-  $select_stmt = $db->prepare("SELECT * FROM tblwilayahprovinsi PRO 
-  JOIN tblwilayahkabupaten KAB ON PRO.field_provinsi_id=KAB.field_provinsi_id
-	JOIN tblwilayahkecamatan KEC ON KAB.field_kabupaten_id=KEC.field_kabupaten_id
-	JOIN tblwilayahdesa KEL ON KEC.field_kecamatan_id=KEL.field_kecamatan_id
-  WHERE PRO.field_provinsi_id=:provinsi AND KAB.field_kabupaten_id=:kebupaten AND KEC.field_kecamatan_id=:kecamatan AND KEL.field_desa_id=:kelurahan");
-  $select_stmt->execute(array(
-    ":provinsi" => $provinsi,
-    ":kebupaten" => $kabupaten,
-    ":kecamatan" => $kecamatan,
-    ":kelurahan" => $kelurahan,
-  ));
-  $data = $select_stmt->fetch(PDO::FETCH_ASSOC);
+  if (empty($id)) {
+    $errorMsg = "Silakan Memasukan Id Anda";
+  } else if (strlen(is_numeric($nik)) == 0) {
+    $errorMsg = "Silakan Memasukan Angka";
+  } else if (strlen($nik) < 16) {
+    $errorMsg = "Nomor NIK Terlalun Pendek";
+  } else if (strlen($nik) > 16) {
+    $errorMsg = "Nomor NIK Terlalu Panjang";
+  } elseif ($provinsi == "") {
+    $errorMsg = "Silakan Pilih Provinsi";
+  } elseif ($kabupaten == "") {
+    $errorMsg = "Silakan Pilih kabupaten";
+  } elseif ($kecamatan == "") {
+    $errorMsg = "Silakan Pilih kecamatan";
+  } elseif ($kelurahan == "") {
+    $errorMsg = "Silakan Pilih kelurahan";
+  } else {
+    try {
 
-  $provinsi  = $data['field_nama_provinsi'];
-  $kabupaten = $data['field_nama_kabupaten'];
-  $kecamatan = $data['field_nama_kecamatan'];
-  $kelurahan = $data['field_nama_desa'];
 
-  $update_nasabah = $db->prepare('UPDATE tblnasabah SET 
+      $select_stmt = $db->prepare("SELECT * FROM tblwilayahprovinsi PRO 
+                                    JOIN tblwilayahkabupaten KAB ON PRO.field_provinsi_id=KAB.field_provinsi_id
+                                    JOIN tblwilayahkecamatan KEC ON KAB.field_kabupaten_id=KEC.field_kabupaten_id
+                                    JOIN tblwilayahdesa KEL ON KEC.field_kecamatan_id=KEL.field_kecamatan_id
+                                    WHERE PRO.field_provinsi_id=:provinsi 
+                                    AND KAB.field_kabupaten_id=:kebupaten 
+                                    AND KEC.field_kecamatan_id=:kecamatan 
+                                    AND KEL.field_desa_id=:kelurahan");
+      $select_stmt->execute(array(
+        ":provinsi" => $provinsi,
+        ":kebupaten" => $kabupaten,
+        ":kecamatan" => $kecamatan,
+        ":kelurahan" => $kelurahan,
+      ));
+      $data = $select_stmt->fetch(PDO::FETCH_ASSOC);
+
+      $provinsi  = $data['field_nama_provinsi'];
+      $kabupaten = $data['field_nama_kabupaten'];
+      $kecamatan = $data['field_nama_kecamatan'];
+      $kelurahan = $data['field_nama_desa'];
+
+
+      $update_nasabah = $db->prepare('UPDATE tblnasabah SET 
                             Nik_Nasabah=:nik,
                             Jenis_Kelamin_N=:gender,
                             Alamat_Nasabah=:alamat,
@@ -92,70 +106,9 @@ if (isset($_REQUEST['btn_update'])) {
                             Kecamatan_N=:kecamatan,
                             Kelurahan_N=:kelurahan,
                             Agama_N=:agama,
-                            Status_N=:statuse     
+                            Status_N=:statuse,
+                            Konfirmasi=:konfirmasi     
                                 WHERE id_UserLogin=:id');
-  $update_nasabah->bindParam(':id', $id);
-  $update_nasabah->bindParam(':nik', $nik);
-  $update_nasabah->bindParam(':gender', $gender);
-  $update_nasabah->bindParam(':alamat', $alamat);
-  $update_nasabah->bindParam(':provinsi', $provinsi);
-  $update_nasabah->bindParam(':kabupaten', $kabupaten);
-  $update_nasabah->bindParam(':kecamatan', $kecamatan);
-  $update_nasabah->bindParam(':kelurahan', $kelurahan);
-  $update_nasabah->bindParam(':agama', $agama);
-  $update_nasabah->bindParam(':statuse', $status);
-
-
-  if ($update_nasabah->execute()) {
-    $Msg = "Update Successfully"; //execute query success message
-    echo '<META HTTP-EQUIV="Refresh" Content="1;">';
-  }
-
-
-
-  die();
-
-  if (empty($nama)) {
-    $errorMsg = "Silakan Memasukan Nama Anda";
-  } else if (empty($email)) {
-    $errorMsg = "Silakan Memasukan Email Anda";
-  } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errorMsg = "Silakan Memasukan Alamat Email yang Valid";
-  } else if (strlen(is_numeric($angka)) == 0) {
-    $errorMsg = "Silakan Memasukan Angka";
-  } else if (strlen($angka) < 10) {
-    $errorMsg = "Nomor Hp Tidak Sesuai";
-  } else if (strlen($angka) > 12) {
-    $errorMsg = "Nomor Hp Terlalu Panjang";
-  } elseif ($cabang == "Pilih") {
-    $errorMsg = "Silakan Pilih Kantor Cabang";
-  } else {
-    try {
-      // $select_stmt = $db->prepare("SELECT field_email,Field_handphone  FROM tbluserlogin 
-      // 							WHERE field_email=:uemail OR Field_handphone=:only"); // sql select query			
-      // $select_stmt->execute(array(
-      //   ':uemail'  => $email,
-      //   ':only'    => $angka
-      // )); //execute query 
-      // $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
-
-      // if ($row["field_email"] !== $email) {
-      //   $errorMsg = "Maaf Email Sudah Ada";  //check condition email already exists 
-      // } else if ($row["Field_handphone"] !== $angka) {
-      //   $errorMsg = "Maaf Nomor Hp Sudah Ada";  //check condition email already exists 
-      // } elseif (!isset($errorMsg)) {
-
-      $update_nasabah = $db->prepare('UPDATE tblnasabah SET 
-                                                Nik_Nasabah=:nik,
-                                                Jenis_Kelamin_N=:gender,
-                                                Alamat_Nasabah=:alamat,
-                                                Provinsi_N=:provinsi,
-                                                Kabupaten_N=:kabupaten,
-                                                Kecamatan_N=:kecamatan,
-                                                Kelurahan_N=:kelurahan,
-                                                Agama_N=:agama,
-                                                Status_N=:status      
-                                       WHERE id_UserLogin=:id');
       $update_nasabah->bindParam(':id', $id);
       $update_nasabah->bindParam(':nik', $nik);
       $update_nasabah->bindParam(':gender', $gender);
@@ -165,8 +118,8 @@ if (isset($_REQUEST['btn_update'])) {
       $update_nasabah->bindParam(':kecamatan', $kecamatan);
       $update_nasabah->bindParam(':kelurahan', $kelurahan);
       $update_nasabah->bindParam(':agama', $agama);
-      $update_nasabah->bindParam(':status', $status);
-
+      $update_nasabah->bindParam(':statuse', $status);
+      $update_nasabah->bindParam(':konfirmasi', $konfirmasi);
 
       if ($update_nasabah->execute()) {
         $Msg = "Update Successfully"; //execute query success message
@@ -180,36 +133,25 @@ if (isset($_REQUEST['btn_update'])) {
 }
 
 
-// if (isset($_REQUEST['btn-ektp'])) {
-//   # code...
-//   $username = "admin";
-//   $password = "M4Potl0ZZCET2I5AsGrt6w==";
-//   $CURLOPT_URL = "172.24.33.162:8089/gmkservice/ktpreader/services/bacaChip";
-//   $curl = curl_init();
-//   curl_setopt_array($curl, array(
-//     CURLOPT_URL => "$CURLOPT_URL",
-//     CURLOPT_RETURNTRANSFER => true,
-//     CURLOPT_ENCODING => "",
-//     CURLOPT_MAXREDIRS => 10,
-//     CURLOPT_TIMEOUT => 30,
-//     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-//     CURLOPT_CUSTOMREQUEST => "POST",
-//     CURLOPT_POSTFIELDS => "username=$username&password=$password&format=json",
-//     CURLOPT_HTTPHEADER => array(
-//       "content-type: application/x-www-form-urlencoded"
-//     )
-//   ));
-//   $response = curl_exec($curl);
-//   $err = curl_error($curl);
-//   curl_close($curl);
-
-//   if ($err) {
-//     echo "cURL Error #:" . $err;
-//   } else {
-
-//     $data = json_decode($response, true);
-//   }
-// } //end if btn-ektp
+// massege
+if (isset($errorMsg)) {
+  echo '<div class="alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
+  //echo '<META HTTP-EQUIV="Refresh" Content="1">';
+  if ($_SERVER['SERVER_NAME'] == 'localhost') {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=customer">';
+  } else {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=customer">';
+  }
+}
+if (isset($Msg)) {
+  echo '<div class="alert alert-success"><strong>SUCCESS !' . $Msg . '</strong></div>';
+  //echo '<META HTTP-EQUIV="Refresh" Content="1">';
+  if ($_SERVER['SERVER_NAME'] == 'localhost') {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=customer">';
+  } else {
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=customer">';
+  }
+}
 
 ?>
 <!-- Main content -->
@@ -263,12 +205,13 @@ if (isset($_REQUEST['btn_update'])) {
               <div>
               </div>
               <form class="form-horizontal" method="POST">
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label for="inputName" class="col-sm-2 control-label">Id User</label>
                   <div class="col-sm-6">
                     <input type="number" class="form-control" value="<?php echo $DataUsers["field_user_id"]; ?>" readonly>
+                    <input type="number" class="form-control" value="<?php echo $DataUsers["No_Rekening"]; ?>" readonly>
                   </div>
-                </div>
+                </div> -->
                 <div class="form-group">
                   <label for="inputName" class="col-sm-2 control-label">NIK</label>
                   <div class="col-sm-6">
@@ -348,12 +291,12 @@ if (isset($_REQUEST['btn_update'])) {
                   <div class="col-sm-6">
                     <select class="form-control" type="text" name="txt_agama" id="">
                       <option value="<?php echo $DataUsers['Agama_N']; ?>"><?php echo $DataUsers['Agama_N']; ?></option>
-                      <option value="ISLAM">Islam</option>
-                      <option value="PROTESTAN">Protestan</option>
-                      <option value="KATOLIK">Katolik</option>
-                      <option value="HINDU">Hindu</option>
-                      <option value="BUDDHA">Buddha</option>
-                      <option value="KHONGHUCU">Khonghucu</option>
+                      <option value="ISLAM">ISLAM</option>
+                      <option value="PROTESTAN">PROTESTAN</option>
+                      <option value="KATOLIK">KATOLIK</option>
+                      <option value="HINDU">HINDU</option>
+                      <option value="BUDDHA">BUDDHA</option>
+                      <option value="KHONGHUCU">KHONGHUCU</option>
                     </select>
                   </div>
                 </div>
@@ -362,18 +305,25 @@ if (isset($_REQUEST['btn_update'])) {
                   <div class="col-sm-6">
                     <select class="form-control" type="text" name="txt_status" id="status">
                       <option value="<?php echo $DataUsers['Status_N']; ?>"><?php echo $DataUsers['Status_N']; ?></option>
-                      <option value="KAWIN">Kawin</option>
-                      <option value="BELUM KAWIN Kawin">Belum Kawin</option>
-                      <option value="DUDA">Duda</option>
-                      <option value="JANDA">Janda</option>
+                      <option value="KAWIN">KAWIN</option>
+                      <option value="BELUM KAWIN ">BELUM KAWIN</option>
+                      <option value="DUDA">DUDA</option>
+                      <option value="JANDA">JANDA</option>
 
                     </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputEmail" class="col-sm-2 control-label"></label>
+                  <div class="col-sm-6">
+                    <input type="checkbox" name="txt_lengkap" value="Y" required> Apakah Data Sudah lengkap Semua ?
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" name="btn_update" class="btn btn-success">Perbarui</button>
-                    <!-- <input type="submit" name="btn_update" class="btn btn-success " value="Perbarui"> -->
+                    <a href="?module=customer" class="btn btn-danger">Keluar</a>
                   </div>
                 </div>
               </form>
