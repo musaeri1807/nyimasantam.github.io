@@ -256,7 +256,8 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
 
 <body>
   <div class="d-lg-flex half">
-    <div class="bg" style="background-image: url('');"></div>
+    <!-- //image background login -->
+    <div class="bg" style="background-image: url('image/');"></div>
     <div class="contents">
 
       <div class="container">
@@ -266,11 +267,16 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
               <!--    <div class="form-block mx-auto"> -->
 
               <div class="text-center mt-1">
-                <img src="image/login.png" width="200">
+                <img src="image/L_BSP_LM_LOGO.png" width="200">
                 <br>
                 <h3> <strong>Officer</strong></h3>
-                <!-- <p class="mb-1">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>  -->
-                <b>Development</b>
+                <!-- <p class="mb-2">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>  -->
+                <?php
+                if ($_SERVER['SERVER_NAME'] == "localhost") {
+                  echo "<b>Development</b>";
+                }
+                ?>
+
 
                 <?php
                 if (isset($errorMsg)) {
@@ -340,15 +346,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
               <hr>
               <!-- Belum Punya Akun ? <a href="">Daftar Ke Bank Sampah terdekat</a> -->
 
-              <br>
-              <br>
-              <br>
-              <br>
-              <br>
-              <br>
-              <br>
-              <br>
-              <br>
+
             </div>
           </div>
         </div>

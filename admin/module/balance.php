@@ -26,18 +26,12 @@ $Sql = "SELECT DISTINCT(field_rekening),(SELECT field_total_saldo FROM tbltrxmut
             FROM tbltrxmutasisaldo bb 
             JOIN tbluserlogin us ON bb.field_member_id = us.field_member_id
             JOIN tblbranch B ON us.field_branch=B.field_branch_id
-            ORDER BY field_id_saldo DESC";
+            ORDER BY bb.field_id_saldo DESC";
 $Stmt = $db->prepare($Sql);
 //$Stmt->execute(array(":statuse"=> $s,":idtoken"=>$t));
 $Stmt->execute();
-$result = $Stmt->fetchAll();
-
-
-
+$Saldo = $Stmt->fetchAll();
 $no = 1;
-
-
-
 ?>
 <section class="content">
   <div class="row">
@@ -46,8 +40,17 @@ $no = 1;
         <div class="box-header">
           <i class="fa fa-edit"></i>
           <h3 class="box-title">Saldo Nasabah</h3>
+          <form action="">
+            <input type="text">
+            <input type="text">
+            <input type="text">
+            <input type="text">
+            <input type="text">
+
+          </form>
         </div>
         <!-- Content -->
+
         <div class="box-body">
           <table id="trxSemua" class="table table-bordered table-striped">
             <thead>
@@ -63,7 +66,7 @@ $no = 1;
             </thead>
             <tbody>
               <?php
-              foreach ($result as $row) {
+              foreach ($Saldo as $row) {
               ?>
 
                 <tr>

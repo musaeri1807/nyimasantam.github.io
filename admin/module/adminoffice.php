@@ -123,12 +123,15 @@ $no = 1;
           <table id="trxSemua" class="table table-bordered table-striped">
             <thead>
               <tr>
-                <th>No</th>
-                <th>Name</th>
-                <th>Office Position</th>
-                <th>Branch</th>
-                <th>Action</th>
-                <th>Action</th>
+                <th style="text-align:center ;">No</th>
+                <th style="text-align:center ;">NIP</th>
+                <th style="text-align:center ;">Nama</th>
+                <th style="text-align:center ;">Username</th>
+                <th style="text-align:center ;">Jabatan</th>
+                <th style="text-align:center ;">Cabang</th>
+                <th style="text-align:center ;">Status</th>
+                <th style="text-align:center ;">Action</th>
+
               </tr>
             </thead>
             <tbody>
@@ -137,14 +140,18 @@ $no = 1;
               ?>
 
                 <tr>
+                  <td style="text-align:center ;">
+                    <?php echo $no++ ?>
+                  </td>
                   <td>
-                    <!-- <?php echo $no++ ?> -->
                     <?php echo $row["field_employees_id"] ?>
                   </td>
-
-
-                  <td data-title="Trx Id"><strong><?php echo $row["field_name_officer"]; ?></strong><br><?php echo $row["field_email"]; ?>| <strong><?php echo $row["field_username"]; ?></strong></td>
-                  <td data-title="Trx Id"><strong><?php echo $row["field_department_name"]; ?></strong><br>
+                  <td data-title="Trx Id"><strong><?php echo $row["field_name_officer"]; ?></strong><br></td>
+                  <td><?php echo $row["field_email"]; ?>| <strong><?php echo $row["field_username"]; ?></strong></td>
+                  <td data-title="Trx Id"><strong><?php echo $row["field_department_name"]; ?></strong></td>
+                  <!-- <td><strong><?php echo $row["field_branch_name"]; ?></strong></td> -->
+                  <td><strong><?php echo $row["field_branch_name"]; ?></strong></td>
+                  <td>
                     <?php
                     $status = $row["field_status_aktif"];
                     if ($status == "1") {
@@ -154,98 +161,23 @@ $no = 1;
                     } elseif ($status == "0") {
                       echo '<span class="badge btn-danger text-white">Verifikasi</span>';;
                     }
-                    ?></td>
-                  <td><strong><?php echo $row["field_branch_name"]; ?></strong></td>
-                  <td ata-title="Trx Id">
+                    ?>
+                  </td>
 
+                  <td ata-title="Trx Id">
                     <?php
                     if ($rows["field_role"] == "ADM") {
-                      echo '<a href="?module=updadminoffice&id=' . $row["field_user_id"] . '" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
+                      echo '<a href="?module=updadminoffice&id=' . $row["field_user_id"] . '" class="btn btn-sm btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
 
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default' . $row["field_user_id"] . '" class="text-white btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-default' . $row["field_user_id"] . '" class="btn btn-sm btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
                     } elseif ($rows["field_role"] == "MGR") {
-                      echo '<a href="?module=updadminoffice&id=' . $row["field_user_id"] . '" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
+                      echo '<a href="?module=updadminoffice&id=' . $row["field_user_id"] . '" class="btn btn-sm btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
                     } elseif ($rows["field_role"] == "SPV") {
-                      echo '<a href="?module=updadminoffice&id=' . $row["field_user_id"] . '" class="text-white btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
+                      echo '<a href="?module=updadminoffice&id=' . $row["field_user_id"] . '" class="btn btn-sm btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
                     }
                     ?>
-
-
                   </td>
-                  <td>
-                    <div class="margin">
-                      <div class="btn-group">
-                        <button type="button" class="btn btn-default">Action</button>
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                          <span class="caret"></span>
-                          <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Action</a></li>
-                          <li><a href="#">Another action</a></li>
-                          <li><a href="#">Something else here</a></li>
-                          <li class="divider"></li>
-                          <li><a href="#">Separated link</a></li>
-                        </ul>
-                      </div>
-                      <!--          <div class="btn-group">
-                            <button type="button" class="btn btn-info">Action</button>
-                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                              <span class="caret"></span>
-                              <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                              <li><a href="#">Action</a></li>
-                              <li><a href="#">Another action</a></li>
-                              <li><a href="#">Something else here</a></li>
-                              <li class="divider"></li>
-                              <li><a href="#">Separated link</a></li>
-                            </ul>
-                          </div>
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-danger">Action</button>
-                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                              <span class="caret"></span>
-                              <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                              <li><a href="#">Action</a></li>
-                              <li><a href="#">Another action</a></li>
-                              <li><a href="#">Something else here</a></li>
-                              <li class="divider"></li>
-                              <li><a href="#">Separated link</a></li>
-                            </ul>
-                          </div>
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-success">Action</button>
-                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                              <span class="caret"></span>
-                              <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                              <li><a href="#">Action</a></li>
-                              <li><a href="#">Another action</a></li>
-                              <li><a href="#">Something else here</a></li>
-                              <li class="divider"></li>
-                              <li><a href="#">Separated link</a></li>
-                            </ul>
-                          </div>
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-warning">Action</button>
-                            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
-                              <span class="caret"></span>
-                              <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                              <li><a href="#">Action</a></li>
-                              <li><a href="#">Another action</a></li>
-                              <li><a href="#">Something else here</a></li>
-                              <li class="divider"></li>
-                              <li><a href="#">Separated link</a></li>
-                            </ul>
-                          </div> -->
-                    </div>
-                  </td>
+
 
                 </tr>
 
@@ -291,12 +223,15 @@ $no = 1;
             </tbody>
             <tfoot>
               <tr>
-                <th>No</th>
-                <th>Name</th>
-                <th>Office Position</th>
-                <th>Branch</th>
-                <th>Action</th>
-                <th>Action</th>
+                <th style="text-align:center ;">No</th>
+                <th style="text-align:center ;">NIP</th>
+                <th style="text-align:center ;">Nama</th>
+                <th style="text-align:center ;">Username</th>
+                <th style="text-align:center ;">Jabatan</th>
+                <th style="text-align:center ;">Cabang</th>
+                <th style="text-align:center ;">Status</th>
+                <th style="text-align:center ;">Action</th>
+
               </tr>
             </tfoot>
           </table>

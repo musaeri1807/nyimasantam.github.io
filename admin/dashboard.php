@@ -120,10 +120,10 @@ $menu = $Stmtmenu->fetchAll();
       <!-- Logo -->
       <a href="#" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><img src="../uploads/PT_MSI.png"></span>
+        <span class="logo-mini"><img src=""></span>
         <!-- logo for regular state and mobile devices -->
 
-        <span class="logo-lg"><b><img src="../uploads/PT_MSI.png"></b></span>
+        <span class="logo-lg"><b><img src=""></b></span>
       </a>
       <!-- Header Navbar: style can be found in header.less -->
       <nav class="navbar navbar-static-top">
@@ -391,8 +391,8 @@ $menu = $Stmtmenu->fetchAll();
         include "module/addcustomer.php";
       } elseif ($_GET['module'] == "updcustomer") {
         include "module/updcustomer.php";
-      } elseif ($_GET['module'] == "activation") {
-        include "module/activation.php";
+      } elseif ($_GET['module'] == "nasabah") {
+        include "module/nasabah.php";
       } elseif ($_GET['module'] == "deposit") {
         include "module/deposit.php";
       } elseif ($_GET['module'] == "backupdatabase") {
@@ -403,8 +403,10 @@ $menu = $Stmtmenu->fetchAll();
         include "module/exporttrash.php";
       } elseif ($_GET['module'] == "balance") {
         include "module/balance.php";
-      } elseif ($_GET['module'] == "withdraw") {
-        include "module/withdraw.php";
+      } elseif ($_GET['module'] == "purchase") {
+        include "module/adddeposit2.php";
+      } elseif ($_GET['module'] == "buyback") {
+        include "module/buyback.php";
       } elseif ($_GET['module'] == "mailbox") {
         include "module/mailbox.php";
       } elseif ($_GET['module'] == "adddeposit") {
@@ -419,7 +421,9 @@ $menu = $Stmtmenu->fetchAll();
         include "module/updadminofficeprofile.php";
       } elseif ($_GET['module'] == "goldbar") {
         include "module/goldbar.php";
-      }else {
+      } elseif ($_GET['module'] == "withdrowsfisik") {
+        include "module/withdrow_fisik.php";
+      } else {
         echo "<script>
                               
                                 swal({
@@ -501,6 +505,9 @@ $menu = $Stmtmenu->fetchAll();
   <!-- DataTables -->
   <script src="../view/assetdashboard/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="../view/assetdashboard/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
+
+
 
   <!-- page script -->
   <script>
@@ -1158,9 +1165,6 @@ $menu = $Stmtmenu->fetchAll();
 
       });
 
-
-
-
       // tombol hapus penjualan
       $("body").on("click", ".tombol-hapus-penjualan", function() {
 
@@ -1302,6 +1306,50 @@ $menu = $Stmtmenu->fetchAll();
       //   // return true;
       // }
     }
+  </script>
+  <!-- //Pemebelian Emas  -->
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#Beli").change(function() {
+        var beli = $("#Beli").val();
+        var qty = $("#Qty").val();
+        var Gold = $("#Hargagold").val();
+        var fee = $("#Oprasionalfree1").val();
+
+        var subtotal = beli * qty;
+
+        var Oprasionalfree2 = subtotal * fee / 100;
+        var Total = subtotal - Oprasionalfree2;
+        var Resultgold = Total / Gold;
+
+        $("#Oprasionalfree2").val(Oprasionalfree2);
+        $("#Subtotal").val(subtotal);
+        $("#Total").val(Total);
+        $("#Gold").val(Resultgold.toFixed(6));
+      });
+    });
+  </script>
+
+
+  <!-- Buyback Rupiah -->
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#Buyback-Rupiah").change(function() {
+        var Buyback1 = $("#Buyback-Rupiah").val();
+        var PriceGold = $("#Hargagold").val();
+        var SaldoAwal = $("#Saldo").val();
+
+        // var Buyback_Gold = $("#Hargagold").val();
+
+        var Buyback_Gold = Buyback1 / PriceGold;
+        // var subtotal = parseInt(beli) * parseInt(qty);
+        // var Resultgold = parseInt(Total) / parseInt(Gold);
+        var SaldoAkhir = SaldoAwal - Buyback_Gold;
+
+        $("#Buyback-Gold").val(Buyback_Gold.toFixed(6));
+        $("#Saldo-A").val(SaldoAkhir.toFixed(6));
+      });
+    });
   </script>
 
 </body>

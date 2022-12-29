@@ -40,9 +40,7 @@ $result = $Stmt->fetchAll();
 //extract($row);                
 
 if (isset($_REQUEST['btn_update'])) {
-  // $_REQUEST['id'];
-  // echo $_REQUEST['txt_lengkap'];
-  // die();
+
   $konfirmasi = $_REQUEST['txt_lengkap'];
   $id = $_REQUEST['id'];
   $nik  = $_REQUEST['txt_nik'];
@@ -54,6 +52,7 @@ if (isset($_REQUEST['btn_update'])) {
   $kelurahan = $_REQUEST['txt_kelurahan'];
   $agama = $_REQUEST['txt_agama'];
   $status = $_REQUEST['txt_status'];
+  $date= date('Y-m-d');
 
   if (empty($id)) {
     $errorMsg = "Silakan Memasukan Id Anda";
@@ -98,6 +97,7 @@ if (isset($_REQUEST['btn_update'])) {
 
 
       $update_nasabah = $db->prepare('UPDATE tblnasabah SET 
+                            Tgl_Nasabah=:date,
                             Nik_Nasabah=:nik,
                             Jenis_Kelamin_N=:gender,
                             Alamat_Nasabah=:alamat,
@@ -110,6 +110,7 @@ if (isset($_REQUEST['btn_update'])) {
                             Konfirmasi=:konfirmasi     
                                 WHERE id_UserLogin=:id');
       $update_nasabah->bindParam(':id', $id);
+      $update_nasabah->bindParam(':date', $date);
       $update_nasabah->bindParam(':nik', $nik);
       $update_nasabah->bindParam(':gender', $gender);
       $update_nasabah->bindParam(':alamat', $alamat);

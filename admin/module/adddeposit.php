@@ -9,12 +9,6 @@ if (!isset($_SESSION['userlogin'])) {
   header("location: ../loginv2.php");
 }
 
-
-
-// var_dump($e);
-
-// die();
-
 //noReff
 $sql = "SELECT field_no_referensi FROM tbltrxmutasisaldo ORDER BY field_no_referensi DESC LIMIT 1";
 $stmt = $db->prepare($sql);
@@ -257,7 +251,7 @@ if (isset($_REQUEST['payment'])) {
   }
 }
 
-$Stmt = $db->prepare("SELECT * FROM tblcustomer");
+$Stmt = $db->prepare("SELECT * FROM tblnasabah N JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id");
 $Stmt->execute();
 $Result = $Stmt->fetchAll();
 
@@ -330,7 +324,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
             <!-- <h3 class="box-title"></h3> -->
             <!-- <a href="" class="btn btn-success btn-block margin-bottom">Search Product</a> -->
             <button style="margin-top: 27px" type="button" class="btn btn-success btn-block margin-bottom" data-toggle="modal" data-target="#cariProduk">
-              <i class="fa fa-search"></i> &nbsp Search Product
+              <i class="fa fa-search"></i> &nbsp Cari Produk
             </button>
             <div class="box-tools">
               <!-- Modal -->
@@ -341,7 +335,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
-                      Select Product
+                      Pilih Produk
                     </div>
                     <div class="modal-body">
 
@@ -352,11 +346,11 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                           <thead>
                             <tr>
                               <th class="text-center">No</th>
-                              <th>Code</th>
-                              <th>Product</th>
-                              <th class="text-center">Branch</th>
+                              <th>Kode</th>
+                              <th>Produk</th>
+                              <th class="text-center">Cabang</th>
                               <th class="text-center">Unit</th>
-                              <th class="text-center">Price</th>
+                              <th class="text-center">Harga</th>
                               <th class="text-center">Approval</th>
                               <th>Note</th>
                               <th></th>
@@ -400,7 +394,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                                   <input type="hidden" id="kode_<?php echo $rows['field_product_id']; ?>" value="<?php echo $rows['field_product_code']; ?>">
                                   <input type="hidden" id="nama_<?php echo $rows['field_product_id']; ?>" value="<?php echo $rows['field_product_name']; ?>">
                                   <input type="hidden" id="harga_<?php echo $rows['field_product_id']; ?>" value="<?php echo $rows['field_price']; ?>">
-                                  <button type="button" class="btn btn-success modal-pilih-produk" id="<?php echo $rows['field_product_id']; ?>" data-dismiss="modal">Select</button>
+                                  <button type="button" class="btn btn-warning modal-pilih-produk" id="<?php echo $rows['field_product_id']; ?>" data-dismiss="modal">Pilih</button>
 
                                 </td>
                               </tr>
@@ -428,7 +422,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
           </div>
           <!-- /.box-body -->
         </div>
-        <a href="#" class="btn btn-primary btn-block margin-bottom" id="tombol-tambahkan">Add </a>
+        <a href="#" class="btn btn-primary btn-block margin-bottom" id="tombol-tambahkan">Tambah </a>
         <!-- /.box -->
       </div>
       <!-- /.col transaksi-->
@@ -465,7 +459,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                       <i class="fa fa-users"></i> Customer
                       </button> -->
                       <button style="margin-right: 5px;" type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#cariCustomer">
-                        <i class="fa fa-users"></i> &nbsp Customer
+                        <i class="fa fa-search"></i> &nbsp Cari Nasabah
                       </button>
                     </div>
 
@@ -487,7 +481,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                     <center>
                       <h5>
                         <i class="fa fa-users"></i>
-                        Select Customer
+                        Pilih Nasabah
                       </h5>
                     </center>
                   </div>
@@ -500,8 +494,8 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                         <thead>
                           <tr>
                             <th class="text-center">No</th>
-                            <th class="text-center">Account Number</th>
-                            <th class="text-center">Name Customer</th>
+                            <th class="text-center">Rekening</th>
+                            <th class="text-center">Nasabah</th>
 
                             <th></th>
                           </tr>
@@ -513,13 +507,13 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                           ?>
                             <tr>
                               <td width="1%" class="text-center"><?php echo $no++; ?></td>
-                              <td width="20%"><?php echo $rows['field_rekening']; ?></td>
-                              <td width="20%"><?php echo $rows['field_nama_customer']; ?> </td>
+                              <td width="20%"><?php echo $rows['No_Rekening']; ?></td>
+                              <td width="20%"><?php echo $rows['field_nama']; ?> </td>
                               <td width="1%">
-                                <input type="hidden" id="member_<?php echo $rows['field_customer_id']; ?>" value="<?php echo $rows['field_member_id']; ?>">
-                                <input type="hidden" id="account_<?php echo $rows['field_customer_id']; ?>" value="<?php echo $rows['field_rekening']; ?>">
-                                <input type="hidden" id="customer_<?php echo $rows['field_customer_id']; ?>" value="<?php echo $rows['field_nama_customer']; ?>">
-                                <button type="button" class="btn btn-success modal-select-customer" id="<?php echo $rows['field_customer_id']; ?>" data-dismiss="modal">Select</button>
+                                <input type="hidden" id="member_<?php echo $rows['id_Nasabah']; ?>" value="<?php echo $rows['field_member_id']; ?>">
+                                <input type="hidden" id="account_<?php echo $rows['id_Nasabah']; ?>" value="<?php echo $rows['No_Rekening']; ?>">
+                                <input type="hidden" id="customer_<?php echo $rows['id_Nasabah']; ?>" value="<?php echo $rows['field_nama']; ?>">
+                                <button type="button" class="btn btn-info modal-select-customer" id="<?php echo $rows['id_Nasabah']; ?>" data-dismiss="modal">Pilih</button>
 
                               </td>
                             </tr>
@@ -609,31 +603,31 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                     <tr>
                       <th style="width:50%">Subtotal:</th>
                       <td>
-                        <input type="text" name="txt_subtotal" class="sub_total_form" value="0">
+                        <input type="text" name="txt_subtotal" class="sub_total_form" value="0" readonly>
                         <span class="sub_total_pembelian" id="0">Rp.0,-</span>
                       </td>
                     </tr>
                     <tr>
                       <th id="txt_persen">Oprasional free (5%)</th>
                       <td>
-                        <input class="total_fee" type="number" min="0" max="100" id="5" name="txt_free">
+                        <input class="total_fee" type="number" min="0" max="100" id="5" name="txt_free" readonly>
                         <span class="fee" id="0">0%</span>
 
-                        <input class="total_fee_rp" type="text" value="0" id="5" name="txt_free_rp">
+                        <input class="total_fee_rp" type="text" value="0" id="5" name="txt_free_rp" readonly>
                         <span class="fee_rp" id="0">Rp.0,-</span>
                       </td>
                     </tr>
                     <tr>
                       <th>Total</th>
                       <td>
-                        <input type="text" name="txt_total" class="total_form" value="0">
+                        <input type="text" name="txt_total" class="total_form" value="0" readonly>
                         <span class="total_pembelian" id="0">Rp.0,-</span>
                       </td>
                     </tr>
                     <tr>
-                      <th>Gold Customer</th>
+                      <th>Gold Nasabah</th>
                       <td>
-                        <input type="text" name="txt_gold" class="gold_form" value="0">
+                        <input type="text" name="txt_gold" class="gold_form" value="0" readonly>
                         <span class="total_gold" id="0">0,Gram</span>
                       </td>
                     </tr>
@@ -647,7 +641,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
             <!-- this row will not appear when printing -->
             <div class="row no-print">
               <div class="col-xs-12">
-                <a href="?module=deposit" class="btn btn-danger"><i class="fa fa-reply "></i> Cancel</a>
+                <a href="?module=deposit" class="btn btn-danger"><i class="fa fa-reply "></i> Keluar</a>
                 <button type="Submit" name="payment" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Payment
                 </button>
 

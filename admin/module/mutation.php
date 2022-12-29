@@ -100,8 +100,8 @@ if(!isset($_SESSION['userlogin'])) {
                     <th>No Reff</th>                 
                     <th>Date</th>
                     <th>Rekening</th> 
-                    <th>Customer</th>
-                    <th>Branch</th>
+                    <th>Nasabah</th>
+                    <th>Cabang</th>
                     <th>Types</th>
                     <th>Amount</th>
                     <th>Sell</th>

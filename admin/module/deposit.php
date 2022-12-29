@@ -103,13 +103,15 @@ if (isset($_REQUEST['iddepositp'])) {
 }
 
 if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
-  $Sql = "SELECT I.*,C.field_nama_customer,E.field_name_officer,E2.field_name_officer AS Approval,field_branch_name,(SELECT G.field_sell FROM tblgoldprice G WHERE G.field_date_gold=I.field_date_deposit ORDER BY field_gold_id DESC LIMIT 1) AS PriceGold 
+  $Sql = "SELECT I.*,E.field_name_officer,E2.field_name_officer AS Approval,B.field_branch_name,
+  (SELECT G.field_sell FROM tblgoldprice G WHERE G.field_date_gold=I.field_date_deposit ORDER BY field_gold_id DESC LIMIT 1) AS PriceGold,
+  (SELECT U.field_nama FROM tblnasabah N JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id WHERE N.No_Rekening=I.field_rekening_deposit ) AS NAMA_NASABAH
   FROM tbldeposit I 
-  LEFT JOIN tblcustomer C ON I.field_rekening_deposit=C.field_rekening
-  LEFT JOIN tblbranch B ON I.field_branch=B.field_branch_id
-  LEFT JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id
-  LEFT JOIN tblemployeeslogin E2 ON I.field_approve=E2.field_user_id
-  -- WHERE I.field_date_deposit=:datenow
+  
+    LEFT JOIN tblbranch B ON I.field_branch=B.field_branch_id
+    LEFT JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id
+    LEFT JOIN tblemployeeslogin E2 ON I.field_approve=E2.field_user_id
+  WHERE I.field_date_deposit=:datenow
   ORDER BY I.field_trx_deposit DESC";
 
   $Stmt = $db->prepare($Sql);
@@ -118,12 +120,15 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   $result = $Stmt->fetchAll();
 } else {
 
-  $Sql = "SELECT I.*,C.field_nama_customer,E.field_name_officer,E2.field_name_officer AS Approval,field_branch_name,(SELECT G.field_sell FROM tblgoldprice G WHERE G.field_date_gold=I.field_date_deposit ORDER BY field_gold_id DESC LIMIT 1) AS PriceGold 
+  $Sql = "SELECT I.*,E.field_name_officer,E2.field_name_officer AS Approval,B.field_branch_name,
+  (SELECT G.field_sell FROM tblgoldprice G WHERE G.field_date_gold=I.field_date_deposit ORDER BY field_gold_id DESC LIMIT 1) AS PriceGold,
+  (SELECT U.field_nama FROM tblnasabah N JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id WHERE N.No_Rekening=I.field_rekening_deposit ) AS NAMA_NASABAH
   FROM tbldeposit I 
-  LEFT JOIN tblcustomer C ON I.field_rekening_deposit=C.field_rekening
-  LEFT JOIN tblbranch B ON I.field_branch=B.field_branch_id
-  LEFT JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id
-  LEFT JOIN tblemployeeslogin E2 ON I.field_approve=E2.field_user_id
+  
+    LEFT JOIN tblbranch B ON I.field_branch=B.field_branch_id
+    LEFT JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id
+    LEFT JOIN tblemployeeslogin E2 ON I.field_approve=E2.field_user_id
+
   WHERE I.field_branch=:idbranch AND I.field_date_deposit=:datenow
   ORDER BY I.field_trx_deposit DESC";
 
@@ -165,7 +170,7 @@ if (isset($Msg)) {
       <div class="box box-primary">
         <div class="box-header">
           <i class="fa fa-edit"></i>
-          <h3 class="box-title">Deposit Customer</h3>
+          <h3 class="box-title">Deposit Nasabah</h3>
           <!-- <button type="submit" class="btn btn-success pull-right">Add Transaction</button> -->
           <?php
           if ($rows['add'] == 'Y') {
@@ -182,8 +187,8 @@ if (isset($Msg)) {
                 <th>#</th>
                 <th>#</th>
                 <th>Reff</th>
-                <th>Account</th>
-                <th>Customer</th>
+                <th>Rekening</th>
+                <th>Nasabah</th>
                 <th>Date</th>
                 <th>Sub Total</th>
                 <th>Free</th>
@@ -221,7 +226,7 @@ if (isset($Msg)) {
                   </td>
                   <td><strong><?php echo $row["field_no_referensi"]; ?></strong></td>
                   <td><?php echo $row["field_rekening_deposit"]; ?></td>
-                  <td><?php echo $row["field_nama_customer"]; ?></td>
+                  <td><?php echo $row["NAMA_NASABAH"]; ?></td>
                   <td><?php echo date("d/m/Y", strtotime($row["field_date_deposit"])); ?></td>
                   <!-- <td><strong><?php echo rupiah($row["PriceGold"]); ?></strong></td> -->
 

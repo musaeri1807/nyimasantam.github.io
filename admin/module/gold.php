@@ -337,7 +337,7 @@ if (isset($Msg)) {
                 <th style="text-align:center ;">Amount Price</th>
                 <th style="text-align:center ;">Status</th>
                 <th style="text-align:center ;">disetujui</th>
-                <th style="text-align:center ;">Action</th>
+                <th style="text-align:center ;">Submitter</th>
               </tr>
             </thead>
             <tbody>

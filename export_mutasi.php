@@ -12,7 +12,7 @@ $objPHPExcel  = new PHPExcel();
 $sqlT = "SELECT * FROM tbltrxmutasisaldo M JOIN tbluserlogin U ON M.field_member_id=U.field_member_id
                                            JOIN tblgoldprice G ON M.field_tanggal_saldo=G.field_date_gold
                                            JOIN tblbranch B ON U.field_branch=B.field_branch_id
-                                           WHERE  date(field_tanggal_saldo) >= '$tgl_dari' AND date(field_tanggal_saldo) <= '$tgl_sampai'  ORDER BY field_id_saldo DESC";
+                                           WHERE  date(M.field_tanggal_saldo) >= '$tgl_dari' AND date(M.field_tanggal_saldo) <= '$tgl_sampai'  ORDER BY M.field_id_saldo DESC";
 
 $stmtT = $db->prepare($sqlT);
 $stmtT->execute(array(':tgl_dari'=> $tgl_dari,':tgl_sampai'=>$tgl_sampai));
@@ -30,8 +30,8 @@ $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Date');
 $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Time');
 $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'No_Reff');
 $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Rekening');
-$objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Customer');
-$objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Branch');
+$objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Nasabah');
+$objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Cabang');
 $objPHPExcel->getActiveSheet()->SetCellValue('H1', 'Types');
 $objPHPExcel->getActiveSheet()->SetCellValue('I1', 'Amount');
 $objPHPExcel->getActiveSheet()->SetCellValue('J1', 'Sell');
