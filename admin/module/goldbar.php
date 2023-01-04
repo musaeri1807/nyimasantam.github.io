@@ -364,15 +364,15 @@ if (isset($Msg)) {
                     ?>
                   </td>
 
-                  <td style="text-align:center ;"><strong><?php echo $row["nama"]; ?></strong></td>
+                  <td style="text-align:center ;"><strong><?php echo $row["Name"]; ?></strong></td>
                   <td style="text-align:center ;">
                     <font size="3">
                       <strong>
-                        <?php echo $row["berat"]; ?>
+                        <?php echo $row["Berat"]; ?>
                       </strong>
                     </font>
                   </td>
-                  <td style="text-align:center ;"><strong><?php echo $row["status"]; ?></strong></td>
+                  <td style="text-align:center ;"><strong><?php echo $row["Status"]; ?></strong></td>
                   <!-- <td data-title="Trx Id"><strong>
                       <?php
                       echo '<a href="#" data-toggle="modal" data-target="#modal-default-aproval' . $row["id"] . '" class="btn btn-warning btn-sm"><i class="fa fa-check-square"></i> Setuju </a> &nbsp';

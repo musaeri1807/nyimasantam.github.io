@@ -216,10 +216,13 @@ if(isset($_REQUEST['btn_insert']))
 					$select_stmt->execute(); 
 					$row = $select_stmt->fetch(PDO::FETCH_ASSOC);
 					$role = $row["field_department_name"];
-					$cabang = $row["field_branch_name"];				
+					$cabang = $row["field_branch_name"];
+					$Password=$row['Password']	;	
+					$UsernameEmail=$row['field_email']	;	
+					$Username=$row['field_username']	;		
 					
 
-					include "../mail/mail_regoffice.php";
+					include "../mail/SendEmail.php";
 					if(!$mail->send()) {
 		    		$insertMsg="Register Successfully ..... Pesan idak dapat dikirim.".$mail->ErrorInfo;    				
 					} else {
@@ -228,7 +231,7 @@ if(isset($_REQUEST['btn_insert']))
 
 					//$insertMsg="Insert Successfully"; //execute query success message
 					
-					echo '<META HTTP-EQUIV="Refresh" Content="3;">';				
+					echo '<META HTTP-EQUIV="Refresh" Content="10;">';				
 				}
 					
 			}
