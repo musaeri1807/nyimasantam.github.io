@@ -1150,98 +1150,8 @@ $menu = $Stmtmenu->fetchAll();
           $(".fee_rp").text("Rp." + formatNumber(f) + ",-");
           $(".total_fee_rp").val(f);
 
-          $(".total_gold").text(g.toFixed(6) + ",gr");
+          $(".total_gold").text(g.toFixed(6) + ",gram");
           $(".gold_form").val(g.toFixed(6));
-
-
-          // kosongkan
-          $("#tambahkan_id").val("");
-          $("#tambahkan_kode").val("");
-          $("#tambahkan_nama").val("");
-          $("#tambahkan_harga").val("");
-          $("#tambahkan_jumlah").val("");
-          $("#tambahkan_total").val("")
-        }
-
-      });
-
-      // tombol tambahkan Emas
-      $("body").on("click", "#tombol-tambahkan-emas", function() {
-
-        var id = $("#tambahkan_id").val();
-        var kode = $("#tambahkan_kode").val();
-        var nama = $("#tambahkan_nama").val();
-        var harga = $("#tambahkan_harga").val();
-        var jumlah = $("#tambahkan_jumlah").val();
-        var total = $("#tambahkan_total").val();
-
-
-        if (id.length == 0) {
-          alert("Product belum dipilih");
-        } else if (kode.length == 0) {
-          alert("Kode produk harus diisi");
-        } else if (jumlah == 0) {
-          alert("Jumlah harus lebih besar dari 0");
-        } else {
-          var table_pembelian = "<tr id='tr_" + id + "'>" +
-            "<td> <input  type='hidden' name='transaksi_produk[]' value='" + id + "'> <input type='hidden'  name='transaksi_harga[]' value='" + harga + "'> <input type='hidden' name='transaksi_jumlah[]' value='" + jumlah + "'> <input type='hidden' name='transaksi_total[]' value='" + total + "'>" +
-            kode +
-            "</td>" +
-            "<td>" + nama + "</td>" +
-            "<td align='center'>" + formatNumber(harga) + " gr</td>" +
-            "<td align='center'>" + formatNumber(jumlah) + "</td>" +
-            "<td align='center'>" + formatNumber(total) + " gr</td>" +
-            "<td align='center'> <span class='btn btn-danger tombol-hapus-penjualan' total='" + total + "' jumlah='" + jumlah + "' harga='" + harga + "' id='" + id + "'><i class='fa fa-close'></i> Batal</span></td>" +
-            "</tr>";
-          $("#table-pembelian tbody").append(table_pembelian);
-
-          var pricegold = $(".goldprice").attr("id");
-          var fee = $(".total_fee").attr("id");
-          // update total pembelian
-          var pembelian_harga = $(".pembelian_harga").attr("id");
-          var pembelian_jumlah = $(".pembelian_jumlah").attr("id");
-          var pembelian_total = $(".pembelian_total").attr("id");
-
-          // jumlahkan pembelian
-          var jumlahkan_harga = eval(pembelian_harga) + eval(harga);
-          var jumlahkan_jumlah = eval(pembelian_jumlah) + eval(jumlah);
-          var jumlahkan_total = eval(pembelian_total) + eval(total);
-
-          //gold
-          // var f = jumlahkan_total * fee / 100;
-          // var e = jumlahkan_total - f;
-          // var g = e / pricegold;
-
-          // isi di table penjualan
-          $(".pembelian_harga").attr("id", jumlahkan_harga);
-          $(".pembelian_jumlah").attr("id", jumlahkan_jumlah);
-          $(".pembelian_total").attr("id", jumlahkan_total);
-
-          // tulis di table penjualan
-          $(".pembelian_harga").text("" + formatNumber(jumlahkan_harga) + " gr");
-          $(".pembelian_jumlah").text(formatNumber(jumlahkan_jumlah));
-          $(".pembelian_total").text("" + formatNumber(jumlahkan_total) + " gr");
-
-          // total
-          $(".total_pembelian").text(" " + formatNumber(jumlahkan_total) + " gr");
-          $(".sub_total_pembelian").text(" " + formatNumber(jumlahkan_total) + " gr");
-          $(".total_pembelian").attr("id", jumlahkan_total);
-          $(".sub_total_pembelian").attr("id", jumlahkan_total);
-
-          $(".sub_total_form").val(jumlahkan_total);
-          //$(".total_form").val(jumlahkan_total);  
-          // $(".total_form").val(e);
-          // $(".total_pembelian").text(" " + formatNumber(e) + " gr");
-
-
-          // //gold
-          // $(".total_fee").val(fee);
-          // $(".fee").text(formatNumber(fee) + "%");
-          // $(".fee_rp").text("Rp." + formatNumber(f) + ",-");
-          // $(".total_fee_rp").val(f);
-
-          // $(".total_gold").text(g.toFixed(6) + ",gr");
-          // $(".gold_form").val(g.toFixed(6));
 
 
           // kosongkan
@@ -1287,13 +1197,13 @@ $menu = $Stmtmenu->fetchAll();
         $(".pembelian_total").attr("id", kurangi_total);
 
         // tulis di table penjualan
-        $(".pembelian_harga").text("" + formatNumber(kurangi_harga) + " gr");
+        $(".pembelian_harga").text("Rp." + formatNumber(kurangi_harga) + ",-");
         $(".pembelian_jumlah").text(formatNumber(kurangi_jumlah));
-        $(".pembelian_total").text("" + formatNumber(kurangi_total) + " gr");
+        $(".pembelian_total").text("Rp." + formatNumber(kurangi_total) + ",-");
 
         // total
-        $(".total_pembelian").text(" " + formatNumber(kurangi_total) + " gr");
-        $(".sub_total_pembelian").text(" " + formatNumber(kurangi_total) + " gr");
+        $(".total_pembelian").text("Rp." + formatNumber(kurangi_total) + ",-");
+        $(".sub_total_pembelian").text("Rp." + formatNumber(kurangi_total) + ",-");
         $(".total_pembelian").attr("id", kurangi_total);
         $(".sub_total_pembelian").attr("id", kurangi_total);
 
@@ -1303,13 +1213,13 @@ $menu = $Stmtmenu->fetchAll();
         $(".sub_total_form").val(kurangi_total);
         //$(".total_form").val(jumlahkan_total);  
         $(".total_form").val(e);
-        $(".total_pembelian").text(" " + formatNumber(e) + " gr");
+        $(".total_pembelian").text("Rp." + formatNumber(e) + ",-");
 
         //gold
         $(".fee_rp").text("Rp." + formatNumber(f) + ",-");
         $(".total_fee_rp").val(f);
 
-        $(".total_gold").text(g.toFixed(6) + ",gr");
+        $(".total_gold").text(g.toFixed(6) + ",gram");
         $(".gold_form").val(g.toFixed(6));
 
 

@@ -297,9 +297,9 @@ $goldprice    = $ResultGold['field_sell'];
 		echo '<div class            = "alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
 		//echo '<META HTTP-EQUIV="Refresh" Content="1">';
 		if ($_SERVER['SERVER_NAME'] == 'localhost') {
-			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=adddeposit">';
+			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=purchase">';
 		} else {
-			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=adddeposit">';
+			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=purchase">';
 		}
 	}
 	if (isset($Msg)) {

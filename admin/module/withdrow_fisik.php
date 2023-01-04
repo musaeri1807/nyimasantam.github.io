@@ -99,7 +99,7 @@ if (isset($_REQUEST['payment'])) {
           # code...
           // echo $field_no_referensi;
           // die();
-          $insert = $db->prepare('INSERT INTO tbldeposit (
+          $insert = $db->prepare('INSERT INTO tblwithdraw (
                 field_no_referensi,
                 field_date_deposit,
                 field_rekening_deposit,
@@ -156,7 +156,7 @@ if (isset($_REQUEST['payment'])) {
               $t_jumlah   = $transaksi_jumlah[$a];
               $t_total    = $transaksi_total[$a];
 
-              $insert = $db->prepare('INSERT INTO tbldepositdetail( 
+              $insert = $db->prepare('INSERT INTO tblwithdrawdetail( 
                                                               field_trx_deposit,
                                                               field_product,
                                                               field_price_product,
@@ -212,7 +212,7 @@ if (isset($_REQUEST['payment'])) {
             ':rekening'           => $field_rekening_deposit,
             ':tanggal_saldo'      => $field_date_deposit,
             ':times'              => $time,
-            ':type_saldo'         => 100,
+            ':type_saldo'         => 200,
             ':kredit_saldo'       => $field_deposit_gold,
             ':total_saldo'        => $saldoAkhir,
             ':status'              => "S"
@@ -238,32 +238,36 @@ $Result = $Stmt->fetchAll();
 
 
 
-if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
+// if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
 
-  $Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
-  LEFT JOIN tblbranch B
-  ON P.field_branch=B.field_branch_id 
-  WHERE field_status='A'
-  ORDER BY P.field_product_id DESC ";
+//   $Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
+//   LEFT JOIN tblbranch B
+//   ON P.field_branch=B.field_branch_id 
+//   WHERE field_status='A'
+//   ORDER BY P.field_product_id DESC ";
 
-  $Stmt = $db->prepare($Sql);
-  $Stmt->execute();
-  $result = $Stmt->fetchAll();
-} else {
+//   $Stmt = $db->prepare($Sql);
+//   $Stmt->execute();
+//   $result = $Stmt->fetchAll();
+// } else {
 
-  $Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
-  LEFT JOIN tblbranch B
-  ON P.field_branch=B.field_branch_id 
-  WHERE field_status='A'
-  AND P.field_branch=:idbranch
-  ORDER BY P.field_product_id DESC ";
+//   $Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
+//   LEFT JOIN tblbranch B
+//   ON P.field_branch=B.field_branch_id 
+//   WHERE field_status='A'
+//   AND P.field_branch=:idbranch
+//   ORDER BY P.field_product_id DESC ";
 
 
-  $Stmt = $db->prepare($Sql);
-  $Stmt->execute(array(":idbranch" => $branchid));
-  $result = $Stmt->fetchAll();
-}
+//   $Stmt = $db->prepare($Sql);
+//   $Stmt->execute(array(":idbranch" => $branchid));
+//   $result = $Stmt->fetchAll();
+// }
 
+$Sql    = "SELECT * FROM tblgoldbar ";
+$Stmt = $db->prepare($Sql);
+$Stmt->execute();
+$result = $Stmt->fetchAll();
 
 
 
@@ -304,7 +308,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
             <!-- <h3 class="box-title"></h3> -->
             <!-- <a href="" class="btn btn-success btn-block margin-bottom">Search Product</a> -->
             <button style="margin-top: 27px" type="button" class="btn btn-success btn-block margin-bottom" data-toggle="modal" data-target="#cariProduk">
-              <i class="fa fa-search"></i> &nbsp Cari Produk
+              <i class="fa fa-search"></i> &nbsp Cari Emas
             </button>
             <div class="box-tools">
               <!-- Modal -->
@@ -326,13 +330,9 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                           <thead>
                             <tr>
                               <th class="text-center">No</th>
-                              <th>Kode</th>
-                              <th>Produk</th>
-                              <th class="text-center">Cabang</th>
-                              <th class="text-center">Unit</th>
-                              <th class="text-center">Harga</th>
-                              <th class="text-center">Approval</th>
-                              <th>Note</th>
+                              <th>Nama</th>
+                              <th>Berat</th>
+                              <th class="text-center">Status</th>
                               <th></th>
                             </tr>
                           </thead>
@@ -343,38 +343,27 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                             ?>
                               <tr>
                                 <td width="1%" class="text-center"><?php echo $no++; ?></td>
-                                <td width="1%"><?php echo $rows['field_product_code']; ?></td>
-                                <td>
-                                  <?php echo $rows['field_product_name']; ?>
-                                  <br>
-                                  <small class="text-muted"><?php echo $rows['field_category']; ?></small>
-                                </td>
-                                <td width="1%" class="text-center"><?php echo $rows['field_branch_name']; ?></td>
-                                <td width="1%" class="text-center"><?php echo $rows['field_unit']; ?></td>
-                                <td width="20%" class="text-center"><?php echo $rows['field_price']; ?></td>
-                                <td width="15%">
+                                <td width="1%"><?php echo $rows['Name']; ?></td>
+                                <td width="1%"><?php echo $rows['Berat']; ?></td>
+
+                                <td width="1%">
 
                                   <?php
 
-                                  if ($rows["field_status"] == "A") {
-                                    echo '<span class="badge btn-success text-white">Approve</span>';
-                                  } elseif ($rows["field_status"] == "C") {
+                                  if ($rows["Status"] == "Y") {
+                                    echo '<span class="badge btn-success text-white">Ready</span>';
+                                  } elseif ($rows["field_status"] == "N") {
                                     echo '<span class="badge btn-info text-white">Cancel</span>';
-                                  } elseif ($rows["field_status"] == "P") {
-                                    echo '<span class="badge btn-warning text-white">Pending</span>';
-                                  } elseif ($rows["field_status"] == "R") {
-                                    echo '<span class="badge btn-danger text-white">Reject</span>';
                                   }
                                   ?>
 
                                 </td>
-                                <td width="15%"><?php echo $rows['field_note']; ?></td>
                                 <td width="1%">
 
-                                  <input type="hidden" id="kode_<?php echo $rows['field_product_id']; ?>" value="<?php echo $rows['field_product_code']; ?>">
-                                  <input type="hidden" id="nama_<?php echo $rows['field_product_id']; ?>" value="<?php echo $rows['field_product_name']; ?>">
-                                  <input type="hidden" id="harga_<?php echo $rows['field_product_id']; ?>" value="<?php echo $rows['field_price']; ?>">
-                                  <button type="button" class="btn btn-warning modal-pilih-produk" id="<?php echo $rows['field_product_id']; ?>" data-dismiss="modal">Pilih</button>
+                                  <input type="hidden" id="kode_<?php echo $rows['id']; ?>" value="<?php echo $rows['Berat']; ?>">
+                                  <input type="hidden" id="nama_<?php echo $rows['id']; ?>" value="<?php echo $rows['Name']; ?>">
+                                  <input type="hidden" id="harga_<?php echo $rows['id']; ?>" value="<?php echo $rows['Berat']; ?>">
+                                  <button type="button" class="btn btn-warning modal-pilih-produk" id="<?php echo $rows['id']; ?>" data-dismiss="modal">Pilih</button>
 
                                 </td>
                               </tr>
@@ -393,16 +382,16 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
           <div class="box-body no-padding">
             <ul class="nav nav-pills nav-stacked">
               <li><a><input type="hidden" class="form-control" id="tambahkan_id"></a></li>
-              <li><a><input type="text" class="form-control" placeholder="Code Product" id="tambahkan_kode" readonly></a></li>
+              <li><a><input type="text" class="form-control" placeholder="Kode Product" id="tambahkan_kode" readonly></a></li>
               <li><a><input type="text" class="form-control" placeholder="Name Product" id="tambahkan_nama" readonly></a></li>
-              <li><a><input type="text" name="" class="form-control" placeholder="Price" id="tambahkan_harga" readonly></a></li>
+              <li><a><input type="text" name="" class="form-control" placeholder="Berat" id="tambahkan_harga" readonly></a></li>
               <li><a><input type="number" name="" class="form-control" placeholder="Qty" id="tambahkan_jumlah"></a></li>
               <li><a><input type="text" name="" class="form-control" placeholder="Total" id="tambahkan_total" readonly></a></li>
             </ul>
           </div>
           <!-- /.box-body -->
         </div>
-        <a href="#" class="btn btn-primary btn-block margin-bottom" id="tombol-tambahkan">Tambah </a>
+        <a href="#" class="btn btn-primary btn-block margin-bottom" id="tombol-tambahkan-emas">Tambah </a>
         <!-- /.box -->
       </div>
       <!-- /.col transaksi-->
@@ -514,9 +503,9 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                 <table class="table table-bordered table-striped table-hover" id="table-pembelian">
                   <thead>
                     <tr>
-                      <th>Code</th>
+                      <th>Kode</th>
                       <th>Product</th>
-                      <th style="text-align: center;">Price</th>
+                      <th style="text-align: center;">Berat</th>
                       <th style="text-align: center;">Qty</th>
                       <th style="text-align: center;">Total</th>
                       <th width="1%" style="text-align: center;">Action</th>
@@ -533,9 +522,9 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                   <tfoot>
                     <tr class="bg-info">
                       <td style="text-align: right;" colspan="2"><b>Total</b></td>
-                      <td style="text-align: center;"><span class="pembelian_harga" id="0">Rp.0,-</span></td>
+                      <td style="text-align: center;"><span class="pembelian_harga" id="0">0,-</span></td>
                       <td style="text-align: center;"><span class="pembelian_jumlah" id="0">0</span></td>
-                      <td style="text-align: center;"><span class="pembelian_total" id="0">Rp.0,-</span></td>
+                      <td style="text-align: center;"><span class="pembelian_total" id="0">0,-</span></td>
                       <td style="text-align: center;"></td>
                     </tr>
                   </tfoot>
@@ -581,36 +570,27 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                 <div class="table-responsive">
                   <table class="table">
                     <tr>
-                      <th style="width:50%">Subtotal:</th>
+                      <th style="width:50%">Total:</th>
                       <td>
-                        <input type="text" name="txt_subtotal" class="sub_total_form" value="0" readonly>
-                        <span class="sub_total_pembelian" id="0">Rp.0,-</span>
+                        <input type="hidden" name="txt_subtotal" class="sub_total_form" value="0" readonly>
+                        <span class="sub_total_pembelian" id="0"> 0 gr</span>
                       </td>
                     </tr>
-                    <tr>
-                      <th id="txt_persen">Oprasional free (5%)</th>
-                      <td>
-                        <input class="total_fee" type="number" min="0" max="100" id="5" name="txt_free" readonly>
-                        <span class="fee" id="0">0%</span>
 
-                        <input class="total_fee_rp" type="text" value="0" id="5" name="txt_free_rp" readonly>
-                        <span class="fee_rp" id="0">Rp.0,-</span>
-                      </td>
-                    </tr>
-                    <tr>
+                    <!-- <tr>
                       <th>Total</th>
                       <td>
                         <input type="text" name="txt_total" class="total_form" value="0" readonly>
-                        <span class="total_pembelian" id="0">Rp.0,-</span>
+                        <span class="total_pembelian" id="0">0 gr</span>
                       </td>
-                    </tr>
-                    <tr>
-                      <th>Gold Nasabah</th>
+                    </tr> -->
+                    <!-- <tr>
+                      <th>Saldo Nasabah</th>
                       <td>
                         <input type="text" name="txt_gold" class="gold_form" value="0" readonly>
-                        <span class="total_gold" id="0">0,Gram</span>
+                        <span class="total_gold" id="0">0,gr</span>
                       </td>
-                    </tr>
+                    </tr> -->
                   </table>
                 </div>
               </div>
