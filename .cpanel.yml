@@ -5,3 +5,7 @@ deployment:
     - /bin/cp -R admin $DEPLOYPATH
     - /bin/cp .cpanel.yml $DEPLOYPATH    
     - /bin/cp .htaccess $DEPLOYPATH
+    - /bin/cp activasipdf.php $DEPLOYPATH
+    - /bin/cp export_mutasi.php $DEPLOYPATH
+    - /bin/cp export_trash.php $DEPLOYPATH
+    - /bin/cp index.php $DEPLOYPATH
