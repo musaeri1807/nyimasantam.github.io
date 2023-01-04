@@ -5,4 +5,5 @@ deployment:
     - /bin/cp -R admin $DEPLOYPATH
     - /bin/cp .cpanel.yml $DEPLOYPATH    
     - /bin/cp .htaccess $DEPLOYPATH
+    - /bin/cp depositcustomerpdf.php $DEPLOYPATH
     - /bin/cp index.php $DEPLOYPATH
