@@ -3,3 +3,5 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/u1733358/public_html/admins.bspid.id
     - /bin/cp -R admin $DEPLOYPATH
+    - /bin/cp .cpanel.yml $DEPLOYPATH    
+    - /bin/cp .htaccess $DEPLOYPATH
