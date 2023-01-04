@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/u1733358/public_html/admins.bspid.id/
+    - export DEPLOYPATH=/home/u1733358/public_html/admins
     - /bin/cp -R admin $DEPLOYPATH
     - /bin/cp -R Classes $DEPLOYPATH
     - /bin/cp -R config $DEPLOYPATH 
