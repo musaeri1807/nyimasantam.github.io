@@ -208,9 +208,14 @@ if (isset($_REQUEST['btn_insert'])) {
 		}
 	}
 }
-$Stmt = $db->prepare("SELECT N.id_Nasabah,N.id_UserLogin,N.No_Rekening AS REKENING ,U.field_nama AS NAMA,U.field_member_id AS IDMEMEBER
-FROM tblnasabah N JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id 
-ORDER BY N.id_Nasabah DESC");
+
+$Stmt = $db->prepare("SELECT DISTINCT(field_rekening),(SELECT S1.field_total_saldo FROM tbltrxmutasisaldo S1 WHERE S1.field_rekening = S2.field_rekening AND S1.field_status='S' ORDER BY S1.field_id_saldo DESC LIMIT 1)  
+AS SALDO,U.field_nama AS NAMA,U.field_member_id AS MEMBERID,B.field_branch_name AS BRANCH, U.field_user_id AS ID 
+            FROM tbltrxmutasisaldo S2 
+            JOIN tbluserlogin U ON S2.field_member_id = U.field_member_id
+            JOIN tblnasabah N ON U.field_user_id=N.id_UserLogin
+            JOIN tblbranch B ON U.field_branch=B.field_branch_id
+            ORDER BY S2.field_id_saldo DESC");
 $Stmt->execute();
 $DataNasabah = $Stmt->fetchAll();
 
@@ -264,7 +269,7 @@ $goldprice    = $ResultGold['field_sell'];
 						<div class="form-group">
 							<label class="col-sm-3 control-label">Saldo</label>
 							<div class="col-sm-3">
-								<input type="text" name="txt_saldo" id="Saldo" class="form-control" placeholder="Saldo" value="10" readonly>
+								<input type="text" name="txt_saldo" id="add_saldo" class="form-control" placeholder="Saldo" readonly>
 							</div>
 						</div>
 
@@ -377,6 +382,7 @@ $goldprice    = $ResultGold['field_sell'];
 													<th class="text-center">No</th>
 													<th class="text-center">Rekening</th>
 													<th class="text-center">Nasabah</th>
+													<th class="text-center">Saldo</th>
 
 													<th></th>
 												</tr>
@@ -388,14 +394,15 @@ $goldprice    = $ResultGold['field_sell'];
 												?>
 													<tr>
 														<td width="1%" class="text-center"><?php echo $no++; ?></td>
-														<td width="20%"><?php echo $Nasabah['REKENING']; ?></td>
+														<td width="20%"><?php echo $Nasabah['field_rekening']; ?></td>
 														<td width="20%"><?php echo $Nasabah['NAMA']; ?> </td>
+														<td width="20%"><?php echo $Nasabah['SALDO']; ?> </td>
 														<td width="1%">
-															<input type="number" id="member_<?php echo $Nasabah['id_Nasabah']; ?>" value="<?php echo $Nasabah['IDMEMEBER']; ?>">
-															<input type="number" id="account_<?php echo $Nasabah['id_Nasabah']; ?>" value="<?php echo $Nasabah['REKENING']; ?>">
-															<input type="text" id="customer_<?php echo $Nasabah['id_Nasabah']; ?>" value="<?php echo $Nasabah['NAMA']; ?>">
-
-															<button type="button" class="btn btn-info modal-select-customer" id="<?php echo $Nasabah['id_Nasabah']; ?>" data-dismiss="modal">Pilih</button>
+															<input type="number" id="member_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['MEMBERID']; ?>">
+															<input type="number" id="account_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['field_rekening']; ?>">
+															<input type="text" id="customer_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['NAMA']; ?>">
+															<input type="text" id="saldo_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['SALDO']; ?>">
+															<button type="button" class="btn btn-info modal-select-customer" id="<?php echo $Nasabah['ID']; ?>" data-dismiss="modal">Pilih</button>
 
 														</td>
 													</tr>

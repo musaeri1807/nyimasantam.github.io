@@ -71,7 +71,7 @@ if (isset($_REQUEST['payment2'])) {
 	// $field_operation_fee_rp   = $_POST['txt_free_rp'];
 	$field_total_deposit      = $_POST['txt_total'];
 	$field_deposit_gold       = $_POST['txt_gold'];
-	$field_gold_price         = 9000000;
+	$field_gold_price         = $_POST['txt_goldprice'];
 
 	$transaksi_produk1        = 7;
 	$transaksi_harga1         = $field_sub_total;
@@ -85,7 +85,7 @@ if (isset($_REQUEST['payment2'])) {
 
 	if (empty($memberid)) {
 		$errorMsg             = "Member ID Belum Ada";
-	} else if (empty($field_gold_price)) {
+	} else if ($field_gold_price == 0) {
 		$errorMsg             = "Harga Emas Belum Update";
 	} else if ($field_deposit_gold == "Infinity") {
 		$errorMsg             = "Harga Emas Belum Update";
@@ -365,7 +365,7 @@ $goldprice    = $ResultGold['field_sell'];
 									echo '<div class= "alert alert-danger"><strong>Harga Hari ini Belum Update</strong></div>';
 								}
 								?>
-								<input type="hidden" id="Hargagold" name="txt_gold" class="form-control" value="<?php echo $goldprice; ?>">
+								<input type="hidden" id="Hargagold" name="txt_goldprice" class="form-control" value="<?php echo $goldprice; ?>">
 								<span class="goldprice" id="<?php echo $goldprice; ?>"><?php echo rupiah($goldprice); ?></span>
 							</div>
 

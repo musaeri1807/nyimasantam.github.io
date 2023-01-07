@@ -45,23 +45,20 @@ $goldprice    = $ResultGold['field_sell'];
 // echo $goldprice;
 // die();
 
-if (isset($_REQUEST['payment'])) {
+if (isset($_REQUEST['InsertData'])) {
 
   $memberid                 = $_REQUEST['txt_memberid'];
   $field_no_referensi       = $noReff;
-  $field_date_deposit       = date('Y-m-d');
+  $field_date_withdraw      = date('Y-m-d');
   $time                     = date('H:i:s');
-  $field_rekening_deposit   = $_POST['txt_rekening'];
-  $field_sumber_dana        = $_POST['txt_select'];
+  $field_rekening_withdraw  = $_POST['txt_rekening'];
+  $field_type_withdraw      = $_POST['txt_select'];
   $field_branch             = $branchid;
   $field_officer_id         = $rows['field_user_id'];
-  $field_sub_total          = $_POST['txt_subtotal'];
-  $field_operation_fee      = $_POST['txt_free'];
-  $field_operation_fee_rp   = $field_sub_total * $field_operation_fee / 100;
-  $field_operation_fee_rp   = $_POST['txt_free_rp'];
-  $field_total_deposit      = $_POST['txt_total'];
-  $field_deposit_gold       = $_POST['txt_gold'];
-  $field_gold_price         = $goldprice;
+  $field_gold_price         = $_POST['txt_pricegold'];
+  $saldo                    = $_POST['txt_saldo'];
+  $field_withdraw_gold      = $_POST['txt_total'];
+  $field_rp_withdraw        = $field_withdraw_gold * $goldprice;
 
   $transaksi_produk         = $_POST['transaksi_produk'];
   $transaksi_harga          = $_POST['transaksi_harga'];
@@ -69,83 +66,76 @@ if (isset($_REQUEST['payment'])) {
   $transaksi_total          = $_POST['transaksi_total'];
 
 
-
   if (empty($memberid)) {
     $errorMsg             = "Member ID Belum Ada";
   } else if (empty($field_gold_price)) {
     $errorMsg             = "Harga Emas Belum Update";
-  } else if ($field_deposit_gold == "Infinity") {
+  } else if ($field_gold_price == 0) {
     $errorMsg             = "Harga Emas Belum Update";
+  } else if ($saldo < $field_withdraw_gold) {
+    $errorMsg             = "Saldo Anda Kurang";
   } else {
     try {
       $query2         = "SELECT field_status FROM tbltrxmutasisaldo WHERE field_rekening =:rekening ORDER BY field_id_saldo DESC LIMIT 1";
       $select2        = $db->prepare($query2);
-      $select2->execute(array(':rekening' => $field_rekening_deposit));
+      $select2->execute(array(':rekening' => $field_rekening_withdraw));
       $result2        = $select2->fetch(PDO::FETCH_ASSOC);
       // echo "SELECT DATA SALDO";
       if ($result2['field_status'] !== "P") {
-        # code...
-
         $query        = "SELECT * FROM tbltrxmutasisaldo WHERE field_rekening =:rekening  AND field_status='S' ORDER BY field_id_saldo DESC LIMIT 1";
         $select       = $db->prepare($query);
-        $select->execute(array(':rekening' => $field_rekening_deposit));
+        $select->execute(array(':rekening' => $field_rekening_withdraw));
         $result       = $select->fetch(PDO::FETCH_ASSOC);
         $saldoAwal    = $result['field_total_saldo'];
-        $saldoAkhir   = $saldoAwal + $field_deposit_gold;
+        $saldoAkhir   = $saldoAwal - $field_withdraw_gold;
         $data         = $select->rowCount();
 
         // echo $data    = $select2->rowCount();
         if ($data = 1) { //memastikan rekening hanya satu yang ter insert
           # code...
-          // echo $field_no_referensi;
-          // die();
           $insert = $db->prepare('INSERT INTO tblwithdraw (
                 field_no_referensi,
-                field_date_deposit,
-                field_rekening_deposit,
-                field_sumber_dana,
+                field_date_withdraw,
+                field_rekening_withdraw,
+                field_type_withdraw,
                 field_branch,
                 field_officer_id,
-                field_sub_total,
-                field_operation_fee,
-                field_operation_fee_rp,
-                field_total_deposit,
-                field_deposit_gold,
                 field_gold_price,
+                
+                field_withdraw_gold,
+                field_rp_withdraw,
+            
                 field_status,
                 field_approve) 
               VALUES(   
                 :no_referensi,
-                :date_deposit,
-                :rekening_deposit,
-                :sumber_dana,
+                :date_withdraw,
+                :rekening_withdraw,
+                :type_withdraw,
                 :branch,
                 :officer_id,
-                :sub_total,
-                :operation_fee,
-                :operation_fee_rp,
-                :total_deposit,
-                :deposit_gold,
                 :gold_price,
+
+                :withdraw_gold,
+                :rp_withdraw,
+
                 :ustatus,
                 :approval)');
 
           $insert->execute(array(
-            ':no_referensi'       => $field_no_referensi,
-            ':date_deposit'       => $field_date_deposit,
-            ':rekening_deposit'   => $field_rekening_deposit,
-            ':sumber_dana'        => $field_sumber_dana,
-            ':branch'             => $field_branch,
-            ':officer_id'         => $field_officer_id,
-            ':sub_total'          => $field_sub_total,
-            ':operation_fee'      => $field_operation_fee,
-            ':operation_fee_rp'   => $field_operation_fee_rp,
-            ':total_deposit'      => $field_total_deposit,
-            ':deposit_gold'       => $field_deposit_gold,
-            ':gold_price'         => $field_gold_price,
+            ':no_referensi'        => $field_no_referensi,
+            ':date_withdraw'       => $field_date_withdraw,
+            ':rekening_withdraw'   => $field_rekening_withdraw,
+            ':type_withdraw'       => $field_type_withdraw,
+            ':branch'              => $field_branch,
+            ':officer_id'          => $field_officer_id,
+            ':gold_price'          => $field_gold_price,
+            ':withdraw_gold'       => $field_withdraw_gold,
+            ':rp_withdraw'         => $field_rp_withdraw,
             ':ustatus'             => "S",
-            ':approval'           => $field_officer_id
+            ':approval'            => $field_officer_id
           ));
+
           $id = $db->lastinsertid();
           if ($id) {
             $jumlah_pembelian = count($transaksi_produk);
@@ -157,11 +147,11 @@ if (isset($_REQUEST['payment'])) {
               $t_total    = $transaksi_total[$a];
 
               $insert = $db->prepare('INSERT INTO tblwithdrawdetail( 
-                                                              field_trx_deposit,
+                                                              field_trx_withdraw,
                                                               field_product,
-                                                              field_price_product,
+                                                              field_berat,
                                                               field_quantity,
-                                                              field_total_price) 
+                                                              field_total_berat) 
                                                       VALUES( :trx_deposit,
                                                               :product,
                                                               :price_product,
@@ -190,7 +180,7 @@ if (isset($_REQUEST['payment'])) {
               field_tanggal_saldo,
               field_time,
               field_type_saldo,
-              field_kredit_saldo,
+              field_debit_saldo,
               field_total_saldo,
               field_status) 
                         VALUES 
@@ -202,27 +192,26 @@ if (isset($_REQUEST['payment'])) {
               :tanggal_saldo,    
               :times,
               :type_saldo,
-              :kredit_saldo,
+              :debit_saldo,
               :total_saldo,
               :status)');
           $in->execute(array(
             ':trx_id'             => $id,
             ':memberid'           => $memberid,
             ':no_referensi'       => $field_no_referensi,
-            ':rekening'           => $field_rekening_deposit,
-            ':tanggal_saldo'      => $field_date_deposit,
+            ':rekening'           => $field_rekening_withdraw,
+            ':tanggal_saldo'      => $field_date_withdraw,
             ':times'              => $time,
             ':type_saldo'         => 200,
-            ':kredit_saldo'       => $field_deposit_gold,
+            ':debit_saldo'        => $field_withdraw_gold,
             ':total_saldo'        => $saldoAkhir,
-            ':status'              => "S"
+            ':status'             => "S"
           ));
           $Msg      = " Transaction Saldo Successfully"; //execute query success message
         } else {
           $errorMsg = "Rekening lebih dari Satu";
         }
       } else {
-
         $errorMsg     = "Transaksi Sebelumnya Masih Pending";
       }
     } catch (PDOException $e) {
@@ -231,10 +220,15 @@ if (isset($_REQUEST['payment'])) {
   }
 }
 
-$Stmt = $db->prepare("SELECT * FROM tblnasabah N JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id");
+$Stmt = $db->prepare("SELECT DISTINCT(field_rekening),(SELECT S1.field_total_saldo FROM tbltrxmutasisaldo S1 WHERE S1.field_rekening = S2.field_rekening AND S1.field_status='S' ORDER BY S1.field_id_saldo DESC LIMIT 1)  
+AS SALDO,U.field_nama AS NAMA,U.field_member_id AS MEMBERID,B.field_branch_name AS BRANCH, U.field_user_id AS ID 
+            FROM tbltrxmutasisaldo S2 
+            JOIN tbluserlogin U ON S2.field_member_id = U.field_member_id
+            JOIN tblnasabah N ON U.field_user_id=N.id_UserLogin
+            JOIN tblbranch B ON U.field_branch=B.field_branch_id
+            ORDER BY S2.field_id_saldo DESC");
 $Stmt->execute();
-$Result = $Stmt->fetchAll();
-
+$DataNasabah = $Stmt->fetchAll();
 
 
 
@@ -284,18 +278,18 @@ $result = $Stmt->fetchAll();
     echo '<div class            = "alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
     //echo '<META HTTP-EQUIV="Refresh" Content="1">';
     if ($_SERVER['SERVER_NAME'] == 'localhost') {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=adddeposit">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=withdrowsfisik">';
     } else {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=adddeposit">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=withdrowsfisikadddeposit">';
     }
   }
   if (isset($Msg)) {
     echo '<div class            = "alert alert-success"><strong>SUCCESS !' . $Msg . '</strong></div>';
     //echo '<META HTTP-EQUIV="Refresh" Content="1">';
     if ($_SERVER['SERVER_NAME'] == 'localhost') {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=deposit">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=withdrowsfisik">';
     } else {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=deposit">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=withdrowsfisik">';
     }
   }
   ?>
@@ -407,13 +401,10 @@ $result = $Stmt->fetchAll();
                   <div class="row">
 
                     <div class="col-xs-3">
-                      <select class="form-control" name="txt_select" required="required">
-                        <option value="">--Pilih--</option>
-                        <option value="Investasi">Investasi</option>
-                        <option value="Investasi">Sampah</option>
-                        <option value="Gaji">Gaji</option>
-
+                      <select class="form-control" name="txt_select" required="required" hidden>
+                        <option value="201">Cetak Fisik</option>
                       </select>
+                      <input type="text" name="txt_saldo" id="add_saldo" class="form-control" placeholder="Saldo" readonly>
                     </div>
                     <div class="col-xs-3">
                       <input type="text" id="add_id" required="required" class="form-control" placeholder="IdCustomer" readonly>
@@ -472,17 +463,19 @@ $result = $Stmt->fetchAll();
                         <tbody>
                           <?php
                           $no = 1;
-                          foreach ($Result as $rows) {
+                          foreach ($DataNasabah as $Nasabah) {
                           ?>
                             <tr>
                               <td width="1%" class="text-center"><?php echo $no++; ?></td>
-                              <td width="20%"><?php echo $rows['No_Rekening']; ?></td>
-                              <td width="20%"><?php echo $rows['field_nama']; ?> </td>
+                              <td width="20%"><?php echo $Nasabah['field_rekening']; ?></td>
+                              <td width="20%"><?php echo $Nasabah['NAMA']; ?> </td>
+                              <td width="20%"><?php echo $Nasabah['SALDO']; ?> </td>
                               <td width="1%">
-                                <input type="hidden" id="member_<?php echo $rows['id_Nasabah']; ?>" value="<?php echo $rows['field_member_id']; ?>">
-                                <input type="hidden" id="account_<?php echo $rows['id_Nasabah']; ?>" value="<?php echo $rows['No_Rekening']; ?>">
-                                <input type="hidden" id="customer_<?php echo $rows['id_Nasabah']; ?>" value="<?php echo $rows['field_nama']; ?>">
-                                <button type="button" class="btn btn-info modal-select-customer" id="<?php echo $rows['id_Nasabah']; ?>" data-dismiss="modal">Pilih</button>
+                                <input type="number" id="member_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['MEMBERID']; ?>">
+                                <input type="number" id="account_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['field_rekening']; ?>">
+                                <input type="text" id="customer_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['NAMA']; ?>">
+                                <input type="text" id="saldo_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['SALDO']; ?>">
+                                <button type="button" class="btn btn-info modal-select-customer" id="<?php echo $Nasabah['ID']; ?>" data-dismiss="modal">Pilih</button>
 
                               </td>
                             </tr>
@@ -558,7 +551,7 @@ $result = $Stmt->fetchAll();
                 }
                 ?>
                 <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                  <input type="hidden" value="<?php echo $goldprice; ?>">
+                  <input type="hidden" name="txt_pricegold" value="<?php echo $goldprice; ?>">
                   <span class="goldprice" id="<?php echo $goldprice; ?>"><?php echo rupiah($goldprice); ?></span>
                 </p>
 
@@ -572,7 +565,7 @@ $result = $Stmt->fetchAll();
                     <tr>
                       <th style="width:50%">Total:</th>
                       <td>
-                        <input type="hidden" name="txt_subtotal" class="sub_total_form" value="0" readonly>
+                        <input type="hidden" name="txt_total" class="sub_total_form" value="0" readonly>
                         <span class="sub_total_pembelian" id="0"> 0 gr</span>
                       </td>
                     </tr>
@@ -602,7 +595,7 @@ $result = $Stmt->fetchAll();
             <div class="row no-print">
               <div class="col-xs-12">
                 <a href="?module=deposit" class="btn btn-danger"><i class="fa fa-reply "></i> Keluar</a>
-                <button type="Submit" name="payment" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Payment
+                <button type="Submit" name="InsertData" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Simpan
                 </button>
 
               </div>

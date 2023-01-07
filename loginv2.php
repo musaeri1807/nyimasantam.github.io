@@ -237,8 +237,8 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
   <!-- <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="icon">
   <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="apple-touch-icon"> -->
 
-  <link href="image/PT_MSI.png" rel="icon">
-  <link href="image/PT_MSI.png" rel="apple-touch-icon">
+  <link href="image/icon_bspid.png" rel="icon">
+  <link href="image/icon_bspid.png" rel="apple-touch-icon">
 
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
 

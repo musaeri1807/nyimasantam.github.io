@@ -251,6 +251,7 @@ if (isset($_REQUEST['payment'])) {
   }
 }
 
+//Data Nasabah
 $Stmt = $db->prepare("SELECT * FROM tblnasabah N JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id");
 $Stmt->execute();
 $Result = $Stmt->fetchAll();

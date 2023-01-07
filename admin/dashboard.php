@@ -70,8 +70,8 @@ $menu = $Stmtmenu->fetchAll();
   <title>BSP| Dashboard</title>
   <!-- <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="icon">
   <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="apple-touch-icon"> -->
-  <link href="../image/PT_MSI.png" rel="icon">
-  <link href="../image/PT_MSI.png" rel="apple-touch-icon">
+  <link href="../image/icon_bspid.png" rel="icon">
+  <link href="../image/icon_bspid.png" rel="apple-touch-icon">
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -1015,11 +1015,13 @@ $menu = $Stmtmenu->fetchAll();
         var account = $("#account_" + id).val();
         var member = $("#member_" + id).val();
         var customer = $("#customer_" + id).val();
+        var saldo = $("#saldo_" + id).val();
 
         $("#add_id").val(id);
         $("#add_account").val(account);
         $("#add_memberid").val(member);
         $("#add_customer").val(customer);
+        $("#add_saldo").val(saldo);
       });
 
       // pilih produk
@@ -1422,7 +1424,7 @@ $menu = $Stmtmenu->fetchAll();
       $("#Buyback-Rupiah").change(function() {
         var Buyback1 = $("#Buyback-Rupiah").val();
         var PriceGold = $("#Hargagold").val();
-        var SaldoAwal = $("#Saldo").val();
+        var SaldoAwal = $("#add_saldo").val();
 
         // var Buyback_Gold = $("#Hargagold").val();
 
