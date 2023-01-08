@@ -278,18 +278,18 @@ $result = $Stmt->fetchAll();
     echo '<div class            = "alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
     //echo '<META HTTP-EQUIV="Refresh" Content="1">';
     if ($_SERVER['SERVER_NAME'] == 'localhost') {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=withdrowsfisik">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=withdrawsfisik">';
     } else {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=withdrowsfisikadddeposit">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=withdrawsfisik">';
     }
   }
   if (isset($Msg)) {
     echo '<div class            = "alert alert-success"><strong>SUCCESS !' . $Msg . '</strong></div>';
     //echo '<META HTTP-EQUIV="Refresh" Content="1">';
     if ($_SERVER['SERVER_NAME'] == 'localhost') {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=withdrowsfisik">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=withdrawsfisik">';
     } else {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=withdrowsfisik">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=withdrawsfisik">';
     }
   }
   ?>

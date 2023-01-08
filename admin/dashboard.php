@@ -421,7 +421,7 @@ $menu = $Stmtmenu->fetchAll();
         include "module/updadminofficeprofile.php";
       } elseif ($_GET['module'] == "goldbar") {
         include "module/goldbar.php";
-      } elseif ($_GET['module'] == "withdrowsfisik") {
+      } elseif ($_GET['module'] == "withdrawsfisik") {
         include "module/tarik_fisik.php";
       } elseif ($_GET['module'] == "withdraws") {
         include "module/withdraw.php";

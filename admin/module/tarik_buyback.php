@@ -33,17 +33,13 @@ if ($order['field_no_referensi'] == "") {
 	$noReff = $char . sprintf("%09s", $no);
 }
 
-
 $query        = "SELECT * FROM tblgoldprice ORDER BY field_gold_id  DESC LIMIT 1 ";
 $Gold         = $db->prepare($query);
 $Gold->execute(array(":datenow" => $date));
 $ResultGold   = $Gold->fetch(PDO::FETCH_ASSOC);
-$goldprice    = $ResultGold['field_sell'];
+$goldprice    = $ResultGold['field_buyback'];
 
 
-
-// echo $goldprice;
-// die();
 
 if (isset($_REQUEST['btn_buyback'])) {
 
@@ -57,13 +53,17 @@ if (isset($_REQUEST['btn_buyback'])) {
 	$field_officer_id         = $rows['field_user_id'];
 	$field_gold_price         = $_POST['txt_pricegold'];
 	$saldo                    = $_POST['txt_saldo'];
-	$field_withdraw_gold      = $_POST['txt_total'];
-	$field_rp_withdraw        = $field_withdraw_gold * $goldprice;
+	$field_withdraw_gold      = $_POST['txt_buybackgold'];
+	$field_rp_withdraw        = $_POST['txt_buyback'];
 
-	$transaksi_produk         = $_POST['transaksi_produk'];
-	$transaksi_harga          = $_POST['transaksi_harga'];
-	$transaksi_jumlah         = $_POST['transaksi_jumlah'];
-	$transaksi_total          = $_POST['transaksi_total'];
+	$transaksi_produk1        = 0;
+	$transaksi_harga1         = $field_withdraw_gold;
+	$transaksi_jumlah1        = 1;
+	$transaksi_total1         = $field_withdraw_gold;
+
+	// 	echo $transaksi_harga;
+
+
 
 
 	if (empty($memberid)) {
@@ -94,33 +94,33 @@ if (isset($_REQUEST['btn_buyback'])) {
 				if ($data = 1) { //memastikan rekening hanya satu yang ter insert
 					# code...
 					$insert = $db->prepare('INSERT INTO tblwithdraw (
-                field_no_referensi,
-                field_date_withdraw,
-                field_rekening_withdraw,
-                field_type_withdraw,
-                field_branch,
-                field_officer_id,
-                field_gold_price,
-                
-                field_withdraw_gold,
-                field_rp_withdraw,
-            
-                field_status,
-                field_approve) 
-              VALUES(   
-                :no_referensi,
-                :date_withdraw,
-                :rekening_withdraw,
-                :type_withdraw,
-                :branch,
-                :officer_id,
-                :gold_price,
-
-                :withdraw_gold,
-                :rp_withdraw,
-
-                :ustatus,
-                :approval)');
+					field_no_referensi,
+					field_date_withdraw,
+					field_rekening_withdraw,
+					field_type_withdraw,
+					field_branch,
+					field_officer_id,
+					field_gold_price,
+					
+					field_withdraw_gold,
+					field_rp_withdraw,
+				
+					field_status,
+					field_approve) 
+				  VALUES(   
+					:no_referensi,
+					:date_withdraw,
+					:rekening_withdraw,
+					:type_withdraw,
+					:branch,
+					:officer_id,
+					:gold_price,
+	
+					:withdraw_gold,
+					:rp_withdraw,
+	
+					:ustatus,
+					:approval)');
 
 					$insert->execute(array(
 						':no_referensi'        => $field_no_referensi,
@@ -135,66 +135,63 @@ if (isset($_REQUEST['btn_buyback'])) {
 						':ustatus'             => "S",
 						':approval'            => $field_officer_id
 					));
-					die();
+
 					$id = $db->lastinsertid();
 					if ($id) {
-						$jumlah_pembelian = count($transaksi_produk);
-						for ($a = 0; $a < $jumlah_pembelian; $a++) {
 
-							$t_produk   = $transaksi_produk[$a];
-							$t_harga    = $transaksi_harga[$a];
-							$t_jumlah   = $transaksi_jumlah[$a];
-							$t_total    = $transaksi_total[$a];
 
-							$insert = $db->prepare('INSERT INTO tblwithdrawdetail( 
-                                                              field_trx_withdraw,
-                                                              field_product,
-                                                              field_berat,
-                                                              field_quantity,
-                                                              field_total_berat) 
-                                                      VALUES( :trx_deposit,
-                                                              :product,
-                                                              :price_product,
-                                                              :quantity,
-                                                              :total_price)');
+						$t_produk   = $transaksi_produk1;
+						$t_harga    = $transaksi_harga1;
+						$t_jumlah   = $transaksi_jumlah1;
+						$t_total    = $transaksi_total1;
 
-							$insert->execute(array(
-								':trx_deposit'        => $id,
-								':product'            => $t_produk,
-								':price_product'      => $t_harga,
-								':quantity'           => $t_jumlah,
-								':total_price'        => $t_total
-							));
-						} //tutup
+						$insert = $db->prepare('INSERT INTO tblwithdrawdetail( 
+																  field_trx_withdraw,
+																  field_product,
+																  field_berat,
+																  field_quantity,
+																  field_total_berat) 
+														  VALUES( :trx_deposit,
+																  :product,
+																  :price_product,
+																  :quantity,
+																  :total_price)');
 
+						$insert->execute(array(
+							':trx_deposit'        => $id,
+							':product'            => $t_produk,
+							':price_product'      => $t_harga,
+							':quantity'           => $t_jumlah,
+							':total_price'        => $t_total
+						));
 					} else {
 						$errorMsg = "id Deposit Transaksi tidak ditemukan";
 					} //tututp             
 
 					$in = $db->prepare('INSERT INTO tbltrxmutasisaldo 
-                              (
-              field_trx_id,
-              field_member_id,
-              field_no_referensi,
-              field_rekening,
-              field_tanggal_saldo,
-              field_time,
-              field_type_saldo,
-              field_debit_saldo,
-              field_total_saldo,
-              field_status) 
-                        VALUES 
-              (
-              :trx_id,   
-              :memberid,  
-              :no_referensi,
-              :rekening,
-              :tanggal_saldo,    
-              :times,
-              :type_saldo,
-              :debit_saldo,
-              :total_saldo,
-              :status)');
+								  (
+				  field_trx_id,
+				  field_member_id,
+				  field_no_referensi,
+				  field_rekening,
+				  field_tanggal_saldo,
+				  field_time,
+				  field_type_saldo,
+				  field_debit_saldo,
+				  field_total_saldo,
+				  field_status) 
+							VALUES 
+				  (
+				  :trx_id,   
+				  :memberid,  
+				  :no_referensi,
+				  :rekening,
+				  :tanggal_saldo,    
+				  :times,
+				  :type_saldo,
+				  :debit_saldo,
+				  :total_saldo,
+				  :status)');
 					$in->execute(array(
 						':trx_id'             => $id,
 						':memberid'           => $memberid,
@@ -220,6 +217,37 @@ if (isset($_REQUEST['btn_buyback'])) {
 	}
 }
 
+
+
+
+
+if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
+
+	$Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
+  LEFT JOIN tblbranch B
+  ON P.field_branch=B.field_branch_id 
+  WHERE field_status='A'
+  ORDER BY P.field_product_id DESC ";
+
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute();
+	$result = $Stmt->fetchAll();
+} else {
+
+	$Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
+  LEFT JOIN tblbranch B
+  ON P.field_branch=B.field_branch_id 
+  WHERE field_status='A'
+  AND P.field_branch=:idbranch
+  ORDER BY P.field_product_id DESC ";
+
+
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute(array(":idbranch" => $branchid));
+	$result = $Stmt->fetchAll();
+}
+
+
 $Stmt = $db->prepare("SELECT DISTINCT(field_rekening),(SELECT S1.field_total_saldo FROM tbltrxmutasisaldo S1 WHERE S1.field_rekening = S2.field_rekening AND S1.field_status='S' ORDER BY S1.field_id_saldo DESC LIMIT 1)  
 AS SALDO,U.field_nama AS NAMA,U.field_member_id AS MEMBERID,B.field_branch_name AS BRANCH, U.field_user_id AS ID 
             FROM tbltrxmutasisaldo S2 
@@ -231,40 +259,12 @@ $Stmt->execute();
 $DataNasabah = $Stmt->fetchAll();
 
 
-
-// if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
-
-//   $Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
-//   LEFT JOIN tblbranch B
-//   ON P.field_branch=B.field_branch_id 
-//   WHERE field_status='A'
-//   ORDER BY P.field_product_id DESC ";
-
-//   $Stmt = $db->prepare($Sql);
-//   $Stmt->execute();
-//   $result = $Stmt->fetchAll();
-// } else {
-
-//   $Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
-//   LEFT JOIN tblbranch B
-//   ON P.field_branch=B.field_branch_id 
-//   WHERE field_status='A'
-//   AND P.field_branch=:idbranch
-//   ORDER BY P.field_product_id DESC ";
-
-
-//   $Stmt = $db->prepare($Sql);
-//   $Stmt->execute(array(":idbranch" => $branchid));
-//   $result = $Stmt->fetchAll();
-// }
-
-$Sql    = "SELECT * FROM tblgoldbar ";
-$Stmt = $db->prepare($Sql);
-$Stmt->execute();
-$result = $Stmt->fetchAll();
-
-
-
+//Harga Emas
+$query        = "SELECT * FROM tblgoldprice ORDER BY field_gold_id  DESC LIMIT 1 ";
+$Gold         = $db->prepare($query);
+$Gold->execute(array(":datenow" => $date));
+$ResultGold   = $Gold->fetch(PDO::FETCH_ASSOC);
+$goldprice    = $ResultGold['field_buyback'];
 ?>
 <section class="content">
 	<!-- Content -->
@@ -274,18 +274,18 @@ $result = $Stmt->fetchAll();
 		echo '<div class            = "alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
 		//echo '<META HTTP-EQUIV="Refresh" Content="1">';
 		if ($_SERVER['SERVER_NAME'] == 'localhost') {
-			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=withdrowsfisik">';
+			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=buyback">';
 		} else {
-			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=withdrowsfisikadddeposit">';
+			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=buyback">';
 		}
 	}
 	if (isset($Msg)) {
 		echo '<div class            = "alert alert-success"><strong>SUCCESS !' . $Msg . '</strong></div>';
 		//echo '<META HTTP-EQUIV="Refresh" Content="1">';
 		if ($_SERVER['SERVER_NAME'] == 'localhost') {
-			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=withdrowsfisik">';
+			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=buyback">';
 		} else {
-			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=withdrowsfisik">';
+			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=buyback">';
 		}
 	}
 	?>
@@ -352,7 +352,7 @@ $result = $Stmt->fetchAll();
 									echo '<div class= "alert alert-danger"><strong>Harga Hari ini Belum Update</strong></div>';
 								}
 								?>
-								<input type="hidden" id="Hargagold" name="txt_gold" class="form-control" value="<?php echo $goldprice; ?>">
+								<input type="hidden" id="Hargagold" name="txt_pricegold" class="form-control" value="<?php echo $goldprice; ?>">
 								<span class="goldprice" id="<?php echo $goldprice; ?>"><?php echo rupiah($goldprice); ?></span>
 							</div>
 						</div>
@@ -372,7 +372,7 @@ $result = $Stmt->fetchAll();
 									<option id="beli" value="500000">Rp 500.000,-</option>
 									<option id="beli" value="1000000">Rp 1.000.000,-</option>
 								</select>
-								<input type="text" id="Buyback-Gold" class="form-control" readonly>
+								<input type="text" name="txt_buybackgold" id="Buyback-Gold" class="form-control" readonly>
 							</div>
 						</div>
 
