@@ -594,7 +594,7 @@ $result = $Stmt->fetchAll();
             <!-- this row will not appear when printing -->
             <div class="row no-print">
               <div class="col-xs-12">
-                <a href="?module=deposit" class="btn btn-danger"><i class="fa fa-reply "></i> Keluar</a>
+                <a href="?module=withdraws" class="btn btn-danger"><i class="fa fa-reply "></i> Keluar</a>
                 <button type="Submit" name="InsertData" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Simpan
                 </button>
 

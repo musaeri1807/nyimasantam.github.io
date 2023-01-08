@@ -406,7 +406,7 @@ $menu = $Stmtmenu->fetchAll();
       } elseif ($_GET['module'] == "purchase") {
         include "module/adddeposit2.php";
       } elseif ($_GET['module'] == "buyback") {
-        include "module/buyback.php";
+        include "module/tarik_buyback.php";
       } elseif ($_GET['module'] == "mailbox") {
         include "module/mailbox.php";
       } elseif ($_GET['module'] == "adddeposit") {
@@ -422,7 +422,9 @@ $menu = $Stmtmenu->fetchAll();
       } elseif ($_GET['module'] == "goldbar") {
         include "module/goldbar.php";
       } elseif ($_GET['module'] == "withdrowsfisik") {
-        include "module/withdrow_fisik.php";
+        include "module/tarik_fisik.php";
+      } elseif ($_GET['module'] == "withdraws") {
+        include "module/withdraw.php";
       } else {
         echo "<script>
                               
