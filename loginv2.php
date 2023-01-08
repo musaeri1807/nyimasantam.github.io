@@ -31,8 +31,8 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
     $secretKey = "6LfJec4ZAAAAACG1-fmobe88erF72OdXbAFN71jj"; //local   
   } elseif ($_SERVER['SERVER_NAME'] == 'bspid.id') {
     $secretKey = "6LdRyd4jAAAAAB3VoMYknt-GQY6XjgWpgkgMx5T5"; //bspid.id
-  } elseif ($_SERVER['SERVER_NAME'] == 'nyimasantam.my.id') {
-    $secretKey = "6Lc9f84ZAAAAAEBSnQvoHzWcPvD0Tqcn0HD0izsO"; //nyimasantam.my.id
+  } elseif ($_SERVER['SERVER_NAME'] == 'admins.bspid.id') {
+    $secretKey = "6Lf81N4jAAAAAChrnqHYNvntbS31cR0PlfJPBxFQ"; //admins.bspid.id
   } elseif ($_SERVER['SERVER_NAME'] == 'musaeri.my.id') {
     $secretKey = "6LdCXhcbAAAAABj_ExKExLI_0h_1uz7tSCYdDHM-"; //musaeri.my.id
   } elseif ($_SERVER['SERVER_NAME'] == 'apps.musaeri.my.id') {
@@ -315,8 +315,8 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   echo '<div class="g-recaptcha" data-sitekey="6LfJec4ZAAAAAPYZt2c-p6gu37D6weYdI8Kw1LqA"></div>';
                 } elseif ($_SERVER['SERVER_NAME'] == 'bspid.id') {
                   echo '<div class="g-recaptcha" data-sitekey="6LdRyd4jAAAAAJi4zEcNRpm8xLswXZSEMi8WeaE3"></div>';
-                } elseif ($_SERVER['SERVER_NAME'] == 'nyimasantam.my.id') {
-                  echo '<div class="g-recaptcha" data-sitekey="6Lc9f84ZAAAAANDLO3VFPiJEsa1trW4PwdE5fX0U"></div>';
+                } elseif ($_SERVER['SERVER_NAME'] == 'admins.bspid.id') {
+                  echo '<div class="g-recaptcha" data-sitekey="6Lf81N4jAAAAAM6ysomXsoMWTlp2WVBdIcJrhiDu"></div>';
                 } elseif ($_SERVER['SERVER_NAME'] == 'musaeri.my.id') {
                   echo '<div class="g-recaptcha" data-sitekey="6LdCXhcbAAAAAKhaHQouGGvtU6u4fJUSx8dpQUGv"></div>';
                 } elseif ($_SERVER['SERVER_NAME'] == 'apps.musaeri.my.id') {
