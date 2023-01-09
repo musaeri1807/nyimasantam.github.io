@@ -283,9 +283,9 @@ $goldprice    = $ResultGold['field_buyback'];
 		echo '<div class            = "alert alert-success"><strong>SUCCESS !' . $Msg . '</strong></div>';
 		//echo '<META HTTP-EQUIV="Refresh" Content="1">';
 		if ($_SERVER['SERVER_NAME'] == 'localhost') {
-			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=buyback">';
+			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=withdraws">';
 		} else {
-			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=buyback">';
+			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=withdraws">';
 		}
 	}
 	?>

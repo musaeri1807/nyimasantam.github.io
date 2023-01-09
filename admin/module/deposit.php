@@ -174,7 +174,8 @@ if (isset($Msg)) {
           <!-- <button type="submit" class="btn btn-success pull-right">Add Transaction</button> -->
           <?php
           if ($rows['add'] == 'Y') {
-            echo '<a href="?module=adddeposit" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Add </a>';
+            echo '<a href="?module=adddeposit" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Add Sampah</a>';
+            echo '<a href="?module=purchase" class="btn btn-warning  pull-right"><i class="fa fa-plus"></i> Add Pembelian</a>';
           }
           ?>
 

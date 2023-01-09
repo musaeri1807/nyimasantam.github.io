@@ -21,7 +21,7 @@ if (isset($_REQUEST['iddepositp'])) {
     try {
       if (!isset($errorMsg)) {
 
-        $update_stmt = $db->prepare('UPDATE tbldeposit SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_trx_deposit=:id'); //sql insert query				
+        $update_stmt = $db->prepare('UPDATE tblwithdraw SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_trx_withdraw=:id'); //sql insert query				
         $update_stmt->bindParam(':typeaprove', $typeaprove);
         $update_stmt->bindParam(':idaprovel', $id);
         $update_stmt->bindParam(':id', $iddeposit);
@@ -50,7 +50,7 @@ if (isset($_REQUEST['iddepositp'])) {
     try {
       if (!isset($errorMsg)) {
 
-        $update_stmt = $db->prepare('UPDATE tbldeposit SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_trx_deposit=:id'); //sql insert query					
+        $update_stmt = $db->prepare('UPDATE tblwithdraw SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_trx_withdraw=:id'); //sql insert query					
 
         $update_stmt->bindParam(':typeaprove', $typeaprove);
         $update_stmt->bindParam(':idaprovel', $id);
@@ -81,7 +81,7 @@ if (isset($_REQUEST['iddepositp'])) {
     try {
       if (!isset($errorMsg)) {
 
-        $update_stmt = $db->prepare('UPDATE tbldeposit SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_trx_deposit=:id'); //sql insert query					
+        $update_stmt = $db->prepare('UPDATE tblwithdraw SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_trx_withdraw=:id'); //sql insert query					
 
         $update_stmt->bindParam(':typeaprove', $typeaprove);
         $update_stmt->bindParam(':idaprovel', $id);
@@ -148,18 +148,18 @@ if (isset($errorMsg)) {
   echo '<div class="alert alert-danger"><strong>WRONG !' . $errorMsg . '</strong></div>';
   //echo '<META HTTP-EQUIV="Refresh" Content="1">';
   if ($_SERVER['SERVER_NAME'] == 'localhost') {
-    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=withdrows">';
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=withdraws">';
   } else {
-    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=withdrows">';
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=withdraws">';
   }
 }
 if (isset($Msg)) {
   echo '<div class="alert alert-success"><strong>SUCCESS !' . $Msg . '</strong></div>';
   //echo '<META HTTP-EQUIV="Refresh" Content="1">';
   if ($_SERVER['SERVER_NAME'] == 'localhost') {
-    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=withdrows">';
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=withdraws">';
   } else {
-    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=withdrows">';
+    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=withdraws">';
   }
 }
 
@@ -174,7 +174,8 @@ if (isset($Msg)) {
           <!-- <button type="submit" class="btn btn-success pull-right">Add Transaction</button> -->
           <?php
           if ($rows['add'] == 'Y') {
-            echo '<a href="?module=withdrowsfisik" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Add </a>';
+            echo '<a href="?module=buyback" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Add Buyback</a>';
+            echo '<a href="?module=withdrawsfisik" class="btn btn-warning  pull-right"><i class="fa fa-plus"></i> Add Cetak Emas</a>';
           }
           ?>
 
@@ -213,9 +214,9 @@ if (isset($Msg)) {
                     <?php
                     // echo $row['field_trx_deposit'];
                     if ($row['field_status'] == "S") {
-                      echo '<a href="../depositcustomerpdf?d=' . $row["field_trx_withdraw"] . ' "class="text-white btn btn-default"><i class="fa fa-print"></i></a> &nbsp <br>';
+                      echo '<a href="../w_print?w=' . $row["field_trx_withdraw"] . ' "class="text-white btn btn-default"><i class="fa fa-print"></i></a> &nbsp <br>';
                     } elseif ($row['field_status'] == "C") {
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-view-cancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-info "><i class="fa fa-info"></i> </a> &nbsp';
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-view-cancel' . $row["field_trx_withdraw"] . '" class="text-white btn btn-info "><i class="fa fa-info"></i> </a> &nbsp';
                     } elseif ($row['field_status'] == "P") {
                     }
 
@@ -347,7 +348,7 @@ if (isset($Msg)) {
                 </tr>
 
                 <!-- Modal aproval CANCEL -->
-                <div class="modal fade" id="modal-default-aprovalcancel<?php echo $row["field_trx_deposit"]; ?>">
+                <div class="modal fade" id="modal-default-aprovalcancel<?php echo $row["field_trx_withdraw"]; ?>">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -362,7 +363,7 @@ if (isset($Msg)) {
                               <center>
                                 <h4>
                                   <?php
-                                  echo 'Anda Setujui Pembatalan Transaksi ini ' . $row["field_deposit_gold"];
+                                  echo 'Anda Setujui Pembatalan Transaksi ini ' . $row["field_withdraw_gold"];
                                   ?>
                                 </h4>
                               </center>
@@ -371,7 +372,7 @@ if (isset($Msg)) {
                           <div class="modal-footer">
                             <button type="button" class="btn btn-danger " data-dismiss="modal">Tidak</button>
                             <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
-                            <a href="?module=deposit&iddepositc=<?php echo $row['field_trx_deposit']; ?>" type="submit" class="text-white btn btn-success">&nbsp Iya &nbsp</a>
+                            <a href="?module=withdraws&iddepositc=<?php echo $row['field_trx_withdraw']; ?>" type="submit" class="text-white btn btn-success">&nbsp Iya &nbsp</a>
                           </div>
                         </form>
                       </div>
@@ -383,7 +384,7 @@ if (isset($Msg)) {
                 <!-- /.modal -->
 
                 <!-- Modal submit CANCEL -->
-                <div class="modal fade" id="modal-default-submitcancel<?php echo $row["field_trx_deposit"]; ?>">
+                <div class="modal fade" id="modal-default-submitcancel<?php echo $row["field_trx_withdraw"]; ?>">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -409,7 +410,7 @@ if (isset($Msg)) {
                           <div class="modal-footer">
                             <button type="button" class="btn btn-danger " data-dismiss="modal">Tidak</button>
                             <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
-                            <a href="?module=deposit&iddepositp=<?php echo $row['field_trx_deposit']; ?>" type="submit" class="text-white btn btn-success">&nbsp&nbsp Iya &nbsp&nbsp</a>
+                            <a href="?module=withdraws&iddepositp=<?php echo $row['field_trx_withdraw']; ?>" type="submit" class="text-white btn btn-success">&nbsp&nbsp Iya &nbsp&nbsp</a>
                           </div>
                         </form>
                       </div>
@@ -421,7 +422,7 @@ if (isset($Msg)) {
                 <!-- /.modal -->
 
                 <!-- Modal Batal CANCEL -->
-                <div class="modal fade" id="modal-default-rejectcancel<?php echo $row["field_trx_deposit"]; ?>">
+                <div class="modal fade" id="modal-default-rejectcancel<?php echo $row["field_trx_withdraw"]; ?>">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -436,7 +437,7 @@ if (isset($Msg)) {
                               <center>
                                 <h4>
                                   <?php
-                                  echo 'Saldo Pelangan Akan Kembali Sebesar ' . $row["field_deposit_gold"];
+                                  echo 'Saldo Pelangan Akan Kembali Sebesar ' . $row["field_withdraw_gold"];
                                   ?>
                                 </h4>
                               </center>
@@ -445,7 +446,7 @@ if (isset($Msg)) {
                           <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak</button>
                             <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
-                            <a href="?module=deposit&iddeposits=<?php echo $row['field_trx_deposit']; ?>" type="submit" class="text-white btn btn-success">&nbsp&nbsp Iya &nbsp&nbsp</a>
+                            <a href="?module=withdraws&iddeposits=<?php echo $row['field_trx_withdraw']; ?>" type="submit" class="text-white btn btn-success">&nbsp&nbsp Iya &nbsp&nbsp</a>
                           </div>
                         </form>
                       </div>
@@ -457,7 +458,7 @@ if (isset($Msg)) {
                 <!-- /.modal -->
 
                 <!-- View -->
-                <div class="modal fade " id="modal-default-view-cancel<?php echo $row["field_trx_deposit"]; ?>">
+                <div class="modal fade " id="modal-default-view-cancel<?php echo $row["field_trx_withdraw"]; ?>">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">

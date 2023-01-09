@@ -134,9 +134,7 @@ $select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin WHERE field_user_id
 $select_stmt->execute(array(":uid" => $id));
 $rows = $select_stmt->fetch(PDO::FETCH_ASSOC);
 
-// $s=$row['field_status_aktif'];
-// $t=$row['field_token_otp'];
-//data nasabah yang tidak sama dengan 0
+
 $Sql_nasabah = "SELECT * FROM tbluserlogin U JOIN tblnasabah N
               ON U.field_user_id=N.id_UserLogin
               WHERE U.field_status_aktif!=:statuse
