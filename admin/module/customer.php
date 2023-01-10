@@ -376,7 +376,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   $Stmt = $db->prepare($SQL_User);
   // $Stmt->execute();
   $Stmt->execute(array(":idbranch" => $branchid));
-  $User = $Stmt->fetchAll();
+  $User = $Stmt->fetchAll(); 
 }
 
 

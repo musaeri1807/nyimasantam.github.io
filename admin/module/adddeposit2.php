@@ -402,9 +402,9 @@ $goldprice    = $ResultGold['field_sell'];
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label">QTY</label>
+							<!-- <label class="col-sm-3 control-label">QTY</label> -->
 							<div class="col-sm-6">
-								<input type="text" name="txt_Qty" id="Qty" class="form-control" value="1">
+								<input type="hidden" name="txt_Qty" id="Qty" class="form-control" value="1">
 							</div>
 						</div>
 						<div class="form-group">

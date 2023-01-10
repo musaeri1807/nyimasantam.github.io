@@ -9,11 +9,6 @@ if (!isset($_SESSION['userlogin'])) {
 }
 
 
-
-
-// var_dump($_SESSION['userlogin']);
-// die();
-
 if (isset($_REQUEST['btn_insert2'])) {
   $branchid   = $rows['field_branch'];
   $hargajual  = $_REQUEST['txt_hargajual'];
@@ -106,7 +101,7 @@ if (isset($_REQUEST['btn_insert2'])) {
   } else {
     try {
       if (!isset($errorMsg)) {
-        $update_stmt = $db->prepare('UPDATE tblgoldprice SET field_status=:typeaprove,field_note=:note,field_approve=:idaprovel WHERE field_gold_id=:idprice'); //sql insert query					
+        $update_stmt = $db->prepare('UPDATE tblgoldbar SET field_status=:typeaprove,field_note=:note,field_approve=:idaprovel WHERE field_gold_id=:idprice'); //sql insert query					
         $update_stmt->bindParam(':idprice', $idprice);
         $update_stmt->bindParam(':note', $note);
         $update_stmt->bindParam(':typeaprove', $typeaprove);
@@ -131,7 +126,7 @@ if (isset($_REQUEST['btn_insert2'])) {
     try {
       if (!isset($errorMsg)) {
 
-        $select_stmt = $db->prepare('SELECT * FROM tblcategory WHERE field_category_id =:id'); //sql select query
+        $select_stmt = $db->prepare('SELECT * FROM tblgoldbar WHERE field_category_id =:id'); //sql select query
         $select_stmt->bindParam(':id', $id);
         $select_stmt->execute();
         $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
@@ -163,7 +158,7 @@ if (isset($_REQUEST['btn_insert2'])) {
     try {
       if (!isset($errorMsg)) {
 
-        $update_stmt = $db->prepare('UPDATE tblgoldprice SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_gold_id=:id'); //sql insert query					
+        $update_stmt = $db->prepare('UPDATE tblgoldbar SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_gold_id=:id'); //sql insert query					
 
         $update_stmt->bindParam(':typeaprove', $typeaprove);
         $update_stmt->bindParam(':idaprovel', $id);
@@ -191,7 +186,7 @@ if (isset($_REQUEST['btn_insert2'])) {
     try {
       if (!isset($errorMsg)) {
 
-        $update_stmt = $db->prepare('UPDATE tblgoldprice SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_gold_id=:id'); //sql insert query					
+        $update_stmt = $db->prepare('UPDATE tblgoldbar SET field_status=:typeaprove,field_approve=:idaprovel WHERE field_gold_id=:id'); //sql insert query					
 
         $update_stmt->bindParam(':typeaprove', $typeaprove);
         $update_stmt->bindParam(':idaprovel', $id);
@@ -210,12 +205,8 @@ if (isset($_REQUEST['btn_insert2'])) {
 
 
 // ..................................................................................................................
-// $Sql = "SELECT G.*,B.field_branch_id,B.field_branch_name,E.field_name_officer,E2.field_name_officer AS Aproval
-//         FROM tblgoldprice G LEFT JOIN tblbranch B ON G.field_branch=B.field_branch_id 
-//         LEFT JOIN tblemployeeslogin E ON G.field_officer_id=E.field_user_id
-//         LEFT JOIN tblemployeeslogin E2 ON G.field_approve=E2.field_user_id
-//         ORDER BY field_gold_id DESC";
-$Sql = "SELECT * FROM tblgoldbar";
+
+$Sql = "SELECT * FROM tblgoldbar WHERE status='Y' ORDER BY id ASC";
 $Stmt = $db->prepare($Sql);
 $Stmt->execute();
 $result = $Stmt->fetchAll();
@@ -229,23 +220,6 @@ $StmtEmas2 = $db->prepare($SqlEmas2);
 $StmtEmas2->execute();
 $ResultEmas2 = $StmtEmas2->fetch(PDO::FETCH_ASSOC);
 
-
-
-$HargaTerkini = $ResultEmas['field_sell'];
-$HargaKemarin = $ResultEmas2['field_sell'];
-$Selisi      = $HargaTerkini - $HargaKemarin;
-$trxid       = $ResultEmas['field_gold_id'];
-$abs         = abs($Selisi);
-
-if ($Selisi > 1) {
-  $update_stmt = $db->prepare("UPDATE tblgoldprice SET field_fluktuasi=:fluktuasi, field_rasio=:rasio WHERE field_gold_id=:trxid ");
-  // execute the query
-  $update_stmt->execute(array(':trxid' => $trxid, ':fluktuasi' => $abs, ':rasio' => "Naik"));
-} else {
-  $update_stmt = $db->prepare("UPDATE tblgoldprice SET field_fluktuasi=:fluktuasi, field_rasio=:rasio WHERE field_gold_id=:trxid ");
-  // execute the query
-  $update_stmt->execute(array(':trxid' => $trxid, ':fluktuasi' => $abs, ':rasio' => "Turun"));
-}
 
 
 // massege
@@ -276,11 +250,11 @@ if (isset($Msg)) {
         <div class="box-header">
           <i class="fa fa-edit"></i>
           <h3 class="box-title">Goldbar</h3>
-          <?php
-          if ($rows['add'] == 'Y') {
-            echo '<a data-toggle="modal" data-target="#modal-default-category" class="btn btn-success  pull-right"><i class="fa fa-plus"></i>&nbsp Add &nbsp</a>';
-          }
-          ?>
+          <!-- <?php
+                if ($rows['add'] == 'Y') {
+                  echo '<a data-toggle="modal" data-target="#modal-default-category" class="btn btn-success  pull-right"><i class="fa fa-plus"></i>&nbsp Add &nbsp</a>';
+                }
+                ?> -->
         </div>
         <!-- Content -->
         <!-- modal add -->

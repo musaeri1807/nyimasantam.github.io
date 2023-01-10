@@ -227,7 +227,7 @@ $menu = $Stmtmenu->fetchAll();
             } elseif ($rows['field_gender'] == 'P') {
               echo '<img src="../uploads/avatar2.png" class="img-circle" alt="User Image">';
             } else {
-              echo '<img src="../uploads/1.png" class="img-circle" alt="User Image">';
+              echo '<img src="../image/icon_bspid.png" class="img-circle" alt="User Image">';
             }
             ?>
           </div>
@@ -425,6 +425,8 @@ $menu = $Stmtmenu->fetchAll();
         include "module/tarik_fisik.php";
       } elseif ($_GET['module'] == "withdraws") {
         include "module/withdraw.php";
+      }elseif($_GET['module']=="usermenu"){
+        include "module/pengguna_menu.php";
       } else {
         echo "<script>
                               

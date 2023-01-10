@@ -12,7 +12,9 @@ $objPHPExcel  = new PHPExcel();
 $sqlT = "SELECT * FROM tbltrxmutasisaldo M JOIN tbluserlogin U ON M.field_member_id=U.field_member_id
                                            JOIN tblgoldprice G ON M.field_tanggal_saldo=G.field_date_gold
                                            JOIN tblbranch B ON U.field_branch=B.field_branch_id
-                                           WHERE  date(M.field_tanggal_saldo) >= '$tgl_dari' AND date(M.field_tanggal_saldo) <= '$tgl_sampai'  ORDER BY M.field_id_saldo DESC";
+                                           WHERE  date(M.field_tanggal_saldo) >= '$tgl_dari' AND date(M.field_tanggal_saldo) <= '$tgl_sampai'  
+										   AND M.field_status='S'
+										   ORDER BY M.field_id_saldo DESC";
 
 $stmtT = $db->prepare($sqlT);
 $stmtT->execute(array(':tgl_dari'=> $tgl_dari,':tgl_sampai'=>$tgl_sampai));
@@ -34,10 +36,11 @@ $objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Nasabah');
 $objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Cabang');
 $objPHPExcel->getActiveSheet()->SetCellValue('H1', 'Types');
 $objPHPExcel->getActiveSheet()->SetCellValue('I1', 'Amount');
-$objPHPExcel->getActiveSheet()->SetCellValue('J1', 'Sell');
-$objPHPExcel->getActiveSheet()->SetCellValue('K1', 'Buyback');
-$objPHPExcel->getActiveSheet()->SetCellValue('L1', 'Status');
-$objPHPExcel->getActiveSheet()->getStyle("A1:L1")->getFont()->setBold(true);
+$objPHPExcel->getActiveSheet()->SetCellValue('J1', 'Saldo Akhir');
+$objPHPExcel->getActiveSheet()->SetCellValue('K1', 'Sell');
+$objPHPExcel->getActiveSheet()->SetCellValue('L1', 'Buyback');
+$objPHPExcel->getActiveSheet()->SetCellValue('M1', 'Status');
+$objPHPExcel->getActiveSheet()->getStyle("A1:M1")->getFont()->setBold(true);
 
 $rowCount	=	2;
 
@@ -70,9 +73,10 @@ if($Types=="200"){
 	$objPHPExcel->getActiveSheet()->SetCellValue('H'.$rowCount, mb_strtoupper($Types,'UTF-8'));
 	$objPHPExcel->getActiveSheet()->SetCellValue('I'.$rowCount, mb_strtoupper($row['field_kredit_saldo'],'UTF-8'));
 		} 
-	$objPHPExcel->getActiveSheet()->SetCellValue('J'.$rowCount, mb_strtoupper($row['field_sell'],'UTF-8'));
-	$objPHPExcel->getActiveSheet()->SetCellValue('K'.$rowCount, mb_strtoupper($row['field_buyback'],'UTF-8'));
-	$objPHPExcel->getActiveSheet()->SetCellValue('L'.$rowCount, mb_strtoupper($row['11'],'UTF-8'));
+	$objPHPExcel->getActiveSheet()->SetCellValue('J'.$rowCount, mb_strtoupper($row['field_total_saldo'],'UTF-8'));
+	$objPHPExcel->getActiveSheet()->SetCellValue('K'.$rowCount, mb_strtoupper($row['field_sell'],'UTF-8'));
+	$objPHPExcel->getActiveSheet()->SetCellValue('L'.$rowCount, mb_strtoupper($row['field_buyback'],'UTF-8'));
+	$objPHPExcel->getActiveSheet()->SetCellValue('M'.$rowCount, mb_strtoupper($row['11'],'UTF-8'));
 	$rowCount++;
 }
 
@@ -85,4 +89,3 @@ header('Content-Disposition: attachment;filename="'.$filename.'.xlsx"'); //tell 
 header('Cache-Control: max-age=0'); //no cache
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');  
 $objWriter->save('php://output');
-?>
