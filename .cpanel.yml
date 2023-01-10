@@ -19,3 +19,5 @@ deployment:
     - /bin/cp d_print.php $DEPLOYPATH
     - /bin/cp export_mutasi.php $DEPLOYPATH
     - /bin/cp export_trash.php $DEPLOYPATH
+    - /bin/cp index.php $DEPLOYPATH
+    - /bin/cp loginv2.php $DEPLOYPATH
