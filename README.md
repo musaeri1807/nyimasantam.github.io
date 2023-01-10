@@ -1,2 +1,2 @@
 # nyimasantam.github.io
-nyimasantamadminv2
+bspid
