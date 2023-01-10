@@ -16,3 +16,4 @@ deployment:
     - /bin/cp -R view $DEPLOYPATH 
     - /bin/cp .cpanel.yml $DEPLOYPATH    
     - /bin/cp .htaccess $DEPLOYPATH
+    - /bin/cp d_print.php $DEPLOYPATH
