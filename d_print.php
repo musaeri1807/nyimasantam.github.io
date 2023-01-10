@@ -162,7 +162,7 @@ foreach ($result as $row) {
 
 
   $pdf->Cell(13, 6, $row['field_deposit_id'], 0, 0, 'C');
-  $pdf->Cell(80, 6, $row['field_product_code'] .'-'.$row['field_product_name'], 0, 0);
+  $pdf->Cell(80, 6, $row['field_product_code'] . '-' . $row['field_product_name'], 0, 0);
   $pdf->Cell(32, 6, $row['field_quantity'], 0, 0, 'C');
   $pdf->Cell(31, 6, rupiah($row['field_price_product']), 0, 0, 'L');
   // $pdf->Cell(20 ,6,$row['field_deposit_id'],1,0,'R');
@@ -193,5 +193,5 @@ $pdf->Cell(125, 6, '', 0, 0);
 $pdf->Cell(31, 6, 'Gold', 0, 0, 'L');
 $pdf->Cell(32, 6, $rows['field_deposit_gold'], 0, 1, 'L');
 
-//$pdf->Output('D',$rows['field_rekening_deposit'].'.pdf');
-$pdf->Output();
+$pdf->Output('D', $rows['field_rekening_deposit'] . '_Deposit' . '.pdf');
+//$pdf->Output('D');

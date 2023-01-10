@@ -40,14 +40,14 @@ $no = 1;
         <div class="box-header">
           <i class="fa fa-edit"></i>
           <h3 class="box-title">Saldo Nasabah</h3>
-          <form action="">
+          <!-- <form action="">
             <input type="text">
             <input type="text">
             <input type="text">
             <input type="text">
             <input type="text">
 
-          </form>
+          </form> -->
         </div>
         <!-- Content -->
 
@@ -78,7 +78,7 @@ $no = 1;
                   <td data-title="Trx Id"><strong><?php echo $row["TotalSaldo"]; ?></strong></td>
                   <td data-title="Trx Id"><?php echo $row["field_branch_name"]; ?> </td>
                   <td data-title="Trx Id">
-                    <a href="../mutasicustomerpdf.php?m=<?php echo $row['field_member_id']; ?>" class="btn btn-sm btn-warning"><i class="fa fa-print o text-warning"></i></a>
+                    <a href="../m_print?m=<?php echo $row['field_member_id']; ?>" class="btn btn-sm btn-warning"><i class="fa fa-print o text-warning"></i></a>
                   </td>
                 </tr>
 

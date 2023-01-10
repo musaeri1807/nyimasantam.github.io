@@ -215,7 +215,7 @@ if (isset($Msg)) {
                     <?php
                     // echo $row['field_trx_deposit'];
                     if ($row['field_status'] == "S") {
-                      echo '<a href="../depositcustomerpdf?d=' . $row["field_trx_deposit"] . ' "class="text-white btn btn-default"><i class="fa fa-print"></i></a> &nbsp <br>';
+                      echo '<a href="../d_print?d=' . $row["field_trx_deposit"] . ' "class="text-white btn btn-default"><i class="fa fa-print"></i></a> &nbsp <br>';
                     } elseif ($row['field_status'] == "C") {
                       echo '<a href="#" data-toggle="modal" data-target="#modal-default-view-cancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-info "><i class="fa fa-info"></i> </a> &nbsp';
                     } elseif ($row['field_status'] == "P") {

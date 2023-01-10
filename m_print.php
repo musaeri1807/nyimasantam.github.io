@@ -211,5 +211,5 @@ $pdf->SetFont('Times', '', 11);
 $pdf->Cell(167, 7, $rows['field_total_saldo'] . " g", 1, 0, 'R');
 $pdf->Cell(23, 7, '', 0, 0, 'C');
 
-// $pdf->Output('D',$rows['field_rekening'].'.pdf');
-$pdf->Output();
+$pdf->Output('D',$rows['field_rekening'].'_Mutasi'.'.pdf');
+// $pdf->Output();
