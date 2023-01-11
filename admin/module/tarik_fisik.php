@@ -220,43 +220,42 @@ if (isset($_REQUEST['InsertData'])) {
   }
 }
 
-$Stmt = $db->prepare("SELECT DISTINCT(field_rekening),(SELECT S1.field_total_saldo FROM tbltrxmutasisaldo S1 WHERE S1.field_rekening = S2.field_rekening AND S1.field_status='S' ORDER BY S1.field_id_saldo DESC LIMIT 1)  
-AS SALDO,U.field_nama AS NAMA,U.field_member_id AS MEMBERID,B.field_branch_name AS BRANCH, U.field_user_id AS ID 
-            FROM tbltrxmutasisaldo S2 
-            JOIN tbluserlogin U ON S2.field_member_id = U.field_member_id
-            JOIN tblnasabah N ON U.field_user_id=N.id_UserLogin
-            JOIN tblbranch B ON U.field_branch=B.field_branch_id
-            ORDER BY S2.field_id_saldo DESC");
-$Stmt->execute();
-$DataNasabah = $Stmt->fetchAll();
+if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
+  $QUERY = "SELECT DISTINCT(field_rekening),(SELECT S1.field_total_saldo FROM tbltrxmutasisaldo S1 WHERE S1.field_rekening = S2.field_rekening AND S1.field_status='S' ORDER BY S1.field_id_saldo DESC LIMIT 1)  
+	AS SALDO,
+	U.field_nama AS NAMA,
+	U.field_member_id AS MEMBER,
+	N.No_Rekening AS REKENING,
+	B.field_branch_name AS CABANG,
+	U.field_user_id AS ID 
+				FROM tbltrxmutasisaldo S2 
+				JOIN tbluserlogin U ON S2.field_member_id = U.field_member_id
+				JOIN tblnasabah N ON U.field_user_id=N.id_UserLogin
+				JOIN tblbranch B ON U.field_branch=B.field_branch_id
+				WHERE N.Konfirmasi='Y' AND U.field_status_aktif='1'
+				ORDER BY S2.field_id_saldo DESC";
+  $Stmt = $db->prepare($QUERY);
+  $Stmt->execute();
+  $DataNasabah = $Stmt->fetchAll();
+} else {
 
-
-
-// if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
-
-//   $Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
-//   LEFT JOIN tblbranch B
-//   ON P.field_branch=B.field_branch_id 
-//   WHERE field_status='A'
-//   ORDER BY P.field_product_id DESC ";
-
-//   $Stmt = $db->prepare($Sql);
-//   $Stmt->execute();
-//   $result = $Stmt->fetchAll();
-// } else {
-
-//   $Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
-//   LEFT JOIN tblbranch B
-//   ON P.field_branch=B.field_branch_id 
-//   WHERE field_status='A'
-//   AND P.field_branch=:idbranch
-//   ORDER BY P.field_product_id DESC ";
-
-
-//   $Stmt = $db->prepare($Sql);
-//   $Stmt->execute(array(":idbranch" => $branchid));
-//   $result = $Stmt->fetchAll();
-// }
+  $QUERY = "SELECT DISTINCT(field_rekening),(SELECT S1.field_total_saldo FROM tbltrxmutasisaldo S1 WHERE S1.field_rekening = S2.field_rekening AND S1.field_status='S' ORDER BY S1.field_id_saldo DESC LIMIT 1)  
+	AS SALDO,
+	U.field_nama AS NAMA,
+	U.field_member_id AS MEMBER,
+	N.No_Rekening AS REKENING,
+	B.field_branch_name AS CABANG,
+	U.field_user_id AS ID 
+				FROM tbltrxmutasisaldo S2 
+				JOIN tbluserlogin U ON S2.field_member_id = U.field_member_id
+				JOIN tblnasabah N ON U.field_user_id=N.id_UserLogin
+				JOIN tblbranch B ON U.field_branch=B.field_branch_id
+				WHERE N.Konfirmasi='Y' AND U.field_status_aktif='1' AND U.field_branch=:idbranch
+				ORDER BY S2.field_id_saldo DESC";
+  $Stmt = $db->prepare($QUERY);
+  $Stmt->execute(array(":idbranch" => $branchid));
+  $DataNasabah = $Stmt->fetchAll();
+}
 
 $Sql    = "SELECT * FROM tblgoldbar ";
 $Stmt = $db->prepare($Sql);
@@ -456,6 +455,8 @@ $result = $Stmt->fetchAll();
                             <th class="text-center">No</th>
                             <th class="text-center">Rekening</th>
                             <th class="text-center">Nasabah</th>
+                            <th class="text-center">Cabang</th>
+                            <th class="text-center">Saldo</th>
 
                             <th></th>
                           </tr>
@@ -467,14 +468,15 @@ $result = $Stmt->fetchAll();
                           ?>
                             <tr>
                               <td width="1%" class="text-center"><?php echo $no++; ?></td>
-                              <td width="20%"><?php echo $Nasabah['field_rekening']; ?></td>
+                              <td width="20%"><?php echo $Nasabah['REKENING']; ?></td>
                               <td width="20%"><?php echo $Nasabah['NAMA']; ?> </td>
+                              <td width="20%"><?php echo $Nasabah['CABANG']; ?> </td>
                               <td width="20%"><?php echo $Nasabah['SALDO']; ?> </td>
                               <td width="1%">
-                                <input type="number" id="member_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['MEMBERID']; ?>">
-                                <input type="number" id="account_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['field_rekening']; ?>">
-                                <input type="text" id="customer_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['NAMA']; ?>">
-                                <input type="text" id="saldo_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['SALDO']; ?>">
+                                <input type="hidden" id="member_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['MEMBER']; ?>">
+                                <input type="hidden" id="account_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['REKENING']; ?>">
+                                <input type="hidden" id="customer_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['NAMA']; ?>">
+                                <input type="hidden" id="saldo_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['SALDO']; ?>">
                                 <button type="button" class="btn btn-info modal-select-customer" id="<?php echo $Nasabah['ID']; ?>" data-dismiss="modal">Pilih</button>
 
                               </td>

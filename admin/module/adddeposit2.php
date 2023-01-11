@@ -259,6 +259,22 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
 	$Stmt = $db->prepare($Sql);
 	$Stmt->execute();
 	$result = $Stmt->fetchAll();
+
+	//Data Nasabah
+	$QUERY = "SELECT 
+	  N.id_Nasabah AS ID,
+	  U.field_member_id AS MEMBER,
+	  N.No_Rekening AS REKENING,
+	  U.field_nama AS NAMA,
+	  B.field_branch_name AS CABANG
+	  FROM tblnasabah N
+	  JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
+	  JOIN tblbranch B ON B.field_branch_id=U.field_branch
+	  WHERE N.Konfirmasi='Y' AND U.field_status_aktif='1'
+	  ORDER BY id_Nasabah DESC";
+	$Stmt = $db->prepare($QUERY);
+	$Stmt->execute();
+	$DataNasabah = $Stmt->fetchAll();
 } else {
 
 	$Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
@@ -272,14 +288,27 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
 	$Stmt = $db->prepare($Sql);
 	$Stmt->execute(array(":idbranch" => $branchid));
 	$result = $Stmt->fetchAll();
+
+	//Data Nasabah
+	$QUERY = "SELECT 
+	  N.id_Nasabah AS ID,
+	  U.field_member_id AS MEMBER,
+	  N.No_Rekening AS REKENING,
+	  U.field_nama AS NAMA,
+	  B.field_branch_name AS CABANG
+	  FROM tblnasabah N
+	  JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
+	  JOIN tblbranch B ON B.field_branch_id=U.field_branch
+	  WHERE N.Konfirmasi='Y' AND U.field_status_aktif='1'
+	  AND U.field_branch=:idbranch
+	  ORDER BY id_Nasabah DESC";
+	$Stmt = $db->prepare($QUERY);
+	$Stmt->execute(array(':idbranch' => $branchid));
+	$DataNasabah = $Stmt->fetchAll();
+	//Data Nasabah
 }
 
 
-$Stmt = $db->prepare("SELECT N.id_Nasabah,N.id_UserLogin,N.No_Rekening AS REKENING ,U.field_nama AS NAMA,U.field_member_id AS IDMEMEBER
-FROM tblnasabah N JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id 
-ORDER BY N.id_Nasabah DESC");
-$Stmt->execute();
-$DataNasabah = $Stmt->fetchAll();
 
 
 //Harga Emas
@@ -306,9 +335,9 @@ $goldprice    = $ResultGold['field_sell'];
 		echo '<div class            = "alert alert-success"><strong>SUCCESS !' . $Msg . '</strong></div>';
 		//echo '<META HTTP-EQUIV="Refresh" Content="1">';
 		if ($_SERVER['SERVER_NAME'] == 'localhost') {
-			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=deposit">';
+			echo '<META HTTP-EQUIV    = "Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=deposit">';
 		} else {
-			echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=deposit">';
+			echo '<META HTTP-EQUIV    = "Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=deposit">';
 		}
 	}
 	?>
@@ -471,6 +500,7 @@ $goldprice    = $ResultGold['field_sell'];
 													<th class="text-center">No</th>
 													<th class="text-center">Rekening</th>
 													<th class="text-center">Nasabah</th>
+													<th class="text-center">Cabang</th>
 
 													<th></th>
 												</tr>
@@ -484,12 +514,13 @@ $goldprice    = $ResultGold['field_sell'];
 														<td width="1%" class="text-center"><?php echo $no++; ?></td>
 														<td width="20%"><?php echo $Nasabah['REKENING']; ?></td>
 														<td width="20%"><?php echo $Nasabah['NAMA']; ?> </td>
+														<td width="20%"><?php echo $Nasabah['CABANG']; ?> </td>
 														<td width="1%">
-															<input type="number" id="member_<?php echo $Nasabah['id_Nasabah']; ?>" value="<?php echo $Nasabah['IDMEMEBER']; ?>">
-															<input type="number" id="account_<?php echo $Nasabah['id_Nasabah']; ?>" value="<?php echo $Nasabah['REKENING']; ?>">
-															<input type="text" id="customer_<?php echo $Nasabah['id_Nasabah']; ?>" value="<?php echo $Nasabah['NAMA']; ?>">
+															<input type="hidden" id="member_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['MEMBER']; ?>">
+															<input type="hidden" id="account_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['REKENING']; ?>">
+															<input type="hidden" id="customer_<?php echo $Nasabah['ID']; ?>" value="<?php echo $Nasabah['NAMA']; ?>">
 
-															<button type="button" class="btn btn-info modal-select-customer" id="<?php echo $Nasabah['id_Nasabah']; ?>" data-dismiss="modal">Pilih</button>
+															<button type="button" class="btn btn-info modal-select-customer" id="<?php echo $Nasabah['ID']; ?>" data-dismiss="modal">Pilih</button>
 
 														</td>
 													</tr>

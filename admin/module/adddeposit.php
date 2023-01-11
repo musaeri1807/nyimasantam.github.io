@@ -251,25 +251,36 @@ if (isset($_REQUEST['payment'])) {
   }
 }
 
-//Data Nasabah
-$Stmt = $db->prepare("SELECT * FROM tblnasabah N JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id");
-$Stmt->execute();
-$Result = $Stmt->fetchAll();
+
 
 
 
 
 if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
-
   $Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
   LEFT JOIN tblbranch B
   ON P.field_branch=B.field_branch_id 
   WHERE field_status='A'
   ORDER BY P.field_product_id DESC ";
-
   $Stmt = $db->prepare($Sql);
   $Stmt->execute();
   $result = $Stmt->fetchAll();
+  //Data Nasabah
+  $QUERY = "SELECT 
+  N.id_Nasabah AS ID,
+  U.field_member_id AS MEMBER,
+  N.No_Rekening AS REKENING,
+  U.field_nama AS NAMA,
+  B.field_branch_name AS CABANG
+  FROM tblnasabah N
+  JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
+  JOIN tblbranch B ON B.field_branch_id=U.field_branch
+  WHERE N.Konfirmasi='Y' AND U.field_status_aktif='1'
+  ORDER BY id_Nasabah DESC";
+  $Stmt = $db->prepare($QUERY);
+  $Stmt->execute();
+  $Result = $Stmt->fetchAll();
+  //Data Nasabah
 } else {
 
   $Sql    = "SELECT P.*,B.field_branch_name FROM tblproduct P 
@@ -278,11 +289,27 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   WHERE field_status='A'
   AND P.field_branch=:idbranch
   ORDER BY P.field_product_id DESC ";
-
-
   $Stmt = $db->prepare($Sql);
   $Stmt->execute(array(":idbranch" => $branchid));
   $result = $Stmt->fetchAll();
+
+  //Data Nasabah
+  $QUERY = "SELECT 
+    N.id_Nasabah AS ID,
+    U.field_member_id AS MEMBER,
+    N.No_Rekening AS REKENING,
+    U.field_nama AS NAMA,
+    B.field_branch_name AS CABANG
+    FROM tblnasabah N
+    JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
+    JOIN tblbranch B ON B.field_branch_id=U.field_branch
+    WHERE N.Konfirmasi='Y' AND U.field_status_aktif='1'
+    AND U.field_branch=:idbranch
+    ORDER BY id_Nasabah DESC";
+  $Stmt = $db->prepare($QUERY);
+  $Stmt->execute(array(':idbranch' => $branchid));
+  $Result = $Stmt->fetchAll();
+  //Data Nasabah
 }
 
 
@@ -310,9 +337,9 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
     echo '<div class            = "alert alert-success"><strong>SUCCESS !' . $Msg . '</strong></div>';
     //echo '<META HTTP-EQUIV="Refresh" Content="1">';
     if ($_SERVER['SERVER_NAME'] == 'localhost') {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=deposit">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=deposit">';
     } else {
-      echo '<META HTTP-EQUIV    = "Refresh" Content="3; URL=' . $domain . '/admin/dashboard?module=deposit">';
+      echo '<META HTTP-EQUIV    = "Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=deposit">';
     }
   }
   ?>
@@ -440,11 +467,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
 
                     <div class="col-xs-3">
                       <select class="form-control" name="txt_select" required="required">
-                        <option value="">--Pilih--</option>
-                        <option value="Investasi">Investasi</option>
-                        <option value="Investasi">Sampah</option>
-                        <option value="Gaji">Gaji</option>
-
+                        <option value="Sampah">--Sampah--</option>
                       </select>
                     </div>
                     <div class="col-xs-3">
@@ -497,6 +520,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                             <th class="text-center">No</th>
                             <th class="text-center">Rekening</th>
                             <th class="text-center">Nasabah</th>
+                            <th class="text-center">Cabang</th>
 
                             <th></th>
                           </tr>
@@ -508,13 +532,14 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                           ?>
                             <tr>
                               <td width="1%" class="text-center"><?php echo $no++; ?></td>
-                              <td width="20%"><?php echo $rows['No_Rekening']; ?></td>
-                              <td width="20%"><?php echo $rows['field_nama']; ?> </td>
+                              <td width="20%"><?php echo $rows['REKENING']; ?></td>
+                              <td width="20%"><?php echo $rows['NAMA']; ?> </td>
+                              <td width="20%"><?php echo $rows['CABANG']; ?> </td>
                               <td width="1%">
-                                <input type="hidden" id="member_<?php echo $rows['id_Nasabah']; ?>" value="<?php echo $rows['field_member_id']; ?>">
-                                <input type="hidden" id="account_<?php echo $rows['id_Nasabah']; ?>" value="<?php echo $rows['No_Rekening']; ?>">
-                                <input type="hidden" id="customer_<?php echo $rows['id_Nasabah']; ?>" value="<?php echo $rows['field_nama']; ?>">
-                                <button type="button" class="btn btn-info modal-select-customer" id="<?php echo $rows['id_Nasabah']; ?>" data-dismiss="modal">Pilih</button>
+                                <input type="hidden" id="member_<?php echo $rows['ID']; ?>" value="<?php echo $rows['MEMBER']; ?>">
+                                <input type="hidden" id="account_<?php echo $rows['ID']; ?>" value="<?php echo $rows['REKENING']; ?>">
+                                <input type="hidden" id="customer_<?php echo $rows['ID']; ?>" value="<?php echo $rows['NAMA']; ?>">
+                                <button type="button" class="btn btn-info modal-select-customer" id="<?php echo $rows['ID']; ?>" data-dismiss="modal">Pilih</button>
 
                               </td>
                             </tr>
@@ -604,31 +629,31 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                     <tr>
                       <th style="width:50%">Subtotal:</th>
                       <td>
-                        <input type="text" name="txt_subtotal" class="sub_total_form" value="0" readonly>
+                        <input type="hidden" name="txt_subtotal" class="sub_total_form" value="0" readonly>
                         <span class="sub_total_pembelian" id="0">Rp.0,-</span>
                       </td>
                     </tr>
                     <tr>
                       <th id="txt_persen">Oprasional free (5%)</th>
                       <td>
-                        <input class="total_fee" type="number" min="0" max="100" id="5" name="txt_free" readonly>
+                        <input type="hidden" class="total_fee" type="number" min="0" max="100" id="5" name="txt_free" readonly>
                         <span class="fee" id="0">0%</span>
 
-                        <input class="total_fee_rp" type="text" value="0" id="5" name="txt_free_rp" readonly>
+                        <input type="hidden" class="total_fee_rp" value="0" id="5" name="txt_free_rp" readonly>
                         <span class="fee_rp" id="0">Rp.0,-</span>
                       </td>
                     </tr>
                     <tr>
                       <th>Total</th>
                       <td>
-                        <input type="text" name="txt_total" class="total_form" value="0" readonly>
+                        <input type="hidden" name="txt_total" class="total_form" value="0" readonly>
                         <span class="total_pembelian" id="0">Rp.0,-</span>
                       </td>
                     </tr>
                     <tr>
                       <th>Gold Nasabah</th>
                       <td>
-                        <input type="text" name="txt_gold" class="gold_form" value="0" readonly>
+                        <input type="hidden" name="txt_gold" class="gold_form" value="0" readonly>
                         <span class="total_gold" id="0">0,Gram</span>
                       </td>
                     </tr>
@@ -643,7 +668,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
             <div class="row no-print">
               <div class="col-xs-12">
                 <a href="?module=deposit" class="btn btn-danger"><i class="fa fa-reply "></i> Keluar</a>
-                <button type="Submit" name="payment" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Payment
+                <button type="Submit" name="payment" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Simpan
                 </button>
 
               </div>
