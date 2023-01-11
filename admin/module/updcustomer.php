@@ -124,7 +124,7 @@ if (isset($_REQUEST['btn_update'])) {
 
       if ($update_nasabah->execute()) {
         $Msg = "Update Successfully"; //execute query success message
-        echo '<META HTTP-EQUIV="Refresh" Content="1;">';
+        echo '<META HTTP-EQUIV="Refresh" Content="10;">';
       }
       // }
     } catch (PDOException $e) {

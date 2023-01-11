@@ -295,14 +295,18 @@ if (isset($_REQUEST['btn_insert'])) { //Done
             ':comment'  => "Balance"
           )); //
 
-          $NAMA         = $data["field_nama"];
-          $link         = 'bspintar.id';
-          $isi          = 'Selamat akun anda sudah terdaftar Sebagai berikut :';
-          $subject      = 'Register';
-          $Username     = $data["field_handphone"];
-          $Email        = $data["field_email"];
-          $Password     = $data["Password"];
-          include "../mail/SendEmail.php"; //email
+          // $NAMA         = $data["field_nama"];
+          // $link         = 'bspintar.id';
+          // $isi          = 'Selamat akun anda sudah terdaftar Sebagai berikut :';
+          // $subject      = 'Register';
+          // $Username     = $data["field_handphone"];
+          // $Email        = $data["field_email"];
+          // $Password     = $data["Password"];
+
+          $UsernameEmail = $data["field_email"];
+          $Username = $data["field_handphone"];
+          $Password = $data["Password"];
+          include "../mail/SendEmailUser.php"; //email
 
           $Msg = "Successfully"; //execute query success message
           echo '<META HTTP-EQUIV="Refresh" Content="10;">';
@@ -367,51 +371,30 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   $Stmt = $db->prepare($SQL_User);
   $Stmt->execute();
   $User = $Stmt->fetchAll();
-} elseif ($_SESSION['rolelogin'] == 'SPV' or $_SESSION['rolelogin'] == 'BCO' or $_SESSION['rolelogin'] == 'CMS') {
+  // } elseif ($_SESSION['rolelogin'] == 'SPV' or $_SESSION['rolelogin'] == 'BCO' or $_SESSION['rolelogin'] == 'CMS') {
+} else {
   # code...
-  $SQL_User = 'SELECT U.*,N.Konfirmasi,B.field_branch_name AS Cabang FROm tbluserlogin U 
+  $SQL_User = 'SELECT U.*,N.No_Rekening,N.Konfirmasi,B.field_branch_name AS Cabang FROM tbluserlogin U 
                 JOIN tblnasabah N ON U.field_user_id=N.id_UserLogin
-                JOIN tblbranch B ON U.field_branch=B.field_branch_id 
-                WHERE U.field_status_aktif!="1" AND U.field_branch=:idbranch ORDER BY field_user_id DESC';
+                JOIN tblbranch B ON U.field_branch=B.field_branch_id
+                WHERE U.field_status_aktif="0" AND U.field_branch=:idbranch 
+                ORDER BY U.field_user_id DESC';
   $Stmt = $db->prepare($SQL_User);
   // $Stmt->execute();
   $Stmt->execute(array(":idbranch" => $branchid));
-  $User = $Stmt->fetchAll(); 
+  $User = $Stmt->fetchAll();
 }
 
 
-if ($_SESSION['rolelogin'] == 'ADM') {
-  // $Sql ="SELECT * FROM tbldepartment WHERE field_department_id !='SPA'";
-  // $Sql = "SELECT * FROM tbldepartment ";
-  // $Stmt = $db->prepare($Sql);
-  // $Stmt->execute();
-  // $resultdept = $Stmt->fetchAll();
-  # code...
+if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   $Sql = "SELECT * FROM tblbranch";
   $Stmt = $db->prepare($Sql);
   $Stmt->execute();
   $resultbranch = $Stmt->fetchAll();
-} elseif ($_SESSION['rolelogin'] == 'MGR') {
-  # code...
-  // $Sql = "SELECT * FROM tbldepartment WHERE field_department_id !='ADM' AND field_department_id !='MGR'";
-  // $Stmt = $db->prepare($Sql);
-  // $Stmt->execute();
-  // $resultdept = $Stmt->fetchAll();
-
-  $Sql = "SELECT * FROM tblbranch";
-  $Stmt = $db->prepare($Sql);
-  $Stmt->execute();
-  $resultbranch = $Stmt->fetchAll();
-} elseif ($_SESSION['rolelogin'] == 'SPV' or $_SESSION['rolelogin'] == 'BCO' or $_SESSION['rolelogin'] == 'CMS') {
-  # code...
-  // $Sql = "SELECT * FROM tbldepartment WHERE field_department_id !='ADM' AND field_department_id !='MGR' AND field_department_id !='SPV'";
-  // $Stmt = $db->prepare($Sql);
-  // $Stmt->execute();
-  // $resultdept = $Stmt->fetchAll();
-
+  // } elseif ($_SESSION['rolelogin'] == 'SPV' or $_SESSION['rolelogin'] == 'BCO' or $_SESSION['rolelogin'] == 'CMS') {
+} else {
   $Sql = "SELECT * FROM tblbranch WHERE field_branch_id=:idbranch";
   $Stmt = $db->prepare($Sql);
-  //$Stmt->execute();
   $Stmt->execute(array(":idbranch" => $branchid));
   $resultbranch = $Stmt->fetchAll();
 }
@@ -595,7 +578,7 @@ if (isset($Msg)) {
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span></button>
                         <center>
-                          <h4 class="modal-title">Update Data <?php echo $users["field_user_id"] ?></h4>
+                          <h4 class="modal-title">Username dan Password Kirim Ke Email</h4>
                         </center>
                       </div>
                       <div class="modal-body">
@@ -606,7 +589,8 @@ if (isset($Msg)) {
                               <div class="form-group">
                                 <label class="col-sm-3 control-label">ID</label>
                                 <div class="col-sm-6">
-                                  <input type="text" name="txt_account" class="form-control" value="<?php echo $users["field_user_id"] ?>">
+                                  <input type="text" name="txt_email" class="form-control" value="<?php echo $users["field_email"] ?>" readonly>
+                                  <input type="hidden" name="txt_account" class="form-control" value="<?php echo $users["field_user_id"] ?>">
                                 </div>
                               </div>
 
@@ -632,7 +616,7 @@ if (isset($Msg)) {
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-danger " data-dismiss="modal">Keluar</button>
-                            <input type="submit" name="btn_aproval" class="btn btn-success " value="Perbarui">
+                            <input type="submit" name="btn_aproval" class="btn btn-success " value="Kirim">
                           </div>
                         </form>
                       </div>

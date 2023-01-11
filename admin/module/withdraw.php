@@ -9,9 +9,9 @@ if (!isset($_SESSION['userlogin'])) {
   header("location: ../loginv2.php");
 }
 
-if (isset($_REQUEST['iddepositp'])) {
+if (isset($_REQUEST['idwithdrawp'])) {
 
-  $iddeposit = $_REQUEST['iddepositp'];
+  $iddeposit = $_REQUEST['idwithdrawp'];
   $typeaprove = "P";
   $id = $rows['field_user_id'];
 
@@ -38,9 +38,9 @@ if (isset($_REQUEST['iddepositp'])) {
       echo $e->getMessage();
     }
   }
-} elseif (isset($_REQUEST['iddepositc'])) {
+} elseif (isset($_REQUEST['idwithdrawc'])) {
 
-  $iddeposit = $_REQUEST['iddepositc'];
+  $iddeposit = $_REQUEST['idwithdrawc'];
   $typeaprove = "C";
   $id = $rows['field_user_id'];
 
@@ -69,9 +69,9 @@ if (isset($_REQUEST['iddepositp'])) {
       echo $e->getMessage();
     }
   }
-} elseif (isset($_REQUEST['iddeposits'])) {
+} elseif (isset($_REQUEST['idwithdraws'])) {
 
-  $iddeposit = $_REQUEST['iddeposits'];
+  $iddeposit = $_REQUEST['idwithdraws'];
   $typeaprove = "S";
   $id = $rows['field_user_id'];
 
@@ -120,17 +120,17 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   $result = $Stmt->fetchAll();
 } else {
 
-  $Sql = "SELECT I.*,E.field_name_officer,E2.field_name_officer AS Approval,B.field_branch_name,
-  (SELECT G.field_sell FROM tblgoldprice G WHERE G.field_date_gold=I.field_date_deposit ORDER BY field_gold_id DESC LIMIT 1) AS PriceGold,
-  (SELECT U.field_nama FROM tblnasabah N JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id WHERE N.No_Rekening=I.field_rekening_deposit ) AS NAMA_NASABAH
-  FROM tbldeposit I 
+  $Sql = "SELECT W.*,E.field_name_officer,E2.field_name_officer AS Approval,B.field_branch_name,
+  (SELECT G.field_sell FROM tblgoldprice G WHERE G.field_date_gold=W.field_date_withdraw ORDER BY field_gold_id DESC LIMIT 1) AS PriceGold,
+  (SELECT U.field_nama FROM tblnasabah N JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id WHERE N.No_Rekening=W.field_rekening_withdraw ) AS NAMA_NASABAH
+  FROM tblwithdraw W 
   
-    LEFT JOIN tblbranch B ON I.field_branch=B.field_branch_id
-    LEFT JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id
-    LEFT JOIN tblemployeeslogin E2 ON I.field_approve=E2.field_user_id
+    LEFT JOIN tblbranch B ON W.field_branch=B.field_branch_id
+    LEFT JOIN tblemployeeslogin E ON W.field_officer_id=E.field_user_id
+    LEFT JOIN tblemployeeslogin E2 ON W.field_approve=E2.field_user_id
 
-  WHERE I.field_branch=:idbranch AND I.field_date_deposit=:datenow
-  ORDER BY I.field_trx_deposit DESC";
+  WHERE W.field_branch=:idbranch AND W.field_date_withdraw=:datenow
+  ORDER BY W.field_trx_withdraw DESC";
 
   $Stmt = $db->prepare($Sql);
   $Stmt->execute(array(
@@ -372,7 +372,7 @@ if (isset($Msg)) {
                           <div class="modal-footer">
                             <button type="button" class="btn btn-danger " data-dismiss="modal">Tidak</button>
                             <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
-                            <a href="?module=withdraws&iddepositc=<?php echo $row['field_trx_withdraw']; ?>" type="submit" class="text-white btn btn-success">&nbsp Iya &nbsp</a>
+                            <a href="?module=withdraws&idwithdrawc=<?php echo $row['field_trx_withdraw']; ?>" type="submit" class="text-white btn btn-success">&nbsp Iya &nbsp</a>
                           </div>
                         </form>
                       </div>
@@ -410,7 +410,7 @@ if (isset($Msg)) {
                           <div class="modal-footer">
                             <button type="button" class="btn btn-danger " data-dismiss="modal">Tidak</button>
                             <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
-                            <a href="?module=withdraws&iddepositp=<?php echo $row['field_trx_withdraw']; ?>" type="submit" class="text-white btn btn-success">&nbsp&nbsp Iya &nbsp&nbsp</a>
+                            <a href="?module=withdraws&idwithdrawp=<?php echo $row['field_trx_withdraw']; ?>" type="submit" class="text-white btn btn-success">&nbsp&nbsp Iya &nbsp&nbsp</a>
                           </div>
                         </form>
                       </div>
@@ -437,7 +437,7 @@ if (isset($Msg)) {
                               <center>
                                 <h4>
                                   <?php
-                                  echo 'Saldo Pelangan Akan Kembali Sebesar ' . $row["field_withdraw_gold"];
+                                  echo 'Saldo Pelanggan Akan Kembali Sebesar ' . $row["field_withdraw_gold"];
                                   ?>
                                 </h4>
                               </center>
@@ -446,7 +446,7 @@ if (isset($Msg)) {
                           <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak</button>
                             <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
-                            <a href="?module=withdraws&iddeposits=<?php echo $row['field_trx_withdraw']; ?>" type="submit" class="text-white btn btn-success">&nbsp&nbsp Iya &nbsp&nbsp</a>
+                            <a href="?module=withdraws&idwithdraws=<?php echo $row['field_trx_withdraw']; ?>" type="submit" class="text-white btn btn-success">&nbsp&nbsp Iya &nbsp&nbsp</a>
                           </div>
                         </form>
                       </div>
