@@ -225,7 +225,7 @@ if (isset($_REQUEST["btn_forget"])) {
 						<div class="form-group">
 							<label class="col-sm-3 control-label">Email</label>
 							<div class="col-sm-6">
-								<input type="text" name="txt_email" class="form-control" value="<?php echo $row["field_email"]; ?>" />
+								<input type="text" name="txt_email" class="form-control" value="<?php echo $row["field_email"]; ?>" readonly>
 								<input type="hidden" name="txt_password" class="form-control" value="<?php echo $row["Password"]; ?>" />
 							</div>
 						</div>
@@ -295,7 +295,7 @@ if (isset($_REQUEST["btn_forget"])) {
 
 						<div class="form-group">
 							<div class="col-sm-offset-3 col-sm-9 m-t-15">
-								<input type="submit" name="btn_update" class="btn btn-success " value="Save">
+								<input type="submit" name="btn_update" class="btn btn-success " value="Simpan">
 								<input type="submit" name="btn_forget" class="btn btn-info " value="Forget Password">
 								<!-- <a href="?module=adminoffice" class="btn btn-danger">Cancel</a> -->
 							</div>

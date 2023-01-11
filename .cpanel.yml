@@ -21,7 +21,7 @@ deployment:
     - /bin/cp export_trash.php $DEPLOYPATH
     - /bin/cp index.php $DEPLOYPATH
     - /bin/cp loginv2.php $DEPLOYPATH
-    - /bin/cp Logo_miga.png $DEPLOYPATH
+    - /bin/cp L_BSP_LM_LOGO.png $DEPLOYPATH
     - /bin/cp logout.php $DEPLOYPATH
     - /bin/cp m_print.php $DEPLOYPATH
     - /bin/cp settingdatabase.php $DEPLOYPATH

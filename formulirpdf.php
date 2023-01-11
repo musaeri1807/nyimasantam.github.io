@@ -30,7 +30,7 @@ class PDF extends FPDF
      {
 
           // Logo
-          $this->Image('Logo-miga.png', 10, 4, 20);
+          $this->Image('L_BSP_LM_LOGO.png', 10, 2,30);
           // Arial bold 15
           $this->SetFont('Times', 'B', 16);
           // Move to the right

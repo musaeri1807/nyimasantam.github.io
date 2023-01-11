@@ -184,7 +184,7 @@ if (isset($_REQUEST['btn_password'])) {
 
 						<div class="form-group">
 							<div class="col-sm-offset-3 col-sm-9 m-t-15">
-								<input type="submit" name="btn_password" class="btn btn-success " value="Save">
+								<input type="submit" name="btn_password" class="btn btn-success " value="Simpan">
 								<!-- <a href="?module=adminoffice" class="btn btn-danger">Cancel</a> -->
 							</div>
 						</div>

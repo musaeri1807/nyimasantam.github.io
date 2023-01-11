@@ -11,7 +11,7 @@ $idemploye = $_SESSION['idlogin'];
 $select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin E JOIN tbldepartment D ON E.field_role=D.field_department_id
                                                                JOIN tblbranch B ON E.field_branch=B.field_branch_id
                                                                JOIN tblpermissions P ON E.field_role=P.role_id
-                                                              WHERE E.field_user_id=:uid");
+                                                              WHERE E.field_user_id=:uid LIMIT 1");
 $select_stmt->execute(array(":uid" => $idemploye));
 $rows = $select_stmt->fetch(PDO::FETCH_ASSOC);
 $permission = $rows['add'];

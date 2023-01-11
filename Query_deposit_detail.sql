@@ -32,32 +32,37 @@ JOIN tblemployeaccessmenu AM ON SM.field_idmenu=AM.field_idmenu local_vpsbsp
 JOIN tblemployeeslogin EL ON EL.field_role=AM.field_role_id  ORDER BY EL.field_role ASC;
 */
 
-											SELECT  T.field_trx_deposit AS ID,
-														T.field_deposit_id,
-                                          P.field_product_name AS PRODUK,
-                                          I.field_date_deposit AS TANGGAL,
-                                          I.field_no_referensi AS REFERENSI,
-                                          I.field_rekening_deposit AS REKENING,
-                                          N.No_Rekening,
-                                          U.field_nama AS NAMA,
-                                         	B.field_branch_name AS CABANG,
-                                          T.field_price_product AS HARGA,
-                                          T.field_quantity AS QTY,
-                                          T.field_total_price AS TOTAL,
-                                          T.field_total_price/100*5 AS PERSEN,
-                                          T.field_total_price-T.field_total_price/100*5 AS DEPO,
-                                          /*I.field_operation_fee AS FEE1,
-                                          I.field_operation_fee_rp AS FEE2,
-                                          I.field_total_deposit AS DEPOSIT ,*/
-                                          (T.field_total_price-T.field_total_price/100*5)/I.field_gold_price AS GOLD,
-                                          I.field_deposit_gold AS EMAS,
-                                          I.field_gold_price AS HARGA_EMAS,
-                                          E.field_name_officer AS PETUGAS,                                          
-                                          E.field_role
-                                          FROM tbldepositdetail T JOIN tblproduct P ON  T.field_product=P.field_product_id
-                                          JOIN tbldeposit I ON T.field_trx_deposit=I.field_trx_deposit 
-                                      		JOIN tblnasabah N ON I.field_rekening_deposit=N.No_Rekening
-                                      		JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
-                                          JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id                                          
-                                          JOIN tblbranch B ON U.field_branch=B.field_branch_id                                            
-                                          ORDER BY T.field_deposit_id ASC;
+										SELECT    T.field_trx_deposit AS ID,
+                                        T.field_deposit_id,
+                                        P.field_product_name AS PRODUK,
+                                        K.field_name_category AS KATEGORI,
+                                        I.field_date_deposit AS TANGGAL,
+                                        I.field_no_referensi AS REFERENSI,
+                                        I.field_rekening_deposit AS REKENING,
+                                        N.No_Rekening,
+                                        U.field_branch AS IDNB_CABANG,
+                                        UB.field_branch_name AS NB_CABANG,
+                                        U.field_nama AS NAMA,
+                                        I.field_branch AS TRX_CABANG,
+                                        B.field_branch_name AS CABANG,
+                                        T.field_price_product AS HARGA,
+                                        T.field_quantity AS QTY,
+                                        T.field_total_price AS TOTAL,
+                                        I.field_operation_fee AS 5PERSEN,
+                                        T.field_total_price/100*5 AS RESULT_PERSEN,
+                                        T.field_total_price-T.field_total_price/100*5 AS DEPO,                                      
+                                        (T.field_total_price-T.field_total_price/100*5)/I.field_gold_price AS GOLD,                                    
+                                        I.field_gold_price AS HARGA_EMAS,
+                                        E.field_name_officer AS PETUGAS,                                          
+                                        E.field_role
+                                        FROM tbldepositdetail T JOIN tblproduct P ON  T.field_product=P.field_product_id
+                                        JOIN tblcategory K ON P.field_category=K.field_category_id
+                                        JOIN tbldeposit I ON T.field_trx_deposit=I.field_trx_deposit 
+                                        JOIN tblnasabah N ON I.field_rekening_deposit=N.No_Rekening
+                                        JOIN tblbranch B ON I.field_branch=B.field_branch_id 
+                                        JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
+                                        JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id                                   
+                                        JOIN tblbranch UB ON U.field_branch=UB.field_branch_id 
+ 													 
+                                        ORDER BY T.field_deposit_id ASC;
+	
