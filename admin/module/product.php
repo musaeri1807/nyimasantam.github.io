@@ -274,17 +274,21 @@ $Sql_kategori = "SELECT * FROM tblcategory";
 $Stmt_kategori = $db->prepare($Sql_kategori);
 $Stmt_kategori->execute();
 $resultKategori = $Stmt_kategori->fetchAll();
+
 if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   $Sql_cabang = "SELECT * FROM tblbranch";
   $Stmt_cabang = $db->prepare($Sql_cabang);
   $Stmt_cabang->execute();
   $KC = $Stmt_cabang->fetchAll();
 } else {
-  $Sql_cabang = "SELECT * FROM tblbranch WHERE field_branch_id=':idbranch'";
+  $Sql_cabang = "SELECT * FROM tblbranch WHERE field_branch_id=:idbranch";
   $Stmt_cabang = $db->prepare($Sql_cabang);
   $Stmt_cabang->execute(array(":idbranch" => $branchid));
-  $KC = $Stmt->fetchAll();
+  $KC = $Stmt_cabang->fetchAll();
 }
+
+// var_dump($KC);
+// die();
 
 
 $no = 1;
@@ -402,11 +406,9 @@ if (isset($Msg)) {
                     <label class="col-sm-3 control-label">Kantor Cabang</label>
                     <div class="col-sm-6">
                       <select class="form-control" type="text" name="txt_cabang">
-                        <!-- <option>Pilih</option> -->
-                        <?php foreach ($KC AS $branch) { ?>
-                          <option value="<?php echo $branch['field_branch_id']; ?>">
-                            <?php echo $branch['field_branch_name'] . "-";
-                            echo $branch['field_branch_id']; ?>
+                        <!-- <option>ksd</option> -->
+                        <?php foreach ($KC as $branch) { ?>
+                          <option value="<?php echo $branch['field_branch_id']; ?>"><?php echo $branch['field_branch_name'] . "-";echo $branch['field_branch_id']; ?>
                           </option>
                         <?php } ?>
                       </select>
