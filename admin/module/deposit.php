@@ -103,34 +103,64 @@ if (isset($_REQUEST['iddepositp'])) {
 }
 
 if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
-  $Sql = "SELECT I.*,E.field_name_officer,E2.field_name_officer AS Approval,B.field_branch_name,
-  (SELECT G.field_sell FROM tblgoldprice G WHERE G.field_date_gold=I.field_date_deposit ORDER BY field_gold_id DESC LIMIT 1) AS PriceGold,
-  (SELECT U.field_nama FROM tblnasabah N JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id WHERE N.No_Rekening=I.field_rekening_deposit ) AS NAMA_NASABAH
-  FROM tbldeposit I 
+  $Sql = "SELECT 
+  D.field_trx_deposit AS ID,
+  D.field_status AS STATUSE,
+  D.field_no_referensi AS REFERENSI,  
+  D.field_rekening_deposit AS REKENING,
+  D.field_date_deposit AS TANGGAL,
+  U.field_nama AS NAMA ,
+  D.field_sub_total AS SUB_TOTAL,
+  D.field_operation_fee AS FEE,
+  D.field_operation_fee_rp AS RPFEE,
+  D.field_total_deposit AS TOTAL,
+  D.field_deposit_gold AS KONVERSI_EMAS,
+  D.field_gold_price AS HARGA_EMAS,
+  E.field_name_officer AS PETUGAS,
+  B.field_branch_name AS TRX_CABANG,
+  EA.field_name_officer AS APROVAL
   
-    LEFT JOIN tblbranch B ON I.field_branch=B.field_branch_id
-    LEFT JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id
-    LEFT JOIN tblemployeeslogin E2 ON I.field_approve=E2.field_user_id
-  WHERE I.field_date_deposit=:datenow
-  ORDER BY I.field_trx_deposit DESC";
+  FROM tbldeposit D  
+  JOIN tblnasabah N ON D.field_rekening_deposit=N.No_Rekening
+  JOIN tbluserlogin U ON U.field_user_id=N.id_UserLogin
+  JOIN tblemployeeslogin E ON E.field_user_id=D.field_officer_id
+  JOIN tblemployeeslogin EA ON EA.field_user_id=D.field_approve
+  JOIN tblbranch B ON B.field_branch_id=D.field_branch
+  -- WHERE D.field_date_deposit='2023-01-13'
+  ORDER BY D.field_trx_deposit DESC";
 
   $Stmt = $db->prepare($Sql);
-  // $Stmt->execute();
-  $Stmt->execute(array(":datenow" => $date));
+  $Stmt->execute();
+  // $Stmt->execute(array(":datenow" => $date));
   $result = $Stmt->fetchAll();
 } else {
 
-  $Sql = "SELECT I.*,E.field_name_officer,E2.field_name_officer AS Approval,B.field_branch_name,
-  (SELECT G.field_sell FROM tblgoldprice G WHERE G.field_date_gold=I.field_date_deposit ORDER BY field_gold_id DESC LIMIT 1) AS PriceGold,
-  (SELECT U.field_nama FROM tblnasabah N JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id WHERE N.No_Rekening=I.field_rekening_deposit ) AS NAMA_NASABAH
-  FROM tbldeposit I 
+  $Sql = "SELECT 
+  D.field_trx_deposit AS ID,
+  D.field_status AS STATUSE,
+  D.field_no_referensi AS REFERENSI,  
+  D.field_rekening_deposit AS REKENING,
+  D.field_date_deposit AS TANGGAL,
+  U.field_nama AS NAMA ,
+  D.field_sub_total AS SUB_TOTAL,
+  D.field_operation_fee AS FEE,
+  D.field_operation_fee_rp AS RPFEE,
+  D.field_total_deposit AS TOTAL,
+  D.field_deposit_gold AS KONVERSI_EMAS,
+  D.field_gold_price AS HARGA_EMAS,
+  E.field_name_officer AS PETUGAS,
+  B.field_branch_name AS TRX_CABANG,
+  EA.field_name_officer AS APROVAL
   
-    LEFT JOIN tblbranch B ON I.field_branch=B.field_branch_id
-    LEFT JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id
-    LEFT JOIN tblemployeeslogin E2 ON I.field_approve=E2.field_user_id
+  FROM tbldeposit D  
+  JOIN tblnasabah N ON D.field_rekening_deposit=N.No_Rekening
+  JOIN tbluserlogin U ON U.field_user_id=N.id_UserLogin
+  JOIN tblemployeeslogin E ON E.field_user_id=D.field_officer_id
+  JOIN tblemployeeslogin EA ON EA.field_user_id=D.field_approve
+  JOIN tblbranch B ON B.field_branch_id=D.field_branch
 
-  WHERE I.field_branch=:idbranch AND I.field_date_deposit=:datenow
-  ORDER BY I.field_trx_deposit DESC";
+  WHERE D.field_branch=:idbranch AND D.field_date_deposit=:datenow
+  ORDER BY D.field_trx_deposit DESC";
 
   $Stmt = $db->prepare($Sql);
   $Stmt->execute(array(
@@ -190,12 +220,12 @@ if (isset($Msg)) {
                 <th>Reff</th>
                 <th>Rekening</th>
                 <th>Nasabah</th>
-                <th>Date</th>
+                <th>Tanggal</th>
                 <th>Sub Total</th>
                 <th>Free</th>
                 <th>Total</th>
-                <th>Gold</th>
-                <th>Officer</th>
+                <th>Konversi Emas</th>
+                <th>Petugas</th>
                 <th>Status</th>
                 <th>Submitter</th>
                 <th>#</th>
@@ -214,59 +244,58 @@ if (isset($Msg)) {
                   <td>
                     <?php
                     // echo $row['field_trx_deposit'];
-                    if ($row['field_status'] == "S") {
-                      echo '<a href="../d_print?d=' . $row["field_trx_deposit"] . ' "class="text-white btn btn-default"><i class="fa fa-print"></i></a> &nbsp <br>';
-                    } elseif ($row['field_status'] == "C") {
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-view-cancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-info "><i class="fa fa-info"></i> </a> &nbsp';
-                    } elseif ($row['field_status'] == "P") {
+                    if ($row['STATUSE'] == "S") {
+                      echo '<a href="../d_print?d=' . $row["ID"] . ' "class="text-white btn btn-default"><i class="fa fa-print"></i></a> &nbsp <br>';
+                    } elseif ($row['STATUSE'] == "C") {
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-view-cancel' . $row["ID"] . '" class="text-white btn btn-info "><i class="fa fa-info"></i> </a> &nbsp';
+                    } elseif ($row['STATUSE'] == "P") {
                     }
 
                     ?>
 
 
                   </td>
-                  <td><strong><?php echo $row["field_no_referensi"]; ?></strong></td>
-                  <td><?php echo $row["field_rekening_deposit"]; ?></td>
-                  <td><?php echo $row["NAMA_NASABAH"]; ?></td>
-                  <td><?php echo date("d/m/Y", strtotime($row["field_date_deposit"])); ?></td>
-                  <!-- <td><strong><?php echo rupiah($row["PriceGold"]); ?></strong></td> -->
+                  <td><strong><?php echo $row["REFERENSI"]; ?></strong></td>
+                  <td><?php echo $row["REKENING"]; ?></td>
+                  <td><?php echo $row["NAMA"]; ?></td>
+                  <td><?php echo date("d/m/Y", strtotime($row["TANGGAL"])); ?></td>
 
-                  <td><?php echo rupiah($row["field_sub_total"]); ?></td>
-                  <td><?php echo rupiah($row["field_operation_fee_rp"]); ?></td>
-                  <td><?php echo rupiah($row["field_total_deposit"]); ?></td>
-                  <td><strong><?php echo $row["field_deposit_gold"]; ?></strong></td>
-                  <td><?php echo $row["field_name_officer"]; ?></td>
+                  <td><?php echo rupiah($row["SUB_TOTAL"]); ?></td>
+                  <td><?php echo rupiah($row["RPFEE"]); ?></td>
+                  <td><?php echo rupiah($row["TOTAL"]); ?></td>
+                  <td><strong><?php echo $row["KONVERSI_EMAS"]; ?></strong></td>
+                  <td><?php echo $row["PETUGAS"]; ?></td>
                   <td>
                     <!-- <br><?php echo $row["field_branch_name"]; ?>  -->
                     <?php
                     // echo $row["Approval"];
-                    if ($row['field_status'] == "P") {
+                    if ($row['STATUSE'] == "P") {
                       echo '<span class="label pull-center bg-yellow"><strong>Menunggu</strong></span>';
-                    } elseif ($row['field_status'] == "C") {
+                    } elseif ($row['STATUSE'] == "C") {
                       echo '<span class="label pull-center bg-red"><strong>&nbsp&nbsp Gagal &nbsp&nbsp</strong></span>';
-                    } elseif ($row['field_status'] == "S") {
+                    } elseif ($row['STATUSE'] == "S") {
                       echo '<span class="label pull-center bg-green"><strong>Berhasil</strong></span>';
                     }
                     ?>
                   </td>
-                  <td><strong><?php echo $row["Approval"]; ?></strong></td>
+                  <td><strong><?php echo $row["APROVAL"]; ?></strong></td>
 
                   <td>
 
 
                     <?php
-                    if ($row["field_status"] == "P") {
+                    if ($row["STATUSE"] == "P") {
                     } else {
                     }
 
                     if ($rows['approval'] == "Y") {
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-aprovalcancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-success "><i class="fa fa-window-close"></i> Setuju Cancel </a> &nbsp';
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-aprovalcancel' . $row["ID"] . '" class="text-white btn btn-success "><i class="fa fa-window-close"></i> Setuju Cancel </a> &nbsp';
                     }
                     if ($rows['reject'] == "Y") {
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-rejectcancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-danger "><i class="fa fa-check-square"></i> Batal Cancel </a> &nbsp';
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-rejectcancel' . $row["ID"] . '" class="text-white btn btn-danger "><i class="fa fa-check-square"></i> Batal Cancel </a> &nbsp';
                     }
                     if ($rows['cancel'] == "Y") {
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-submitcancel' . $row["field_trx_deposit"] . '" class="text-white btn btn-warning "><i class="fa fa-window-close"></i> Ajukan Cancel </a> &nbsp';
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-default-submitcancel' . $row["ID"] . '" class="text-white btn btn-warning "><i class="fa fa-window-close"></i> Ajukan Cancel </a> &nbsp';
                     }
 
 
@@ -349,7 +378,7 @@ if (isset($Msg)) {
                 </tr>
 
                 <!-- Modal aproval CANCEL -->
-                <div class="modal fade" id="modal-default-aprovalcancel<?php echo $row["field_trx_deposit"]; ?>">
+                <div class="modal fade" id="modal-default-aprovalcancel<?php echo $row["ID"]; ?>">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -364,7 +393,7 @@ if (isset($Msg)) {
                               <center>
                                 <h4>
                                   <?php
-                                  echo 'Anda Setujui Pembatalan Transaksi ini ' . $row["field_deposit_gold"];
+                                  echo 'Anda Setujui Pembatalan Transaksi ini ' . $row["KONVERSI_EMAS"];
                                   ?>
                                 </h4>
                               </center>
@@ -373,7 +402,7 @@ if (isset($Msg)) {
                           <div class="modal-footer">
                             <button type="button" class="btn btn-danger " data-dismiss="modal">Tidak</button>
                             <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
-                            <a href="?module=deposit&iddepositc=<?php echo $row['field_trx_deposit']; ?>" type="submit" class="text-white btn btn-success">&nbsp Iya &nbsp</a>
+                            <a href="?module=deposit&iddepositc=<?php echo $row['ID']; ?>" type="submit" class="text-white btn btn-success">&nbsp Iya &nbsp</a>
                           </div>
                         </form>
                       </div>
@@ -385,7 +414,7 @@ if (isset($Msg)) {
                 <!-- /.modal -->
 
                 <!-- Modal submit CANCEL -->
-                <div class="modal fade" id="modal-default-submitcancel<?php echo $row["field_trx_deposit"]; ?>">
+                <div class="modal fade" id="modal-default-submitcancel<?php echo $row["ID"]; ?>">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -411,7 +440,7 @@ if (isset($Msg)) {
                           <div class="modal-footer">
                             <button type="button" class="btn btn-danger " data-dismiss="modal">Tidak</button>
                             <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
-                            <a href="?module=deposit&iddepositp=<?php echo $row['field_trx_deposit']; ?>" type="submit" class="text-white btn btn-success">&nbsp&nbsp Iya &nbsp&nbsp</a>
+                            <a href="?module=deposit&iddepositp=<?php echo $row['ID']; ?>" type="submit" class="text-white btn btn-success">&nbsp&nbsp Iya &nbsp&nbsp</a>
                           </div>
                         </form>
                       </div>
@@ -423,7 +452,7 @@ if (isset($Msg)) {
                 <!-- /.modal -->
 
                 <!-- Modal Batal CANCEL -->
-                <div class="modal fade" id="modal-default-rejectcancel<?php echo $row["field_trx_deposit"]; ?>">
+                <div class="modal fade" id="modal-default-rejectcancel<?php echo $row["ID"]; ?>">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -438,7 +467,7 @@ if (isset($Msg)) {
                               <center>
                                 <h4>
                                   <?php
-                                  echo 'Saldo Pelangan Akan Kembali Sebesar ' . $row["field_deposit_gold"];
+                                  echo 'Saldo Pelangan Akan Kembali Sebesar ' . $row["KONVERSI_EMAS"];
                                   ?>
                                 </h4>
                               </center>
@@ -447,7 +476,7 @@ if (isset($Msg)) {
                           <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak</button>
                             <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
-                            <a href="?module=deposit&iddeposits=<?php echo $row['field_trx_deposit']; ?>" type="submit" class="text-white btn btn-success">&nbsp&nbsp Iya &nbsp&nbsp</a>
+                            <a href="?module=deposit&iddeposits=<?php echo $row['ID']; ?>" type="submit" class="text-white btn btn-success">&nbsp&nbsp Iya &nbsp&nbsp</a>
                           </div>
                         </form>
                       </div>
@@ -459,7 +488,7 @@ if (isset($Msg)) {
                 <!-- /.modal -->
 
                 <!-- View -->
-                <div class="modal fade " id="modal-default-view-cancel<?php echo $row["field_trx_deposit"]; ?>">
+                <div class="modal fade " id="modal-default-view-cancel<?php echo $row["ID"]; ?>">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -497,14 +526,14 @@ if (isset($Msg)) {
                 <th>#</th>
                 <th>#</th>
                 <th>Reff</th>
-                <th>Account</th>
-                <th>Customer</th>
-                <th>Date</th>
+                <th>Rekening</th>
+                <th>Nasabah</th>
+                <th>Tanggal</th>
                 <th>Sub Total</th>
                 <th>Free</th>
                 <th>Total</th>
-                <th>Gold</th>
-                <th>Officer</th>
+                <th>Konversi Emas</th>
+                <th>Petugas</th>
                 <th>Status</th>
                 <th>Submitter</th>
                 <th>#</th>

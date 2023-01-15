@@ -277,13 +277,13 @@ if (!isset($_SESSION['userlogin'])) {
                 </tbody>
                 <tfoot>
                   <tr class="bg-info">
-                    <td colspan="8" class="text-right"><b>General Total</b></td>
+                    <td colspan="9" class="text-right"><b>General Total</b></td>
                     <td class="text-center"></td>
                     <td class="text-center"><strong><?php echo number_format($sumP, 3, ",", ","); ?> Kg</strong></td>
                     <td class="text-center"><strong><?php echo rupiah($sumST); ?></strong></td>
                     <td class="text-center"><strong><?php echo rupiah($sumFEE); ?></strong></td>
                     <td class="text-center"><strong><?php echo rupiah($sumT); ?></strong></td>
-                    <td colspan="3" class="text-left"><strong><?php echo number_format($sumGOLD, 6, ",", ","); ?> gr </strong></td>
+                    <td colspan="2" class="text-left"><strong><?php echo number_format($sumGOLD, 6, ",", ","); ?> gr </strong></td>
 
 
                   </tr>

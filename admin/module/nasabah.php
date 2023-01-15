@@ -94,7 +94,7 @@ if (isset($_REQUEST['btn_reset'])) {
 }
 
 //delete
-if (isset($_REQUEST['id'])) {
+if (isset($_REQUEST['iddd'])) {
   $id = $_REQUEST['id'];
 
   $select_stmt = $db->prepare('SELECT * FROM tbluserlogin WHERE field_user_id =:id'); //sql select query

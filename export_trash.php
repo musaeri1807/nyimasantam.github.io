@@ -131,9 +131,8 @@ $objPHPExcel->getActiveSheet()->getStyle("A1:Q1")->getFont()->setBold(true);
 $rowCount = 2;
 
 foreach ($resultT as $row) {
-
+  $golda = number_format($row["GOLD"], 6);
   // while($row = $result->fetch_assoc()){sprintf("%09s",$number)
-
   $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, mb_strtoupper(sprintf("%09s", $row['field_deposit_id']), 'UTF-8'));
   $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, mb_strtoupper($row['PRODUK'], 'UTF-8'));
   $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, mb_strtoupper($row['KATEGORI'], 'UTF-8'));
@@ -148,7 +147,7 @@ foreach ($resultT as $row) {
   $objPHPExcel->getActiveSheet()->SetCellValue('L' . $rowCount, mb_strtoupper($row['TOTAL'], 'UTF-8'));
   $objPHPExcel->getActiveSheet()->SetCellValue('M' . $rowCount, mb_strtoupper($row['RESULT_PERSEN'], 'UTF-8'));
   $objPHPExcel->getActiveSheet()->SetCellValue('N' . $rowCount, mb_strtoupper($row['DEPO'], 'UTF-8'));
-  $objPHPExcel->getActiveSheet()->SetCellValue('O' . $rowCount, mb_strtoupper($row['GOLD'], 'UTF-8'));
+  $objPHPExcel->getActiveSheet()->SetCellValue('O' . $rowCount, mb_strtoupper($golda, 'UTF-8'));
   $objPHPExcel->getActiveSheet()->SetCellValue('P' . $rowCount, mb_strtoupper($row['HARGA_EMAS'], 'UTF-8'));
   $objPHPExcel->getActiveSheet()->SetCellValue('Q' . $rowCount, mb_strtoupper($row['PETUGAS'], 'UTF-8'));
   $rowCount++;

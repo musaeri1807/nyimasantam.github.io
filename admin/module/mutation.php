@@ -163,7 +163,7 @@ $branchid = $rows['field_branch'];
                     $stmtT->execute(array(':tgl_dari' => $tgl_dari, ':tgl_sampai' => $tgl_sampai));
                     $resultT = $stmtT->fetchAll();
                   } else {
-                    echo "AMR" . $branchid;
+                    // echo "AMR" . $branchid;
                     $sqlT = "SELECT 
                       M.field_id_saldo AS ID,
                       M.field_no_referensi AS REFERENSI,
