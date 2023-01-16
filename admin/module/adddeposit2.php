@@ -469,7 +469,7 @@ $goldprice    = $ResultGold['field_sell'];
 						<div class="form-group">
 							<div class="col-sm-offset-3 col-sm-9 m-t-15">
 								<input type="submit" name="payment2" class="btn btn-success " value="Simpan">
-								<a href="?module=adminoffice" class="btn btn-danger">Batal</a>
+								<a href="?module=deposit" class="btn btn-danger">Batal</a>
 							</div>
 						</div>
 

@@ -126,12 +126,12 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   JOIN tblemployeeslogin E ON E.field_user_id=D.field_officer_id
   JOIN tblemployeeslogin EA ON EA.field_user_id=D.field_approve
   JOIN tblbranch B ON B.field_branch_id=D.field_branch
-  -- WHERE D.field_date_deposit='2023-01-13'
+  WHERE D.field_date_deposit=:datenow
   ORDER BY D.field_trx_deposit DESC";
 
   $Stmt = $db->prepare($Sql);
-  $Stmt->execute();
-  // $Stmt->execute(array(":datenow" => $date));
+  // $Stmt->execute();
+  $Stmt->execute(array(":datenow" => $date));
   $result = $Stmt->fetchAll();
 } else {
 
