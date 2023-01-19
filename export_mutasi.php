@@ -26,86 +26,82 @@ $objPHPExcel  = new PHPExcel();
 if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
 
 	$sqlT = "SELECT 
-	  M.field_id_saldo AS ID,
-	  M.field_no_referensi AS REFERENSI,
-	  M.field_tanggal_saldo AS TANGGAL,
-	  M.field_time AS TIMES,
-	  M.field_rekening AS REKENING,
-	  U.field_nama AS NAMA,
-	  M.field_time AS TIMES,
-	  B.field_branch_name AS TRX_CABANG,
-	  M.field_type_saldo AS TIPE,
-	  G.field_sell AS HARGA_EMAS,
-	  G.field_buyback AS BUYBACK,
-	  M.field_kredit_saldo AS KREDIT,
-	  M.field_debit_saldo AS DEBIT,
-	  M.field_total_saldo AS SALDO,
-	  M.field_status AS STATUS
-	  FROM tbltrxmutasisaldo M JOIN tbldeposit D ON M.field_no_referensi=D.field_no_referensi
-	  JOIN tblnasabah N ON N.No_Rekening=M.field_rekening
-	  JOIN tbluserlogin U ON U.field_user_id=N.id_UserLogin
-	  JOIN tblgoldprice G ON M.field_tanggal_saldo=G.field_date_gold
-	  JOIN tblbranch B ON B.field_branch_id=D.field_branch
+	M.field_id_saldo AS ID,
+	M.field_no_referensi AS REFERENSI,
+	M.field_tanggal_saldo AS TANGGAL,
+	M.field_time AS TIMES,
+	M.field_rekening AS MREKENING,
+	N.id_UserLogin AS ID_LOGIN,
+	N.No_Rekening AS NREKENING,
+	U.field_nama AS NAMA,
+	B.field_branch_name AS CABANG_TERDAFTAR,
+	M.field_time AS TIMES,
+	M.field_type_saldo AS TIPE,
+	M.field_kredit_saldo AS KREDIT,
+	M.field_debit_saldo AS DEBIT,
+	M.field_total_saldo AS SALDO,
+	M.field_status AS STATUS
+	FROM tbltrxmutasisaldo M 
+	LEFT JOIN tblnasabah N ON M.field_rekening=N.No_Rekening
+	LEFT JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
+	LEFT JOIN tblbranch B ON U.field_branch=B.field_branch_id
 	  WHERE  date(M.field_tanggal_saldo) >= '$tgl_dari' AND date(M.field_tanggal_saldo) <= '$tgl_sampai'
 	  AND M.field_status='S'
 	  ORDER BY M.field_id_saldo ASC";
 	$stmtT = $db->prepare($sqlT);
 	$stmtT->execute(array(':tgl_dari' => $tgl_dari, ':tgl_sampai' => $tgl_sampai));
 	$resultT = $stmtT->fetchAll();
-} else {
+  } else {
 
 	$sqlT = "SELECT 
-	  M.field_id_saldo AS ID,
-	  M.field_no_referensi AS REFERENSI,
-	  M.field_tanggal_saldo AS TANGGAL,
-	  M.field_time AS TIMES,
-	  M.field_rekening AS REKENING,
-	  U.field_nama AS NAMA,
-	  M.field_time AS TIMES,
-	  B.field_branch_name AS TRX_CABANG,
-	  M.field_type_saldo AS TIPE,
-	  G.field_sell AS HARGA_EMAS,
-	  G.field_buyback AS BUYBACK,
-	  M.field_kredit_saldo AS KREDIT,
-	  M.field_debit_saldo AS DEBIT,
-	  M.field_total_saldo AS SALDO,
-	  M.field_status AS STATUS
-	  FROM tbltrxmutasisaldo M JOIN tbldeposit D ON M.field_no_referensi=D.field_no_referensi
-	  JOIN tblnasabah N ON N.No_Rekening=M.field_rekening
-	  JOIN tbluserlogin U ON U.field_user_id=N.id_UserLogin
-	  JOIN tblgoldprice G ON M.field_tanggal_saldo=G.field_date_gold
-	  JOIN tblbranch B ON B.field_branch_id=D.field_branch
+	M.field_id_saldo AS ID,
+	M.field_no_referensi AS REFERENSI,
+	M.field_tanggal_saldo AS TANGGAL,
+	M.field_time AS TIMES,
+	M.field_rekening AS MREKENING,
+	N.id_UserLogin AS ID_LOGIN,
+	N.No_Rekening AS NREKENING,
+	U.field_nama AS NAMA,
+	B.field_branch_name AS CABANG_TERDAFTAR,
+	M.field_time AS TIMES,
+	M.field_type_saldo AS TIPE,
+	M.field_kredit_saldo AS KREDIT,
+	M.field_debit_saldo AS DEBIT,
+	M.field_total_saldo AS SALDO,
+	M.field_status AS STATUS
+	FROM tbltrxmutasisaldo M 
+	LEFT JOIN tblnasabah N ON M.field_rekening=N.No_Rekening
+	LEFT JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
+	LEFT JOIN tblbranch B ON U.field_branch=B.field_branch_id
 	  WHERE  date(M.field_tanggal_saldo) >=:tgl_dari AND date(M.field_tanggal_saldo) <= :tgl_sampai
 	  
 	  AND D.field_branch=:idbranch AND M.field_status='S' 
 	  ORDER BY M.field_id_saldo ASC";
 	$stmtT = $db->prepare($sqlT);
 	$stmtT->execute(array(
-		':tgl_dari'   => $tgl_dari,
-		':tgl_sampai' => $tgl_sampai,
-		':idbranch'   => $branchid
+	  ':tgl_dari'   => $tgl_dari,
+	  ':tgl_sampai' => $tgl_sampai,
+	  ':idbranch'   => $branchid
 	));
 	$resultT = $stmtT->fetchAll();
-}
+  }
 
 $filename = "Periode_Mutasi_" . $tgl_dari . "-" . $tgl_sampai;
 
 $objPHPExcel->setActiveSheetIndex(0);
 
 $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'ID_Trx_Mutasi');
-$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Date');
+$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Tanggal');
 $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Time');
 $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'No_Reff');
 $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Rekening');
 $objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Nasabah');
-$objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Trx Cabang');
+$objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Cabang Terdaftar');
 $objPHPExcel->getActiveSheet()->SetCellValue('H1', 'Types');
 $objPHPExcel->getActiveSheet()->SetCellValue('I1', 'Amount');
 $objPHPExcel->getActiveSheet()->SetCellValue('J1', 'Saldo Akhir');
-$objPHPExcel->getActiveSheet()->SetCellValue('K1', 'Harga Emas');
-$objPHPExcel->getActiveSheet()->SetCellValue('L1', 'Buyback');
-$objPHPExcel->getActiveSheet()->SetCellValue('M1', 'Status');
-$objPHPExcel->getActiveSheet()->getStyle("A1:M1")->getFont()->setBold(true);
+$objPHPExcel->getActiveSheet()->SetCellValue('K1', 'Status');
+$objPHPExcel->getActiveSheet()->getStyle("A1:K1")->getFont()->setBold(true);
 
 $rowCount	=	2;
 
@@ -125,9 +121,9 @@ foreach ($resultT as $row) {
 	$objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, mb_strtoupper($row['TANGGAL'], 'UTF-8'));
 	$objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, mb_strtoupper($row['TIMES'], 'UTF-8'));
 	$objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, mb_strtoupper($row['REFERENSI'], 'UTF-8'));
-	$objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, mb_strtoupper($row['REKENING'], 'UTF-8'));
+	$objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, mb_strtoupper($row['MREKENING'], 'UTF-8'));
 	$objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, mb_strtoupper($row['NAMA'], 'UTF-8'));
-	$objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, mb_strtoupper($row['TRX_CABANG'], 'UTF-8'));
+	$objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, mb_strtoupper($row['CABANG_TERDAFTAR'], 'UTF-8'));
 	if ($row['KREDIT'] == "0") {
 		$objPHPExcel->getActiveSheet()->SetCellValue('H' . $rowCount, mb_strtoupper($Types, 'UTF-8'));
 		$objPHPExcel->getActiveSheet()->SetCellValue('I' . $rowCount, mb_strtoupper($row['DEBIT'], 'UTF-8'));
@@ -136,9 +132,7 @@ foreach ($resultT as $row) {
 		$objPHPExcel->getActiveSheet()->SetCellValue('I' . $rowCount, mb_strtoupper($row['KREDIT'], 'UTF-8'));
 	}
 	$objPHPExcel->getActiveSheet()->SetCellValue('J' . $rowCount, mb_strtoupper($row['SALDO'], 'UTF-8'));
-	$objPHPExcel->getActiveSheet()->SetCellValue('K' . $rowCount, mb_strtoupper($row['HARGA_EMAS'], 'UTF-8'));
-	$objPHPExcel->getActiveSheet()->SetCellValue('L' . $rowCount, mb_strtoupper($row['BUYBACK'], 'UTF-8'));
-	$objPHPExcel->getActiveSheet()->SetCellValue('M' . $rowCount, mb_strtoupper($row['STATUS'], 'UTF-8'));
+	$objPHPExcel->getActiveSheet()->SetCellValue('K' . $rowCount, mb_strtoupper($row['STATUS'], 'UTF-8'));
 	$rowCount++;
 }
 

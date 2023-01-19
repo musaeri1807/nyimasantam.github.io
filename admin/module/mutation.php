@@ -117,15 +117,13 @@ $branchid = $rows['field_branch'];
                     <th width="10">ID_Trx</th>
 
                     <th>No Reff</th>
-                    <th>Date</th>
+                    <th>Tanggal</th>
                     <th>Rekening</th>
                     <th>Nasabah</th>
-                    <th>Trx Cabang</th>
+                    <th>Cabang Terdaftar</th>
                     <th>Types</th>
                     <th>Amount</th>
                     <th>Saldo Akhir</th>
-                    <th>Jual</th>
-                    <th>Buyback</th>
                     <th>Status</th>
                   </tr>
                 </thead>
@@ -136,26 +134,25 @@ $branchid = $rows['field_branch'];
                   if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
                     echo "ADMIN";
                     $sqlT = "SELECT 
-                      M.field_id_saldo AS ID,
-                      M.field_no_referensi AS REFERENSI,
-                      M.field_tanggal_saldo AS TANGGAL,
-                      M.field_time AS TIMES,
-                      M.field_rekening AS REKENING,
-                      U.field_nama AS NAMA,
-                      M.field_time AS TIMES,
-                      B.field_branch_name AS TRX_CABANG,
-                      M.field_type_saldo AS TIPE,
-                      G.field_sell AS HARGA_EMAS,
-                      G.field_buyback AS BUYBACK,
-                      M.field_kredit_saldo AS KREDIT,
-                      M.field_debit_saldo AS DEBIT,
-                      M.field_total_saldo AS SALDO,
-                      M.field_status AS STATUS
-                      FROM tbltrxmutasisaldo M JOIN tbldeposit D ON M.field_no_referensi=D.field_no_referensi
-                      JOIN tblnasabah N ON N.No_Rekening=M.field_rekening
-                      JOIN tbluserlogin U ON U.field_user_id=N.id_UserLogin
-                      JOIN tblgoldprice G ON M.field_tanggal_saldo=G.field_date_gold
-                      JOIN tblbranch B ON B.field_branch_id=D.field_branch
+                    M.field_id_saldo AS ID,
+                    M.field_no_referensi AS REFERENSI,
+                    M.field_tanggal_saldo AS TANGGAL,
+                    M.field_time AS TIMES,
+                    M.field_rekening AS MREKENING,
+                    N.id_UserLogin AS ID_LOGIN,
+                    N.No_Rekening AS NREKENING,
+                    U.field_nama AS NAMA,
+                    B.field_branch_name AS CABANG_TERDAFTAR,
+                    M.field_time AS TIMES,
+                    M.field_type_saldo AS TIPE,
+                    M.field_kredit_saldo AS KREDIT,
+                    M.field_debit_saldo AS DEBIT,
+                    M.field_total_saldo AS SALDO,
+                    M.field_status AS STATUS
+                    FROM tbltrxmutasisaldo M 
+                    LEFT JOIN tblnasabah N ON M.field_rekening=N.No_Rekening
+                    LEFT JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
+                    LEFT JOIN tblbranch B ON U.field_branch=B.field_branch_id
                       WHERE  date(M.field_tanggal_saldo) >= '$tgl_dari' AND date(M.field_tanggal_saldo) <= '$tgl_sampai'
                       AND M.field_status='S'
                       ORDER BY M.field_id_saldo ASC";
@@ -165,26 +162,25 @@ $branchid = $rows['field_branch'];
                   } else {
                     // echo "AMR" . $branchid;
                     $sqlT = "SELECT 
-                      M.field_id_saldo AS ID,
-                      M.field_no_referensi AS REFERENSI,
-                      M.field_tanggal_saldo AS TANGGAL,
-                      M.field_time AS TIMES,
-                      M.field_rekening AS REKENING,
-                      U.field_nama AS NAMA,
-                      M.field_time AS TIMES,
-                      B.field_branch_name AS TRX_CABANG,
-                      M.field_type_saldo AS TIPE,
-                      G.field_sell AS HARGA_EMAS,
-                      G.field_buyback AS BUYBACK,
-                      M.field_kredit_saldo AS KREDIT,
-                      M.field_debit_saldo AS DEBIT,
-                      M.field_total_saldo AS SALDO,
-                      M.field_status AS STATUS
-                      FROM tbltrxmutasisaldo M JOIN tbldeposit D ON M.field_no_referensi=D.field_no_referensi
-                      JOIN tblnasabah N ON N.No_Rekening=M.field_rekening
-                      JOIN tbluserlogin U ON U.field_user_id=N.id_UserLogin
-                      JOIN tblgoldprice G ON M.field_tanggal_saldo=G.field_date_gold
-                      JOIN tblbranch B ON B.field_branch_id=D.field_branch
+                    M.field_id_saldo AS ID,
+                    M.field_no_referensi AS REFERENSI,
+                    M.field_tanggal_saldo AS TANGGAL,
+                    M.field_time AS TIMES,
+                    M.field_rekening AS MREKENING,
+                    N.id_UserLogin AS ID_LOGIN,
+                    N.No_Rekening AS NREKENING,
+                    U.field_nama AS NAMA,
+                    B.field_branch_name AS CABANG_TERDAFTAR,
+                    M.field_time AS TIMES,
+                    M.field_type_saldo AS TIPE,
+                    M.field_kredit_saldo AS KREDIT,
+                    M.field_debit_saldo AS DEBIT,
+                    M.field_total_saldo AS SALDO,
+                    M.field_status AS STATUS
+                    FROM tbltrxmutasisaldo M 
+                    LEFT JOIN tblnasabah N ON M.field_rekening=N.No_Rekening
+                    LEFT JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
+                    LEFT JOIN tblbranch B ON U.field_branch=B.field_branch_id
                       WHERE  date(M.field_tanggal_saldo) >=:tgl_dari AND date(M.field_tanggal_saldo) <= :tgl_sampai
                       
                       AND D.field_branch=:idbranch AND M.field_status='S' 
@@ -226,9 +222,9 @@ $branchid = $rows['field_branch'];
                       <td data-title="waktu_bayar"><?php echo $row["REFERENSI"]; ?></td>
 
                       <td data-title="Status"><?php echo $row["TANGGAL"]; ?></td>
-                      <td data-title="Status"><?php echo $row["REKENING"]; ?></td>
+                      <td data-title="Status"><?php echo $row["MREKENING"]; ?></td>
                       <td data-title="Status"><?php echo $row["NAMA"]; ?></td>
-                      <td data-title="Status"><?php echo $row["TRX_CABANG"]; ?></td>
+                      <td data-title="Status"><?php echo $row["CABANG_TERDAFTAR"]; ?></td>
                       <td data-title="Status"><?php echo $Types; ?></td>
                       <?php
 
@@ -239,8 +235,6 @@ $branchid = $rows['field_branch'];
                       }
                       ?>
                       <td data-title="Status"><?php echo $row['SALDO']; ?></td>
-                      <td data-title="Status"><?php echo rupiah($row['HARGA_EMAS']); ?></td>
-                      <td data-title="Status"><?php echo rupiah($row['BUYBACK']); ?></td>
                       <td data-title="Status"><?php if ($row["STATUS"] == "S") {
                                                 echo '<span class="badge btn-success text-white">Berhasil</span>';
                                               } ?></td>
@@ -250,15 +244,13 @@ $branchid = $rows['field_branch'];
                   <?php
                     $sumK = $sumK + $row["KREDIT"];
                     $sumD = $sumD + $row["DEBIT"];
-                  } ?>
+                  } 
+                  ?>
                 </tbody>
                 <tfoot>
                   <tr class="bg-info">
-                    <td colspan="7" class="text-right"><b> Total</b></td>
-                    <td class="text-center"><strong><?php
-                                                    $SUM = $sumK - $sumD;
-
-                                                    echo $SUM; ?>,-g</strong></td>
+                    <td colspan="9" class="text-right"><b></b></td>
+                    <td class="text-center"><strong></strong></td>
 
 
                   </tr>
