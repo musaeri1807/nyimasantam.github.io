@@ -407,8 +407,8 @@ $menu = $Stmtmenu->fetchAll();
         include "module/adddeposit2.php";
       } elseif ($_GET['module'] == "buyback") {
         include "module/tarik_buyback.php";
-      } elseif ($_GET['module'] == "mailbox") {
-        include "module/mailbox.php";
+      } elseif ($_GET['module'] == "exportwithdraw") {
+        include "module/exportwithdraw.php";
       } elseif ($_GET['module'] == "adddeposit") {
         include "module/adddeposit.php";
       } elseif ($_GET['module'] == "formcustomer") {
