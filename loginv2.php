@@ -265,7 +265,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
               <!--    <div class="form-block mx-auto"> -->
 
               <div class="text-center mt-1">
-                <img src="image/L_BSP_LM_LOGO.png" width="200">
+                <img src="image/icon_bspid.png" width="200">
                 <br>
                 <h3> <strong>Officer</strong></h3>
                 <!-- <p class="mb-2">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>  -->
