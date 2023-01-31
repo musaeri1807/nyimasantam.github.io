@@ -89,7 +89,7 @@ if (!isset($_SESSION['userlogin'])) {
                   <tr>
 
                     <td colspan="3" class="text-left">
-                      <a href="../export_trash?tanggal_dari=<?php echo $tgl_dari ?>&tanggal_sampai=<?php echo $tgl_sampai ?>" class="btn btn-sm btn-success"><i class="fa fa-download"></i> &nbsp Excel</a>
+                      <a href="../export_withdraw?tanggal_dari=<?php echo $tgl_dari ?>&tanggal_sampai=<?php echo $tgl_sampai ?>" class="btn btn-sm btn-success"><i class="fa fa-download"></i> &nbsp Excel</a>
                     </td>
                   </tr>
                 </table>
@@ -250,7 +250,7 @@ if (!isset($_SESSION['userlogin'])) {
                         $Types = '<span class="badge btn-warning text-white">Fisik</span>';
                       } else if ($Types == "202") {
                         $Types = '<span class="badge btn-primary text-white">Buyback</span>';
-                      } 
+                      }
                       ?>
                       <td data-title="channel"><?php echo $Types; ?></td>
                       <td data-title="channel"><?php echo $row["Trx_CABANG"]; ?></td>
