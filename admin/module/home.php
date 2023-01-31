@@ -12,68 +12,77 @@ $result = $Stmt->fetch(PDO::FETCH_ASSOC);
 
 //Transaksi Hari Ini
 $tanggal = date('Y-m-d');
-// $tanggal = '2022-08-19';
+// $tanggal = '2021-11-29';
 $bulan   = date('m');
 $tahun   = date('Y');
-// echo $tanggal;
-// echo $bulan;
-// echo $tahun;
-// die();
-$query_hari = "SELECT SUM(field_total_deposit) AS TOTAL_HRI,SUM(field_deposit_gold) AS EMAS_HRI FROM tbldeposit WHERE field_status ='S' AND field_date_deposit=:hari";
-$ST_hari = $db->prepare($query_hari);
-$ST_hari->execute(array(':hari' => $tanggal));
-$result_hari = $ST_hari->fetch(PDO::FETCH_ASSOC);
+
+// Simpanan
+$query_Dhari = "SELECT SUM(field_total_deposit) AS TOTALD_HRI,SUM(field_deposit_gold) AS EMASD_HRI FROM tbldeposit WHERE field_status ='S' AND field_date_deposit=:hari";
+$ST_Dhari = $db->prepare($query_Dhari);
+$ST_Dhari->execute(array(':hari' => $tanggal));
+$result_Dhari = $ST_Dhari->fetch(PDO::FETCH_ASSOC);
+// Pengembalian
+$query_Whari = "SELECT SUM(field_rp_withdraw) AS TOTALW_HRI, SUM(field_withdraw_gold) AS EMASW_HRI FROM tblwithdraw WHERE field_status ='S' AND field_date_withdraw=:hari";
+$ST_Whari = $db->prepare($query_Whari);
+$ST_Whari->execute(array(':hari' => $tanggal));
+$result_Whari = $ST_Whari->fetch(PDO::FETCH_ASSOC);
+
+$result_hari_RP = $result_Dhari['TOTALD_HRI'] - $result_Whari['TOTALW_HRI'];
+$result_hari_GOLD = $result_Dhari['EMASD_HRI'] - $result_Whari['EMASW_HRI'];
 
 //Transaksi Bulan
-$query_bulan = "SELECT SUM(field_total_deposit) AS TOTAL_BLN,SUM(field_deposit_gold) AS EMAS_BLN FROM tbldeposit WHERE field_status ='S' AND MONTH(field_date_deposit)=:bulan AND YEAR(field_date_deposit)=:tahun";
-$ST_bulan = $db->prepare($query_bulan);
-$ST_bulan->execute(array(
-
+// Simpanan
+$query_Dbulan = "SELECT SUM(field_total_deposit) AS TOTALD_BLN,SUM(field_deposit_gold) AS EMASD_BLN FROM tbldeposit WHERE field_status ='S' AND MONTH(field_date_deposit)=:bulan AND YEAR(field_date_deposit)=:tahun";
+$ST_Dbulan = $db->prepare($query_Dbulan);
+$ST_Dbulan->execute(array(
   ':bulan' => $bulan,
   ':tahun' => $tahun
 ));
-$result_bulan = $ST_bulan->fetch(PDO::FETCH_ASSOC);
+$result_Dbulan = $ST_Dbulan->fetch(PDO::FETCH_ASSOC);
+// Pengembalian
+$query_Wbulan = "SELECT SUM(field_rp_withdraw) AS TOTALW_BLN ,SUM(field_withdraw_gold) AS EMASW_BLN FROM tblwithdraw WHERE field_status ='S' AND MONTH(field_date_withdraw)=:bulan AND YEAR(field_date_withdraw)=:tahun";
+$ST_Wbulan = $db->prepare($query_Wbulan);
+$ST_Wbulan->execute(array(
+  ':bulan' => $bulan,
+  ':tahun' => $tahun
+));
+$result_Wbulan = $ST_Wbulan->fetch(PDO::FETCH_ASSOC);
+
+$result_bulan_RP    = $result_Dbulan['TOTALD_BLN'] - $result_Wbulan['TOTALW_BLN'];
+$result_bulan_GOLD  = $result_Dbulan['EMASD_BLN'] - $result_Wbulan['EMASW_BLN'];
 
 //Transaksi Tahun
-$query_tahun = "SELECT SUM(field_total_deposit) AS TOTAL_THN ,SUM(field_deposit_gold) AS EMAS_THN FROM tbldeposit WHERE field_status ='S' AND YEAR(field_date_deposit)=:tahun";
-$ST_tahun = $db->prepare($query_tahun);
-$ST_tahun->execute(array(':tahun' => $tahun));
-$result_tahun = $ST_tahun->fetch(PDO::FETCH_ASSOC);
+$query_Dtahun = "SELECT SUM(field_total_deposit) AS TOTALD_THN ,SUM(field_deposit_gold) AS EMASD_THN FROM tbldeposit WHERE field_status ='S' AND YEAR(field_date_deposit)=:tahun";
+$ST_Dtahun = $db->prepare($query_Dtahun);
+$ST_Dtahun->execute(array(':tahun' => $tahun));
+$result_Dtahun = $ST_Dtahun->fetch(PDO::FETCH_ASSOC);
+
+$query_Wtahun = "SELECT SUM(field_rp_withdraw) AS TOTALW_THN ,SUM(field_withdraw_gold) AS EMASW_THN FROM tblwithdraw WHERE field_status ='S' AND YEAR(field_date_withdraw)=:tahun";
+$ST_Wtahun = $db->prepare($query_Wtahun);
+$ST_Wtahun->execute(array(':tahun' => $tahun));
+$result_Wtahun = $ST_Wtahun->fetch(PDO::FETCH_ASSOC);
+
+$result_tahun_RP    = $result_Dtahun['TOTALD_THN'] - $result_Wtahun['TOTALW_THN'];
+$result_tahun_GOLD  = $result_Dtahun['EMASD_THN'] - $result_Wtahun['EMASW_THN'];
 
 //Transaksi Semua
-$query_semua = "SELECT SUM(field_total_deposit) AS TOTAL_TRX,SUM(field_deposit_gold) AS EMAS_TRX FROM tbldeposit WHERE field_status ='S'";
-$ST_semua = $db->prepare($query_semua);
-$ST_semua->execute();
-$result_semua = $ST_semua->fetch(PDO::FETCH_ASSOC);
+$query_Dsemua = "SELECT SUM(field_total_deposit) AS TOTALD_TRX,SUM(field_deposit_gold) AS EMASD_TRX , SUM(field_operation_fee_rp) AS FEE FROM tbldeposit WHERE field_status ='S'";
+$ST_Dsemua = $db->prepare($query_Dsemua);
+$ST_Dsemua->execute();
+$result_Dsemua = $ST_Dsemua->fetch(PDO::FETCH_ASSOC);
 
+$query_Wsemua = "SELECT SUM(field_rp_withdraw) AS TOTALW_TRX,SUM(field_withdraw_gold) AS EMASW_TRX FROM tblwithdraw WHERE field_status ='S'";
+$ST_Wsemua = $db->prepare($query_Wsemua);
+$ST_Wsemua->execute();
+$result_Wsemua = $ST_Wsemua->fetch(PDO::FETCH_ASSOC);
 
-echo $result_hari['TOTAL_HRI'];
-echo '<br>';
-echo $result_bulan['TOTAL_BLN'];
-echo '<br>';
-echo $result_tahun['TOTAL_THN'];
-echo '<br>';
-echo $result_semua['TOTAL_TRX'];
-// die();
+$result_semua_RP    = $result_Dsemua['TOTALD_TRX'] - $result_Wsemua['TOTALW_TRX'];
+$result_semua_GOLD  = $result_Dsemua['EMASD_TRX'] - $result_Wsemua['EMASW_TRX'];
 
-
-
-// SELECT * FROM tblwithdraw;
-// SELECT SUM(field_rp_withdraw) AS TOTAL_HRI, SUM(field_withdraw_gold) AS EMAS_HRI FROM tblwithdraw 
-// WHERE field_status ='S' AND field_date_withdraw='2021-04-19';
-
-// SELECT SUM(field_rp_withdraw) AS TOTAL_BLN ,SUM(field_withdraw_gold) AS EMAS_HRI FROM tblwithdraw 
-// WHERE field_status ='S' AND MONTH(field_date_withdraw)='01' AND YEAR(field_date_withdraw)='2022';
-
-// SELECT SUM(field_rp_withdraw) AS TOTAL_THN ,SUM(field_withdraw_gold) AS EMAS_HRI FROM tblwithdraw 
-// WHERE field_status ='S' AND YEAR(field_date_withdraw)='2022';
-
-// SELECT SUM(field_rp_withdraw) AS TOTAL_TRX ,SUM(field_withdraw_gold) AS EMAS_HRI FROM tblwithdraw 
-// WHERE field_status ='S';
-
-
-
-
+$Query_Cabang = "SELECT COUNT(field_branch_id) AS CABANG FROM tblbranch ";
+$ST_Dhari = $db->prepare($query_Dhari);
+$ST_Dhari->execute(array(':hari' => $tanggal));
+$result_Dhari = $ST_Dhari->fetch(PDO::FETCH_ASSOC);
 
 ?>
 <div style="margin-right:10%;margin-left:15%" class="alert alert-info alert-dismissable">
@@ -98,8 +107,8 @@ echo $result_semua['TOTAL_TRX'];
     <div class="col-lg-3 col-xs-6">
       <div class="small-box bg-red">
         <div class="inner">
-          <h4 style="font-weight: bolder"><?php echo "Rp. " . number_format($result_hari['TOTAL_HRI']) . " ,-" ?></h4>
-          <p>Transaksi Hari Ini</p>
+          <h4 style="font-weight: bolder"><?php echo "Rp. " . number_format($result_hari_RP); ?></h4>
+          <p>Transaksi Tgl <?php echo date('d') ?></p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
@@ -109,8 +118,8 @@ echo $result_semua['TOTAL_TRX'];
     <div class="col-lg-3 col-xs-6">
       <div class="small-box bg-blue">
         <div class="inner">
-          <h4 style="font-weight: bolder"><?php echo "Rp. " . number_format($result_bulan['TOTAL_BLN']) . " ,-" ?></h4>
-          <p>Transaksi Bulan Ini</p>
+          <h4 style="font-weight: bolder"><?php echo "Rp. " . number_format($result_bulan_RP); ?></h4>
+          <p>Transaksi Bln <?php echo date('M'); ?></p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
@@ -120,8 +129,8 @@ echo $result_semua['TOTAL_TRX'];
     <div class="col-lg-3 col-xs-6">
       <div class="small-box bg-yellow">
         <div class="inner">
-          <h4 style="font-weight: bolder"><?php echo "Rp. " . number_format($result_tahun['TOTAL_THN']) . " ,-" ?></h4>
-          <p>Transaksi Tahun Ini</p>
+          <h4 style="font-weight: bolder"><?php echo "Rp. " . number_format($result_tahun_RP); ?></h4>
+          <p>Transaksi Thn <?php echo date('Y'); ?></p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
@@ -131,8 +140,8 @@ echo $result_semua['TOTAL_TRX'];
     <div class="col-lg-3 col-xs-6">
       <div class="small-box bg-black">
         <div class="inner">
-          <h4 style="font-weight: bolder"><?php echo "Rp. " . number_format($result_semua['TOTAL_TRX']) . " ,-" ?></h4>
-          <p>Total Seluruh Transaksi</p>
+          <h4 style="font-weight: bolder"><?php echo "Rp. " . number_format($result_semua_RP); ?></h4>
+          <p>Total Transaksi</p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
@@ -147,8 +156,8 @@ echo $result_semua['TOTAL_TRX'];
       <div class="small-box bg-green">
         <div class="inner">
 
-          <h4 style="font-weight: bolder"><?php echo $result_hari['EMAS_HRI'] . " " . "Gram"; ?></h4>
-          <p>Simpanan Emas Hari Ini</p>
+          <h4 style="font-weight: bolder"><?php echo round($result_hari_GOLD, 6) . " gr"; ?></h4>
+          <p>Emas Hari <?php echo date('d'); ?></p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
@@ -159,8 +168,8 @@ echo $result_semua['TOTAL_TRX'];
       <div class="small-box bg-green">
         <div class="inner">
 
-          <h4 style="font-weight: bolder"><?php echo round($result_bulan['EMAS_BLN'], 6) . ",- gr"; ?></h4>
-          <p>Simpanan Emas Bulan Ini</p>
+          <h4 style="font-weight: bolder"><?php echo round($result_bulan_GOLD, 6) . " gr"; ?></h4>
+          <p>Emas Bulan <?php echo date('m'); ?></p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
@@ -170,8 +179,8 @@ echo $result_semua['TOTAL_TRX'];
     <div class="col-lg-2 col-xs-6">
       <div class="small-box bg-green">
         <div class="inner">
-          <h4 style="font-weight: bolder"><?php echo round($result_tahun['EMAS_THN'], 6) . ",- gr"; ?></h4>
-          <p>Simpanan Emas Tahun <?php echo date('Y'); ?></p>
+          <h4 style="font-weight: bolder"><?php echo round($result_tahun_GOLD, 6) . " gr"; ?></h4>
+          <p>Emas Tahun <?php echo date('Y'); ?></p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
@@ -181,44 +190,37 @@ echo $result_semua['TOTAL_TRX'];
     <div class="col-lg-2 col-xs-6">
       <div class="small-box bg-green">
         <div class="inner">
-          <h4 style="font-weight: bolder"><?php echo round($result_semua['EMAS_TRX'], 6) . ",- gr"; ?></h4>
-          <p>Total Simpanan Emas</p>
+          <h4 style="font-weight: bolder"><?php echo round($result_semua_GOLD, 6) . " gr"; ?></h4>
+          <p>Total Emas</p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
         </div>
       </div>
     </div>
+
     <div class="col-lg-2 col-xs-6">
       <div class="small-box bg-green">
         <div class="inner">
-          <?php
-          $query = mysqli_query($koneksi, "SELECT sum(field_debit_saldo) AS debit FROM tbltrxmutasisaldo WHERE field_status='Success' ");
-          $debit = mysqli_fetch_array($query);
-          ?>
-          <h4 style="font-weight: bolder"><?php echo round($debit['debit'], 6) . ",- gr"; ?></h4>
-          <p>Total Penarikan</p>
+          <h4 style="font-weight: bolder"><?php echo "Rp. " . number_format($result_Dsemua['FEE']); ?></h4>
+          <p>Total Oprasional Fee </p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
         </div>
       </div>
     </div>
-    <div class="col-lg-2 col-xs-6">
+    <!-- <div class="col-lg-2 col-xs-6">
       <div class="small-box bg-green">
         <div class="inner">
-          <?php
-          $invoice = mysqli_query($koneksi, "SELECT * from invoice");
-          $i = mysqli_num_rows($invoice);
-          ?>
-          <h4 style="font-weight: bolder"><?php echo $i ?></h4>
-          <p>Jumlah Invoice</p>
+          <h4 style="font-weight: bolder"><?php echo round($result_semua_GOLD, 6) . " gr"; ?></h4>
+          <p>Nasabah</p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
   <!-- /.row -->
   <div class="row">
@@ -236,10 +238,7 @@ echo $result_semua['TOTAL_TRX'];
         <div class="box-body">
           <h4>Hak Akses sebagai Admin:</h4>
           <li>Mengelola data User</li>
-          <li>Mengelola data master lokasi kerja</li>
-          <li>Mengelola data master unit kerja</li>
-          <li>Mengelola data master jabatan</li>
-          <li>Mengelola data master pangkat</li>
+          <li>Mengelola data transaksi</li>
         </div>
       </div>
       <!-- /Content -->
