@@ -111,7 +111,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
     LEFT JOIN tblbranch B ON W.field_branch=B.field_branch_id
     LEFT JOIN tblemployeeslogin E ON W.field_officer_id=E.field_user_id
     LEFT JOIN tblemployeeslogin E2 ON W.field_approve=E2.field_user_id
-
+  WHERE W.field_date_withdraw=:datenow
   ORDER BY W.field_trx_withdraw DESC";
 
   $Stmt = $db->prepare($Sql);
