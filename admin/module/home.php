@@ -191,7 +191,7 @@ $result_Dhari = $ST_Dhari->fetch(PDO::FETCH_ASSOC);
       <div class="small-box bg-green">
         <div class="inner">
           <h4 style="font-weight: bolder"><?php echo round($result_semua_GOLD, 6) . " gr"; ?></h4>
-          <p>Total Emas</p>
+          <p>Total Emas Unit</p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
@@ -210,17 +210,17 @@ $result_Dhari = $ST_Dhari->fetch(PDO::FETCH_ASSOC);
         </div>
       </div>
     </div>
-    <!-- <div class="col-lg-2 col-xs-6">
+    <div class="col-lg-2 col-xs-6">
       <div class="small-box bg-green">
         <div class="inner">
-          <h4 style="font-weight: bolder"><?php echo round($result_semua_GOLD, 6) . " gr"; ?></h4>
-          <p>Nasabah</p>
+          <h4 style="font-weight: bolder"><?php echo round($result_Dsemua['EMASD_TRX'], 6) . " gr"; ?></h4>
+          <p>Total Emas Masuk</p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
   <!-- /.row -->
   <div class="row">
