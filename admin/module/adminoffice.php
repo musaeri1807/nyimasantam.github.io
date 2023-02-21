@@ -47,65 +47,127 @@ if (isset($_REQUEST['id'])) {
 
 
 if ($_SESSION['rolelogin'] == 'ADM') {
-  $Sql = "SELECT E.*,D.field_department_name,B.field_branch_name  
-                        FROM tblemployeeslogin E 
-                        JOIN tblbranch B ON E.field_branch=B.field_branch_id 
-                        JOIN tbldepartment D ON E.field_role=D.field_department_id 
-                        ORDER BY E.field_user_id DESC ";
-  $Stmt = $db->prepare($Sql);
-  $Stmt->execute();
-  $result = $Stmt->fetchAll();
-  # code...
+          $Sql = "SELECT
+          E.field_user_id AS ID ,
+          E.field_employees_id AS NIP,
+          E.field_name_officer AS NAMA,
+          E.field_username AS USERNAME,
+          E.field_email AS MAIL,
+          E.field_role AS ROLE,
+          E.field_status_aktif AS STATUS,
+          D.field_department_name AS JABATAN,
+          W.field_nama_desa AS CABANG
+          FROM tblemployeeslogin E 
+          LEFT JOIN tblbranch B ON E.field_branch=B.field_branch_id 
+          LEFT JOIN tblwilayahdesa W ON E.field_branch=W.field_desa_id
+          LEFT JOIN tbldepartment D ON E.field_role=D.field_department_id 
+          WHERE E.field_role !='ADM'
+          ORDER BY E.field_user_id DESC";
+          $Stmt = $db->prepare($Sql);
+          $Stmt->execute();
+          $result = $Stmt->fetchAll();
 } elseif ($_SESSION['rolelogin'] == 'MGR') {
-  $Sql = "SELECT E.*,D.field_department_name,B.field_branch_name  
-                        FROM tblemployeeslogin E 
-                        JOIN tblbranch B ON E.field_branch=B.field_branch_id 
-                        JOIN tbldepartment D ON E.field_role=D.field_department_id 
-                        WHERE E.field_role !='ADM'
-                        ORDER BY E.field_user_id DESC ";
-  $Stmt = $db->prepare($Sql);
-  $Stmt->execute();
-  $result = $Stmt->fetchAll();
+          $Sql = "SELECT
+          E.field_user_id AS ID ,
+          E.field_employees_id AS NIP,
+          E.field_name_officer AS NAMA,
+          E.field_username AS USERNAME,
+          E.field_email AS MAIL,
+          E.field_role AS ROLE,
+          E.field_status_aktif AS STATUS,
+          D.field_department_name AS JABATAN,
+          W.field_nama_desa AS CABANG
+          FROM tblemployeeslogin E 
+          LEFT JOIN tblbranch B ON E.field_branch=B.field_branch_id 
+          LEFT JOIN tblwilayahdesa W ON E.field_branch=W.field_desa_id
+          LEFT JOIN tbldepartment D ON E.field_role=D.field_department_id 
+          WHERE E.field_role NOT IN('ADM','MGR')
+          ORDER BY E.field_user_id DESC";
+          $Stmt = $db->prepare($Sql);
+          $Stmt->execute();
+          $result = $Stmt->fetchAll();
+}elseif ($_SESSION['rolelogin'] == 'AMR') {
+          $Sql = "SELECT
+          E.field_user_id AS ID ,
+          E.field_employees_id AS NIP,
+          E.field_name_officer AS NAMA,
+          E.field_username AS USERNAME,
+          E.field_email AS MAIL,
+          E.field_role AS ROLE,
+          E.field_status_aktif AS STATUS,
+          D.field_department_name AS JABATAN,
+          W.field_nama_desa AS CABANG
+          FROM tblemployeeslogin E 
+          LEFT JOIN tblbranch B ON E.field_branch=B.field_branch_id 
+          LEFT JOIN tblwilayahdesa W ON E.field_branch=W.field_desa_id
+          LEFT JOIN tbldepartment D ON E.field_role=D.field_department_id 
+          WHERE E.field_role NOT IN('ADM','MGR','AMR') AND E.field_branch=:idbranch
+          ORDER BY E.field_user_id DESC";
+          $Stmt = $db->prepare($Sql);
+          $Stmt->execute(array(':idbranch' => $branchid));
+          $result = $Stmt->fetchAll();
 } elseif ($_SESSION['rolelogin'] == 'SPV') {
-  # code...
-  $Sql = "SELECT E.*,D.field_department_name,B.field_branch_name  
-                        FROM tblemployeeslogin E 
-                        JOIN tblbranch B ON E.field_branch=B.field_branch_id 
-                        JOIN tbldepartment D ON E.field_role=D.field_department_id 
-                        WHERE E.field_role !='ADM' AND E.field_role !='MGR' AND E.field_role !='SPV' AND E.field_branch=:idbranch
-                        ORDER BY E.field_user_id DESC ";
-  $Stmt = $db->prepare($Sql);
-  //$Stmt->execute();
-  $Stmt->execute(array(":idbranch" => $branchid));
-  $result = $Stmt->fetchAll();
+          $Sql = "SELECT
+          E.field_user_id AS ID ,
+          E.field_employees_id AS NIP,
+          E.field_name_officer AS NAMA,
+          E.field_username AS USERNAME,
+          E.field_email AS MAIL,
+          E.field_role AS ROLE,
+          E.field_status_aktif AS STATUS,
+          D.field_department_name AS JABATAN,
+          W.field_nama_desa AS CABANG
+          FROM tblemployeeslogin E 
+          LEFT JOIN tblbranch B ON E.field_branch=B.field_branch_id 
+          LEFT JOIN tblwilayahdesa W ON E.field_branch=W.field_desa_id
+          LEFT JOIN tbldepartment D ON E.field_role=D.field_department_id 
+          WHERE E.field_role NOT IN('ADM','MGR','AMR','SPV') AND E.field_branch=:idbranch
+          ORDER BY E.field_user_id DESC";
+          $Stmt = $db->prepare($Sql);
+          $Stmt->execute(array(':idbranch' => $branchid));
+          $result = $Stmt->fetchAll();
 } elseif ($_SESSION['rolelogin'] == 'BCO') {
-  $Sql = "SELECT E.*,D.field_department_name,B.field_branch_name  
-                        FROM tblemployeeslogin E 
-                        JOIN tblbranch B ON E.field_branch=B.field_branch_id 
-                        JOIN tbldepartment D ON E.field_role=D.field_department_id 
-                        WHERE E.field_role !='ADM' AND E.field_role !='MGR' AND E.field_role !='SPV' AND E.field_branch=:idbranch
-                        ORDER BY E.field_user_id DESC ";
-  $Stmt = $db->prepare($Sql);
-  //$Stmt->execute();
-  $Stmt->execute(array(":idbranch" => $branchid));
-  $result = $Stmt->fetchAll();
+          $Sql = "SELECT
+          E.field_user_id AS ID ,
+          E.field_employees_id AS NIP,
+          E.field_name_officer AS NAMA,
+          E.field_username AS USERNAME,
+          E.field_email AS MAIL,
+          E.field_role AS ROLE,
+          E.field_status_aktif AS STATUS,
+          D.field_department_name AS JABATAN,
+          W.field_nama_desa AS CABANG
+          FROM tblemployeeslogin E 
+          LEFT JOIN tblbranch B ON E.field_branch=B.field_branch_id 
+          LEFT JOIN tblwilayahdesa W ON E.field_branch=W.field_desa_id
+          LEFT JOIN tbldepartment D ON E.field_role=D.field_department_id 
+          WHERE E.field_role NOT IN('ADM','MGR','AMR','SPV','BCO') AND E.field_branch=:idbranch
+          ORDER BY E.field_user_id DESC";
+          $Stmt = $db->prepare($Sql);
+          $Stmt->execute(array(':idbranch' => $branchid));
+          $result = $Stmt->fetchAll();
 } elseif ($_SESSION['rolelogin'] == 'CMS') {
-  $Sql = "SELECT E.*,D.field_department_name,B.field_branch_name  
-                        FROM tblemployeeslogin E 
-                        JOIN tblbranch B ON E.field_branch=B.field_branch_id 
-                        JOIN tbldepartment D ON E.field_role=D.field_department_id 
-                        WHERE E.field_role !='ADM' AND E.field_role !='MGR' AND E.field_role !='SPV' AND E.field_branch=:idbranch
-                        ORDER BY E.field_user_id DESC ";
-  $Stmt = $db->prepare($Sql);
-  //$Stmt->execute();
-  $Stmt->execute(array(":idbranch" => $branchid));
-  $result = $Stmt->fetchAll();
+          $Sql = "SELECT
+          E.field_user_id AS ID ,
+          E.field_employees_id AS NIP,
+          E.field_name_officer AS NAMA,
+          E.field_username AS USERNAME,
+          E.field_email AS MAIL,
+          E.field_role AS ROLE,
+          E.field_status_aktif AS STATUS,
+          D.field_department_name AS JABATAN,
+          W.field_nama_desa AS CABANG
+          FROM tblemployeeslogin E 
+          LEFT JOIN tblbranch B ON E.field_branch=B.field_branch_id 
+          LEFT JOIN tblwilayahdesa W ON E.field_branch=W.field_desa_id
+          LEFT JOIN tbldepartment D ON E.field_role=D.field_department_id 
+          WHERE E.field_role NOT IN('ADM','MGR','AMR','SPV','BCO','CMS') AND E.field_branch=:idbranch
+          ORDER BY E.field_user_id DESC";
+          $Stmt = $db->prepare($Sql);
+          $Stmt->execute(array(':idbranch' => $branchid));
+          $result = $Stmt->fetchAll();
 }
-
-
-
 $no = 1;
-
 
 ?>
 <section class="content">
@@ -114,7 +176,7 @@ $no = 1;
       <div class="box box-primary">
         <div class="box-header">
           <i class="fa fa-edit"></i>
-          <h3 class="box-title">Employee</h3>
+          <h3 class="box-title">Petugas</h3>
           <!-- <button type="submit" class="btn btn-success pull-right">Add Transaction</button> -->
           <a href="?module=addadminoffice" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Add Employee</a>
         </div>
@@ -144,16 +206,16 @@ $no = 1;
                     <?php echo $no++ ?>
                   </td>
                   <td>
-                    <?php echo $row["field_employees_id"] ?>
+                    <?php echo $row["NIP"] ?>
                   </td>
-                  <td data-title="Trx Id"><strong><?php echo $row["field_name_officer"]; ?></strong><br></td>
-                  <td><?php echo $row["field_email"]; ?>| <strong><?php echo $row["field_username"]; ?></strong></td>
-                  <td data-title="Trx Id"><strong><?php echo $row["field_department_name"]; ?></strong></td>
+                  <td data-title="Trx Id"><strong><?php echo $row["NAMA"]; ?></strong><br></td>
+                  <td><?php echo $row["MAIL"]; ?>| <strong><?php echo $row["USERNAME"]; ?></strong></td>
+                  <td data-title="Trx Id"><strong><?php echo $row["JABATAN"]; ?></strong></td>
                   <!-- <td><strong><?php echo $row["field_branch_name"]; ?></strong></td> -->
-                  <td><strong><?php echo $row["field_branch_name"]; ?></strong></td>
+                  <td><strong><?php echo $row["CABANG"]; ?></strong></td>
                   <td>
                     <?php
-                    $status = $row["field_status_aktif"];
+                    $status = $row["STATUS"];
                     if ($status == "1") {
                       echo '<span class="badge btn-info text-white">Aktif</span>';
                     } elseif ($status == "2") {
@@ -167,13 +229,12 @@ $no = 1;
                   <td ata-title="Trx Id">
                     <?php
                     if ($rows["field_role"] == "ADM") {
-                      echo '<a href="?module=updadminoffice&id=' . $row["field_user_id"] . '" class="btn btn-sm btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
-
-                      echo '<a href="#" data-toggle="modal" data-target="#modal-default' . $row["field_user_id"] . '" class="btn btn-sm btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
+                      echo '<a href="?module=updadminoffice&id=' . $row["ID"] . '" class="btn btn-sm btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
+                      echo '<a href="#" data-toggle="modal" data-target="#modal-default' . $row["ID"] . '" class="btn btn-sm btn btn-danger "><i class="fa fa-trash"></i></a> &nbsp';
                     } elseif ($rows["field_role"] == "MGR") {
-                      echo '<a href="?module=updadminoffice&id=' . $row["field_user_id"] . '" class="btn btn-sm btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
-                    } elseif ($rows["field_role"] == "SPV") {
-                      echo '<a href="?module=updadminoffice&id=' . $row["field_user_id"] . '" class="btn btn-sm btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
+                      echo '<a href="?module=updadminoffice&id=' . $row["ID"] . '" class="btn btn-sm btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
+                    } elseif ($rows["field_role"] == "AMR") {
+                      echo '<a href="?module=updadminoffice&id=' . $row["ID"] . '" class="btn btn-sm btn btn-success "><i class="fa fa-refresh"></i></a>&nbsp';
                     }
                     ?>
                   </td>

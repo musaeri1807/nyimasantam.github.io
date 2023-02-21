@@ -127,22 +127,30 @@ if (isset($_REQUEST['iddd'])) {
   }
 }
 
-//delete
 
-$id = $_SESSION['idlogin'];
-$select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin WHERE field_user_id=:uid");
-$select_stmt->execute(array(":uid" => $id));
-$rows = $select_stmt->fetch(PDO::FETCH_ASSOC);
-
-
-$Sql_nasabah = "SELECT * FROM tbluserlogin U JOIN tblnasabah N
-              ON U.field_user_id=N.id_UserLogin
-              WHERE U.field_status_aktif!=:statuse
-              ORDER BY U.field_user_id DESC";
+//data yang di tampilkan
+if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
+  $Sql_nasabah = "SELECT * FROM tbluserlogin U LEFT JOIN tblnasabah N
+ON U.field_user_id=N.id_UserLogin
+WHERE U.field_status_aktif!=:statuse
+ORDER BY U.field_user_id DESC";
 $Stmt_nasabah = $db->prepare($Sql_nasabah);
 $Stmt_nasabah->execute(array(":statuse" => 0));
-$Stmt_nasabah->execute();
 $result_nasabah = $Stmt_nasabah->fetchAll();
+
+} else {
+
+  $Sql_nasabah = "SELECT * FROM tbluserlogin U LEFT JOIN tblnasabah N
+  ON U.field_user_id=N.id_UserLogin
+  WHERE U.field_status_aktif!=:statuse AND U.field_branch=:idbranch
+  ORDER BY U.field_user_id DESC";
+$Stmt_nasabah = $db->prepare($Sql_nasabah);
+$Stmt_nasabah->execute(array(":statuse" => 0,':idbranch' => $branchid));
+$result_nasabah = $Stmt_nasabah->fetchAll();
+
+
+}
+
 $no = 1;
 
 // massege
