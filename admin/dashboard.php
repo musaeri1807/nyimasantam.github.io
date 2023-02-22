@@ -429,17 +429,17 @@ $menu = $Stmtmenu->fetchAll();
       }elseif($_GET['module']=="usermenu"){
         include "module/pengguna_menu.php";
       } else {
-        echo "<script>
+        // echo "<script>
                               
-                                swal({
-                                    title: 'Akses ditolak',
-                                    text: 'Hanya akun email Google, Yahoo dan AOL Mail yang diperbolehkan',
-                                    type: 'error'
-                                }, function() {
-                                    window.location = 'login.php';
-                                });
+        //                         swal({
+        //                             title: 'Akses ditolak',
+        //                             text: 'Hanya akun email Google, Yahoo dan AOL Mail yang diperbolehkan',
+        //                             type: 'error'
+        //                         }, function() {
+        //                             window.location = 'login.php';
+        //                         });
                           
-                                </script>";
+        //                         </script>";
       }
 
 

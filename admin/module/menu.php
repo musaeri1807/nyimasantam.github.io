@@ -1,11 +1,13 @@
 <?php
-// // ini_set('display_errors', 0);
+
+ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
 require_once("../php/function.php");
 
+  
 if (!isset($_SESSION['userlogin'])) {
-  header("location: ../index.php");
+	header("location: ../loginv2.php");
 }
 
 if (isset($_REQUEST['btn_insert2'])) {
@@ -271,9 +273,7 @@ if (isset($Msg)) {
 
                               <center>
                                 <h4>
-                                  <?php
-                                  echo "Nama product " . $row["field_category_id"] . " Dengan " . rupiah($row["field_category_id"]);
-                                  ?>
+                               dd
                                 </h4>
                               </center>
                             </div>
@@ -281,7 +281,7 @@ if (isset($Msg)) {
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default " data-dismiss="modal">No</button>
                             <!-- <input type="submit"  name="btn_delete" class="btn btn-success " value="YES"> -->
-                            <a href="?module=category&id=<?php echo $row['field_category_id']; ?>" type="submit" class="text-white btn btn-danger">YES</a>
+                            <a href="" type="submit" class="text-white btn btn-danger">YES</a>
                           </div>
                         </form>
                       </div>

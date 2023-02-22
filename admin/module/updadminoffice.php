@@ -1,13 +1,14 @@
 <?php
-// // ini_set('display_errors', 0);
+
+// ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
 require_once("../php/function.php");
 
-if(!isset($_SESSION['userlogin'])) {
-    header("location: ../index.php");
-}
 
+if (!isset($_SESSION['userlogin'])) {
+	header("location: ../loginv2.php");
+}
 
 if(isset($_REQUEST['id']))
 {
@@ -27,42 +28,7 @@ if(isset($_REQUEST['id']))
 	
 }
 
-
-if ($_SESSION['rolelogin']=='ADM') {
-	// $Sql ="SELECT * FROM tbldepartment WHERE field_department_id !='SPA'";
-	$Sql ="SELECT * FROM tbldepartment ";
-	$Stmt = $db->prepare($Sql);
-	$Stmt->execute();
-	$resultdept = $Stmt->fetchAll(); 
-	# code...
-	$Sql ="SELECT * FROM tblbranch";
-	$Stmt = $db->prepare($Sql);
-	$Stmt->execute();
-	$result = $Stmt->fetchAll();
-}elseif ($_SESSION['rolelogin']=='MGR') {
-	# code...
-	$Sql ="SELECT * FROM tbldepartment WHERE field_department_id !='ADM' AND field_department_id !='MGR'";
-	$Stmt = $db->prepare($Sql);
-	$Stmt->execute();
-	$resultdept = $Stmt->fetchAll(); 
-
-	$Sql ="SELECT * FROM tblbranch";
-	$Stmt = $db->prepare($Sql);
-	$Stmt->execute();
-	$result = $Stmt->fetchAll();
-}elseif ($_SESSION['rolelogin']=='SPV') {
-	# code...
-	$Sql ="SELECT * FROM tbldepartment WHERE field_department_id !='ADM' AND field_department_id !='MGR' AND field_department_id !='SPV'";
-	$Stmt = $db->prepare($Sql);
-	$Stmt->execute();
-	$resultdept = $Stmt->fetchAll();
-
-	$Sql ="SELECT * FROM tblbranch WHERE field_branch_id=:idbranch";
-	$Stmt = $db->prepare($Sql);
-	//$Stmt->execute();
-	$Stmt->execute(array(":idbranch"=>$branchid));
-	$result = $Stmt->fetchAll();
-}               
+             
 
 if(isset($_REQUEST['btn_update']))
 {
@@ -79,17 +45,6 @@ if(isset($_REQUEST['btn_update']))
 	$tokenn		= hash('sha256', md5(date('Y-m-d h:i:s')));
 	//$password 	= password_generate(8);
 	$status 	= $_REQUEST['txt_status'];
-
-	//echo $role;
-
-
-
-	// echo $cabang;
-	// echo "<br>";
-	// echo $kategori;
-	// echo "<br>";
-	// echo $kodeproduk;
-	// die();
 
 	if(empty($firstname)){
 		$errorMsg="Silakan Masukkan Nama Depan";
@@ -112,11 +67,11 @@ if(isset($_REQUEST['btn_update']))
 			if(!isset($errorMsg))
 			{
 				
-				$update_stmt=$db->prepare('UPDATE tblemployeeslogin SET field_role=:urole, field_branch=:cabang, field_token=:token, field_status_aktif=:statuse WHERE field_user_id=:id');
+				$update_stmt=$db->prepare('UPDATE tblemployeeslogin SET field_name_officer=:nama,field_role=:urole, field_branch=:cabang, field_token=:token, field_status_aktif=:statuse WHERE field_user_id=:id');
 				$update_stmt->bindParam(':id',$id);
 				// $update_stmt->bindParam(':idemployee',$idemployee);
 				// $update_stmt->bindParam(':namaemployee',$name); 
-				// $update_stmt->bindParam(':username',$username);  
+				$update_stmt->bindParam(':nama',$firstname);  
 				$update_stmt->bindParam(':urole',$role);   
 				// $update_stmt->bindParam(':udate',$date); 
 				$update_stmt->bindParam(':cabang',$cabang);
@@ -174,6 +129,42 @@ if (isset($_REQUEST["btn_forget"])) {
 			}
 }
 
+
+if ($_SESSION['rolelogin']=='ADM') {
+	$Sql ="SELECT * FROM tbldepartment WHERE field_department_id!='ADM' ";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute();
+	$resultdept = $Stmt->fetchAll(); 
+	# code...
+	$Sql ="SELECT * FROM tblbranch";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute();
+	$result = $Stmt->fetchAll();
+}elseif ($_SESSION['rolelogin']=='MGR') {
+	# code...
+	$Sql ="SELECT * FROM tbldepartment WHERE field_department_id !='ADM' AND field_department_id !='MGR'";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute();
+	$resultdept = $Stmt->fetchAll(); 
+
+	$Sql ="SELECT * FROM tblbranch";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute();
+	$result = $Stmt->fetchAll();
+}elseif ($_SESSION['rolelogin']=='SPV') {
+	# code...
+	$Sql ="SELECT * FROM tbldepartment WHERE field_department_id !='ADM' AND field_department_id !='MGR' AND field_department_id !='SPV'";
+	$Stmt = $db->prepare($Sql);
+	$Stmt->execute();
+	$resultdept = $Stmt->fetchAll();
+
+	$Sql ="SELECT * FROM tblbranch WHERE field_branch_id=:idbranch";
+	$Stmt = $db->prepare($Sql);
+	//$Stmt->execute();
+	$Stmt->execute(array(":idbranch"=>$branchid));
+	$result = $Stmt->fetchAll();
+}  
+
 ?>
     <section class="content">
       <div class="row">
@@ -181,7 +172,7 @@ if (isset($_REQUEST["btn_forget"])) {
           <div class="box box-primary">
             <div class="box-header">
               <i class="fa fa-edit"></i>
-              <h3 class="box-title">Update Employee</h3>
+              <h3 class="box-title">Update Petugas</h3>
                 
             </div>
               <!-- Content --> 
@@ -206,7 +197,7 @@ if (isset($_REQUEST["btn_forget"])) {
 				</div>
 
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Name</label>
+				<label class="col-sm-3 control-label">Nama</label>
 				<div class="row">
 				<div class="col-sm-3">
 				<input type="text" name="txt_firstname" class="form-control" value="<?php echo $row["field_name_officer"]; ?>" />
@@ -230,9 +221,9 @@ if (isset($_REQUEST["btn_forget"])) {
 				<label class="col-sm-3 control-label">Role</label>
 				<div class="col-sm-3">
 					<select class="form-control" type="text" name="txt_role">
-						<option value="<?php echo $row["field_role"]; ?>"><?php echo $row["field_role"]."-"; echo $row['field_department_name']; ?></option>
+						<option value="<?php echo $row["field_role"]; ?>"><?php echo $row['field_department_name']; ?></option>
 						<?php foreach($resultdept as $rows) { ?>
-						<option  value="<?php echo $rows['field_department_id']; ?>"><?php echo $rows['field_department_id']."-"; echo $rows['field_department_name'] ; ?></option>
+						<option  value="<?php echo $rows['field_department_id']; ?>"><?php echo $rows['field_department_name'] ; ?></option>
 						<?php } ?>
 					</select>
 				</div>
@@ -247,7 +238,7 @@ if (isset($_REQUEST["btn_forget"])) {
 				</div>
 				</div> -->
 				<div class="form-group">
-				<label class="col-sm-3 control-label">Branch Office</label>
+				<label class="col-sm-3 control-label">Cabang BSP</label>
 				<div class="col-sm-6">
 				<select class="form-control" type="text" name="txt_cabang">
 						<option value="<?php echo $row["field_branch"]; ?>"><?php echo $row['field_branch_name']."-"; echo $row["field_branch"]; ?></option>
@@ -266,17 +257,13 @@ if (isset($_REQUEST["btn_forget"])) {
 				<select class="form-control" type="text" name="txt_status">
 
 						<?php if ($row["field_status_aktif"]==1) { 
-
-							echo '<option value="1">Active</option>';
-
+							echo '<option value="1">Aktif</option>';
 						}elseif ($row["field_status_aktif"]==2) {
-
-							echo '<option value="2">NotActive</option>';
-
+							echo '<option value="2">Tidak Aktif</option>';
 						}?>					
 					
-						<option value="1">Active</option>
-						<option value="2">NotActive</option>
+						<option value="1">Aktif</option>
+						<option value="2">Tidak Aktif</option>
 
 					</select>
 				</div>

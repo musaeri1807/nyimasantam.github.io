@@ -1,12 +1,12 @@
 <?php
-// // ini_set('display_errors', 0);
+ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
 require_once("../php/function.php");
 
 
 if (!isset($_SESSION['userlogin'])) {
-  header("location: ../index.php");
+	header("location: ../loginv2.php");
 }
 
 if (isset($_REQUEST['id'])) {
@@ -210,8 +210,7 @@ $no = 1;
                   </td>
                   <td data-title="Trx Id"><strong><?php echo $row["NAMA"]; ?></strong><br></td>
                   <td><?php echo $row["MAIL"]; ?>| <strong><?php echo $row["USERNAME"]; ?></strong></td>
-                  <td data-title="Trx Id"><strong><?php echo $row["JABATAN"]; ?></strong></td>
-                  <!-- <td><strong><?php echo $row["field_branch_name"]; ?></strong>HEAD OFFICE</td> -->
+                  <td data-title="Trx Id"><strong><?php echo $row["JABATAN"]; ?></strong></td>                  
                   <td><strong><?php if(["CABANG"]==null){
                     echo "HEAD OFFICE";
                   }else{
@@ -264,7 +263,7 @@ $no = 1;
                               <center>
                                 <h4>
                                   <?php
-                                  echo "Username " . $row["field_username"] . " Dengan Email " . $row["field_email"];
+                                  echo "Username " . $row["USERNAME"] . " Dengan Email " . $row["MAIL"];
                                   ?>
                                 </h4>
                               </center>
@@ -273,7 +272,7 @@ $no = 1;
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default " data-dismiss="modal">No</button>
                             <!-- <input type="submit"  name="btn_insert2" class="btn btn-success " value="YES"> -->
-                            <a href="?module=adminoffice&id=<?php echo $row['field_user_id']; ?>" type="submit" class="text-white btn btn-danger">YES</a>
+                            <a href="?module=adminoffice&id=<?php echo $row['ID']; ?>" type="submit" class="text-white btn btn-danger">YES</a>
                           </div>
                         </form>
                       </div>

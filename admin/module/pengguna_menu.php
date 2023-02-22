@@ -1,11 +1,13 @@
 <?php
-// // ini_set('display_errors', 0);
+
+ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
 require_once("../php/function.php");
 
+
 if (!isset($_SESSION['userlogin'])) {
-  header("location: ../index.php");
+	header("location: ../loginv2.php");
 }
 
 if (isset($_REQUEST['btn_insert2'])) {
@@ -66,15 +68,15 @@ if (isset($_REQUEST['btn_insert2'])) {
   } else {
     try {
       if (!isset($errorMsg)) {
-        $select_stmt = $db->prepare('SELECT * FROM tblcategory WHERE field_category_id =:id'); //sql select query
-        $select_stmt->bindParam(':id', $id);
-        $select_stmt->execute();
-        $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
+        // $select_stmt = $db->prepare('SELECT * FROM tblcategory WHERE field_category_id =:id'); //sql select query
+        // $select_stmt->bindParam(':id', $id);
+        // $select_stmt->execute();
+        // $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
 
-        // echo $row['field_gold_id'];
-        $delete_stmt = $db->prepare('DELETE FROM tblcategory WHERE field_category_id =:id');
-        $delete_stmt->bindParam(':id', $id);
-        $delete_stmt->execute();
+        // // echo $row['field_gold_id'];
+        // $delete_stmt = $db->prepare('DELETE FROM tblcategory WHERE field_category_id =:id');
+        // $delete_stmt->bindParam(':id', $id);
+        // $delete_stmt->execute();
         // if($delete_stmt->execute()){
         // 	$Msg="Successfully"; //execute query success message
         // 	// echo '<META HTTP-EQUIV="Refresh" Content="1">';
@@ -222,13 +224,13 @@ if (isset($Msg)) {
                             </div>
                             <div class="box-header">
                               <select class="form-control" name="txt_group_category">
-                                <option value="<?php echo $row["field_is_active"] ?>">
+                                <!-- <option value="<?php echo $row["field_is_active"] ?>">
                                   <?php if ($row["field_is_active"] == "Y") {
                                     echo "Aktif";
                                   } else {
                                     echo "Pasif";
                                   } ?>
-                                </option>
+                                </option> -->
                                 <option value="Y">Aktif</option>
                                 <option value="N">Pasif</option>
 
@@ -267,7 +269,7 @@ if (isset($Msg)) {
                               <center>
                                 <h4>
                                   <?php
-                                  echo "Nama product " . $row["field_category_id"] . " Dengan " . rupiah($row["field_category_id"]);
+                                 D
                                   ?>
                                 </h4>
                               </center>
@@ -276,7 +278,7 @@ if (isset($Msg)) {
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default " data-dismiss="modal">No</button>
                             <!-- <input type="submit"  name="btn_delete" class="btn btn-success " value="YES"> -->
-                            <a href="?module=category&id=<?php echo $row['field_category_id']; ?>" type="submit" class="text-white btn btn-danger">YES</a>
+                            <a href="" type="submit" class="text-white btn btn-danger">YES</a>
                           </div>
                         </form>
                       </div>

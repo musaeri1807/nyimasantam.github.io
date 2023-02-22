@@ -1,18 +1,15 @@
 <?php
-// // ini_set('display_errors', 0);
+
+// ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("../config/connection.php");
 require_once("../php/function.php");
 
+
 if (!isset($_SESSION['userlogin'])) {
-  header("location: ../index.php");
+	header("location: ../loginv2.php");
 }
 
-
-
-
-// var_dump($_SESSION['userlogin']);
-// die();
 
 if (isset($_REQUEST['btn_insert2'])) {
   $branchid   = $rows['field_branch'];
@@ -126,7 +123,7 @@ if (isset($_REQUEST['btn_insert2'])) {
   //$id = $_REQUEST['id'];
 
   if (empty($id)) {
-    $errorMsg = "Silakan Id Category";
+    $errorMsg = "";
   } else {
     try {
       if (!isset($errorMsg)) {
@@ -533,26 +530,13 @@ if (isset($Msg)) {
                             </div>
                             <div class="box-header">
                               <select class="form-control" name="txt_aprovel">
-                                <option value="Pilih">Pilih</option>
-                                <?php
-                                foreach ($RESULT as $STATUS) {
 
-                                  echo '<br>';
-                                  echo $STATUS['field_status'];
-
-                                ?>
-                                  <option value="<?php echo $STATUS["field_cdstatus"] ?>"><?php echo $STATUS["field_status"] ?></option>
-                                  <!-- <option value="A">A</option>
-                                  <option value="R">R</option>
-                                  <option value="C">C</option>
-                                  <option value="P">P</option> -->
-                                <?php } ?>
                               </select>
                             </div>
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-danger " data-dismiss="modal">Close</button>
-                            <input type="submit" name="btn_aprovel" class="btn btn-success " value="OK">
+                            <input type="submit" name="btn_aprovel" class="btn btn-success " value="OK--">
                           </div>
                         </form>
                       </div>
