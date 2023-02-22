@@ -171,7 +171,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
         # code...
       } else {
         # code...
-        echo '<br>'.'Cabang ' .  $result['field_nama_desa'];
+        echo '<br>'.'BSP ' .  $result['field_nama_desa'];
       }
       ?>
     </h3>

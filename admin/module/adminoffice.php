@@ -178,7 +178,7 @@ $no = 1;
           <i class="fa fa-edit"></i>
           <h3 class="box-title">Petugas</h3>
           <!-- <button type="submit" class="btn btn-success pull-right">Add Transaction</button> -->
-          <a href="?module=addadminoffice" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Add Employee</a>
+          <a href="?module=addadminoffice" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Add Petugas</a>
         </div>
         <!-- Content -->
         <div class="box-body">
@@ -211,8 +211,12 @@ $no = 1;
                   <td data-title="Trx Id"><strong><?php echo $row["NAMA"]; ?></strong><br></td>
                   <td><?php echo $row["MAIL"]; ?>| <strong><?php echo $row["USERNAME"]; ?></strong></td>
                   <td data-title="Trx Id"><strong><?php echo $row["JABATAN"]; ?></strong></td>
-                  <!-- <td><strong><?php echo $row["field_branch_name"]; ?></strong></td> -->
-                  <td><strong><?php echo $row["CABANG"]; ?></strong></td>
+                  <!-- <td><strong><?php echo $row["field_branch_name"]; ?></strong>HEAD OFFICE</td> -->
+                  <td><strong><?php if(["CABANG"]==null){
+                    echo "HEAD OFFICE";
+                  }else{
+                    echo $row["CABANG"];
+                  }; ?></strong></td>
                   <td>
                     <?php
                     $status = $row["STATUS"];
