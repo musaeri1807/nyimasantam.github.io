@@ -20,6 +20,7 @@ deployment:
     - /bin/cp export_mutasi.php $DEPLOYPATH
     - /bin/cp export_trash.php $DEPLOYPATH 
     - /bin/cp export_withdraw.php $DEPLOYPATH
+    - /bin/cp formulirpdf.php $DEPLOYPATH
     - /bin/cp index.php $DEPLOYPATH
     - /bin/cp loginv2.php $DEPLOYPATH
     - /bin/cp L_BSP_LM_LOGO.png $DEPLOYPATH
