@@ -11,26 +11,49 @@ if (!isset($_SESSION['userlogin'])) {
 
 
 
-// $id = $_SESSION['administrator_id'];                               
-// $select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin WHERE field_user_id=:uid");
-// $select_stmt->execute(array(":uid"=>$id));  
-// $rows=$select_stmt->fetch(PDO::FETCH_ASSOC);
+$id = $_SESSION['idlogin'];
+// echo $id;
+$select_stmt = $db->prepare("SELECT * FROM tblemployeeslogin WHERE field_user_id=:uid");
+$select_stmt->execute(array(":uid" => $id));
+$rows = $select_stmt->fetch(PDO::FETCH_ASSOC);
 
-// $s=$row['field_status_aktif'];
-// $t=$row['field_token_otp'];
+$cabang = $rows['field_branch'];
 
-$Sql = "SELECT DISTINCT(field_rekening),(SELECT field_total_saldo FROM tbltrxmutasisaldo aa 
-                                                                  WHERE aa.field_rekening = bb.field_rekening AND aa.field_status='S'
-                                                                  ORDER BY field_id_saldo DESC LIMIT 1) 
-            AS TotalSaldo,us.field_nama,us.field_member_id,B.field_branch_name
-            FROM tbltrxmutasisaldo bb 
-            JOIN tbluserlogin us ON bb.field_member_id = us.field_member_id
-            JOIN tblbranch B ON us.field_branch=B.field_branch_id
-            ORDER BY bb.field_id_saldo DESC";
-$Stmt = $db->prepare($Sql);
-//$Stmt->execute(array(":statuse"=> $s,":idtoken"=>$t));
-$Stmt->execute();
-$Saldo = $Stmt->fetchAll();
+// echo $_SESSION["rolelogin"];
+
+if ($_SESSION["rolelogin"] == 'ADM' or $_SESSION["rolelogin"] == 'MGR') {
+
+  $Sql = "SELECT DISTINCT(field_rekening),(SELECT field_total_saldo FROM tbltrxmutasisaldo aa 
+  WHERE aa.field_rekening = bb.field_rekening AND aa.field_status='S'
+  ORDER BY field_id_saldo DESC LIMIT 1) 
+  AS TotalSaldo,us.field_nama,us.field_member_id,B.field_branch_name
+  FROM tbltrxmutasisaldo bb 
+  JOIN tbluserlogin us ON bb.field_member_id = us.field_member_id
+  JOIN tblbranch B ON us.field_branch=B.field_branch_id
+  -- WHERE B.field_branch_id=:cabang
+  ORDER BY bb.field_id_saldo DESC";
+  $Stmt = $db->prepare($Sql);
+  // $Stmt->execute(array(":cabang" => $cabang));
+  $Stmt->execute();
+  $Saldo = $Stmt->fetchAll();
+} else {
+
+  $Sql = "SELECT DISTINCT(field_rekening),(SELECT field_total_saldo FROM tbltrxmutasisaldo aa 
+                                                                    WHERE aa.field_rekening = bb.field_rekening AND aa.field_status='S'
+                                                                    ORDER BY field_id_saldo DESC LIMIT 1) 
+              AS TotalSaldo,us.field_nama,us.field_member_id,B.field_branch_name
+              FROM tbltrxmutasisaldo bb 
+              JOIN tbluserlogin us ON bb.field_member_id = us.field_member_id
+              JOIN tblbranch B ON us.field_branch=B.field_branch_id
+              WHERE B.field_branch_id=:cabang
+              ORDER BY bb.field_id_saldo DESC";
+  $Stmt = $db->prepare($Sql);
+  $Stmt->execute(array(":cabang" => $cabang));
+  $Stmt->execute();
+  $Saldo = $Stmt->fetchAll();
+}
+
+
 $no = 1;
 ?>
 <section class="content">
