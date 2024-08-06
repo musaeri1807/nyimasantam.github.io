@@ -37,7 +37,6 @@ if (!isset($_SESSION['userlogin'])) {
             </div>
 
             <div class="col-md-2">
-
               <div class="form-group">
                 <label>Sampai Tanggal</label>
                 <input autocomplete="off" type="date" value="<?php if (isset($_POST['tanggal_sampai'])) {
@@ -46,8 +45,8 @@ if (!isset($_SESSION['userlogin'])) {
                                                                 echo "";
                                                               } ?>" name="tanggal_sampai" class="form-control datepicker2" placeholder="Sampai Tanggal" required>
               </div>
-
             </div>
+          
 
             <div class="col-md-1">
 
@@ -71,6 +70,7 @@ if (!isset($_SESSION['userlogin'])) {
           if (isset($_POST['tanggal_sampai']) && isset($_POST['tanggal_dari'])) {
             $tgl_dari = $_POST['tanggal_dari'];
             $tgl_sampai = $_POST['tanggal_sampai'];
+             
           ?>
 
             <div class="row">
@@ -127,7 +127,7 @@ if (!isset($_SESSION['userlogin'])) {
                 </thead>
                 <tbody>
                   <?php
-                 
+
                   $sumP = 0;
                   $sumST = 0;
                   $sumFEE = 0;
@@ -135,12 +135,12 @@ if (!isset($_SESSION['userlogin'])) {
                   $sumGOLD = 0;
 
                   if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
-                    $sqlT = "SELECT    
-                    T.field_trx_deposit AS ID,
+                    $sqlT = "	SELECT  
                     T.field_deposit_id,
+                    T.field_trx_deposit AS ID,                    
                     P.field_product_name AS PRODUK,
                     K.field_name_category AS KATEGORI,
-                    I.field_date_deposit AS TANGGAL,
+                  	I.field_date_deposit AS TANGGAL,
                     I.field_no_referensi AS REFERENSI,
                     I.field_rekening_deposit AS REKENING,
                     N.No_Rekening,
@@ -152,22 +152,23 @@ if (!isset($_SESSION['userlogin'])) {
                     T.field_price_product AS HARGA,
                     T.field_quantity AS QTY,
                     T.field_total_price AS TOTAL,
-                    I.field_operation_fee AS 5PERSEN,
+                    I.field_operation_fee AS PERSEN_5,
                     T.field_total_price/100*5 AS RESULT_PERSEN,
                     T.field_total_price-T.field_total_price/100*5 AS DEPO,                                      
                     (T.field_total_price-T.field_total_price/100*5)/I.field_gold_price AS GOLD,                                    
                     I.field_gold_price AS HARGA_EMAS,
                     E.field_name_officer AS PETUGAS,                                          
                     E.field_role
-                    FROM tbldepositdetail T JOIN tblproduct P ON  T.field_product=P.field_product_id
-                    JOIN tblcategory K ON P.field_category=K.field_category_id
-                    JOIN tbldeposit I ON T.field_trx_deposit=I.field_trx_deposit 
-                    JOIN tblnasabah N ON I.field_rekening_deposit=N.No_Rekening
-                    JOIN tblbranch B ON I.field_branch=B.field_branch_id 
-                    JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
-                    JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id                                   
-                    JOIN tblbranch UB ON U.field_branch=UB.field_branch_id                                            
-                    WHERE  date(I.field_date_deposit) >=:tgl_dari AND date(I.field_date_deposit) <= :tgl_sampai 
+                    FROM tbldepositdetail T 
+						        LEFT JOIN tblproduct P ON  T.field_product=P.field_product_id
+                    LEFT JOIN tblcategory K ON P.field_category=K.field_category_id
+                    LEFT JOIN tbldeposit I ON T.field_trx_deposit=I.field_trx_deposit 
+                    LEFT JOIN tblnasabah N ON I.field_rekening_deposit=N.No_Rekening
+                    LEFT JOIN tblbranch B ON I.field_branch=B.field_branch_id 
+                    LEFT JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
+                    LEFT JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id                                   
+                    LEFT JOIN tblbranch UB ON U.field_branch=UB.field_branch_id                                          
+                    WHERE  I.field_status='S' AND  date(I.field_date_deposit) >=:tgl_dari AND date(I.field_date_deposit) <= :tgl_sampai 
                     ORDER BY T.field_deposit_id ASC";
                     $stmtT = $db->prepare($sqlT);
                     $stmtT->execute(array(':tgl_dari' => $tgl_dari, ':tgl_sampai' => $tgl_sampai));
@@ -176,12 +177,12 @@ if (!isset($_SESSION['userlogin'])) {
                     // } elseif ($_SESSION['rolelogin'] == 'SVP' or $_SESSION['rolelogin'] == 'BCO' or $_SESSION['rolelogin'] == 'CMS') {
                   } else {
                     # code...
-                    $sqlT = "SELECT    
-                    T.field_trx_deposit AS ID,
+                    $sqlT = "SELECT  
                     T.field_deposit_id,
+                    T.field_trx_deposit AS ID,                    
                     P.field_product_name AS PRODUK,
                     K.field_name_category AS KATEGORI,
-                    I.field_date_deposit AS TANGGAL,
+                  	I.field_date_deposit AS TANGGAL,
                     I.field_no_referensi AS REFERENSI,
                     I.field_rekening_deposit AS REKENING,
                     N.No_Rekening,
@@ -193,22 +194,23 @@ if (!isset($_SESSION['userlogin'])) {
                     T.field_price_product AS HARGA,
                     T.field_quantity AS QTY,
                     T.field_total_price AS TOTAL,
-                    I.field_operation_fee AS 5PERSEN,
+                    I.field_operation_fee AS PERSEN_5,
                     T.field_total_price/100*5 AS RESULT_PERSEN,
                     T.field_total_price-T.field_total_price/100*5 AS DEPO,                                      
                     (T.field_total_price-T.field_total_price/100*5)/I.field_gold_price AS GOLD,                                    
                     I.field_gold_price AS HARGA_EMAS,
                     E.field_name_officer AS PETUGAS,                                          
                     E.field_role
-                    FROM tbldepositdetail T JOIN tblproduct P ON  T.field_product=P.field_product_id
-                    JOIN tblcategory K ON P.field_category=K.field_category_id
-                    JOIN tbldeposit I ON T.field_trx_deposit=I.field_trx_deposit 
-                    JOIN tblnasabah N ON I.field_rekening_deposit=N.No_Rekening
-                    JOIN tblbranch B ON I.field_branch=B.field_branch_id 
-                    JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
-                    JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id                                   
-                    JOIN tblbranch UB ON U.field_branch=UB.field_branch_id
-                    WHERE  date(I.field_date_deposit) >=:tgl_dari AND date(I.field_date_deposit) <= :tgl_sampai AND
+                    FROM tbldepositdetail T 
+						        LEFT JOIN tblproduct P ON  T.field_product=P.field_product_id
+                    LEFT JOIN tblcategory K ON P.field_category=K.field_category_id
+                    LEFT JOIN tbldeposit I ON T.field_trx_deposit=I.field_trx_deposit 
+                    LEFT JOIN tblnasabah N ON I.field_rekening_deposit=N.No_Rekening
+                    LEFT JOIN tblbranch B ON I.field_branch=B.field_branch_id 
+                    LEFT JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id
+                    LEFT JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id                                   
+                    LEFT JOIN tblbranch UB ON U.field_branch=UB.field_branch_id 
+                    WHERE I.field_status='S' AND date(I.field_date_deposit) >=:tgl_dari AND date(I.field_date_deposit) <= :tgl_sampai AND
                                       I.field_branch=:idbranch
                     ORDER BY T.field_deposit_id ASC";
                     $stmtT = $db->prepare($sqlT);
@@ -279,7 +281,7 @@ if (!isset($_SESSION['userlogin'])) {
                   <tr class="bg-info">
                     <td colspan="9" class="text-right"><b>General Total</b></td>
                     <td class="text-center"></td>
-                    <td class="text-center"><strong><?php echo number_format($sumP, 3, ",", ","); ?> Kg</strong></td>
+                    <td class="text-center"><strong><?php echo number_format($sumP); ?></strong></td>
                     <td class="text-center"><strong><?php echo rupiah($sumST); ?></strong></td>
                     <td class="text-center"><strong><?php echo rupiah($sumFEE); ?></strong></td>
                     <td class="text-center"><strong><?php echo rupiah($sumT); ?></strong></td>
