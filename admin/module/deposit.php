@@ -102,6 +102,7 @@ if (isset($_REQUEST['iddepositp'])) {
   }
 }
 
+
 if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   $Sql = "SELECT 
   D.field_trx_deposit AS ID,
@@ -126,12 +127,17 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   JOIN tblemployeeslogin E ON E.field_user_id=D.field_officer_id
   JOIN tblemployeeslogin EA ON EA.field_user_id=D.field_approve
   JOIN tblbranch B ON B.field_branch_id=D.field_branch
-  WHERE D.field_date_deposit=:datenow
+  WHERE 
+  -- D.field_date_deposit=:datenow
+  D.field_date_deposit >= DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY)
+
+    -- MONTH(D.field_date_deposit) = MONTH(CURRENT_DATE)
+    -- AND YEAR(D.field_date_deposit) = YEAR(CURRENT_DATE)
   ORDER BY D.field_trx_deposit DESC";
 
   $Stmt = $db->prepare($Sql);
-  // $Stmt->execute();
-  $Stmt->execute(array(":datenow" => $date));
+  $Stmt->execute();
+  // $Stmt->execute(array(":datenow" => $date));
   $result = $Stmt->fetchAll();
 } else {
 
