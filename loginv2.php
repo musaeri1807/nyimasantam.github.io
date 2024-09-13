@@ -23,10 +23,10 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
   $ipaddress  = $_SERVER['REMOTE_ADDR'];
   $satu     = "1";
 
-  var_dump($domain);
+  // var_dump($domain);
 
-  echo $username;
-  echo $email;
+  // echo $username;
+  // echo $email;
 
 
   if ($_SERVER['SERVER_NAME'] == 'localhost') {
@@ -50,7 +50,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
     $errorMsg[] = "Harap Periksa reCAPTCHA";
   }
 
-  if ($response->success) {
+  // if ($response->success) {
 
     if (empty($username)) {
       $errorMsg[] = "Silakan Memasukan Akun Username Or Email"; //check "username/email" textbox not empty 
@@ -214,8 +214,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
       //input   
 
     }
-  } //google c
-
+  // } //google c
   //$loginMsgCapcha = " Login...";
 
 }
