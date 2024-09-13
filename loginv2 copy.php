@@ -4,7 +4,7 @@
 
 //   header("location: index.php");
 // }
-// ini_set('display_errors', 0);
+ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("config/koneksi.php");
 //require_once 'connection.php';
@@ -26,15 +26,13 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
   $ipaddress  = $_SERVER['REMOTE_ADDR'];
   $satu     = "1";
 
-  //$username = $_POST['username']; nyimasantam.my.id
+
   if ($_SERVER['SERVER_NAME'] == 'localhost') {
-    $secretKey = "6LfJec4ZAAAAACG1-fmobe88erF72OdXbAFN71jj"; //local        
-  } elseif ($_SERVER['SERVER_NAME'] == 'urunanmu.my.id') {
-    $secretKey = "6Ldi1lsaAAAAAELsOlpS__1jUbNTuXv0bbjhpD6L"; //urunanmu.my.id
-  } elseif ($_SERVER['SERVER_NAME'] == 'nyimasantam.com') {
-    $secretKey = "6Lf6eR0aAAAAABFKOeUrFysV3fvrrWcoTayg3R2j"; //nyimasantam.com
-  } elseif ($_SERVER['SERVER_NAME'] == 'nyimasantam.my.id') {
-    $secretKey = "6Lc9f84ZAAAAAEBSnQvoHzWcPvD0Tqcn0HD0izsO"; //nyimasantam.my.id
+    $secretKey = "6LfJec4ZAAAAACG1-fmobe88erF72OdXbAFN71jj"; //local   
+  } elseif ($_SERVER['SERVER_NAME'] == 'bspid.id') {
+    $secretKey = "6LdRyd4jAAAAAB3VoMYknt-GQY6XjgWpgkgMx5T5"; //bspid.id
+  } elseif ($_SERVER['SERVER_NAME'] == 'admins.bspid.id') {
+    $secretKey = "6Lf81N4jAAAAAChrnqHYNvntbS31cR0PlfJPBxFQ"; //admins.bspid.id
   } elseif ($_SERVER['SERVER_NAME'] == 'musaeri.my.id') {
     $secretKey = "6LdCXhcbAAAAABj_ExKExLI_0h_1uz7tSCYdDHM-"; //musaeri.my.id
   } elseif ($_SERVER['SERVER_NAME'] == 'apps.musaeri.my.id') {
@@ -60,7 +58,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
       $errorMsg[] = "Silakan Memasukan Password"; //check "passowrd" textbox not empty 
     } else {
       try {
-        $select_stmt = $db->prepare('SELECT * FROM tblemployeeslogin WHERE field_email=:uemail OR field_username=:uname '); //sql select query
+        $select_stmt = $db->prepare('SELECT * FROM tblemployeeslogin LEFT JOIN tbldepartment ON field_role=field_department_id WHERE field_email=:uemail OR field_username=:uname '); //sql select query
         $select_stmt->execute(array(':uemail' => $email, ':uname' => $username)); //execute query with bind parameter
         $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
         $data = $select_stmt->rowCount();
@@ -94,7 +92,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   $_SESSION["rolelogin"]  = $row["field_role"];
                   $_SESSION["idlogin"]    = $row["field_user_id"];
                   $_SESSION["userlogin"]  = $row["field_email"];
-                  $loginMsg = "Administrator..Successfully Login";
+                  $loginMsg = $row['field_department_name'] . " Successfully Login";
                   //header("refresh:1;../../superadmin/superadmin_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -106,7 +104,19 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   $_SESSION["rolelogin"]  = $row["field_role"];
                   $_SESSION["idlogin"]    = $row["field_user_id"];
                   $_SESSION["userlogin"]  = $row["field_email"];
-                  $loginMsg = "Manager..Successfully Login";
+                  $loginMsg = $row['field_department_name'] . " Successfully Login";
+                  //header("refresh:1;../../superadmin/superadmin_home.php");
+                  if ($_SERVER['SERVER_NAME'] == 'localhost') {
+                    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
+                  } else {
+                    echo '<META HTTP-EQUIV="Refresh" Content="1; URL=' . $domain . '/admin/dashboard?module=home">';
+                  }
+                  break;
+                case 'AMR':
+                  $_SESSION["rolelogin"]  = $row["field_role"];
+                  $_SESSION["idlogin"]    = $row["field_user_id"];
+                  $_SESSION["userlogin"]  = $row["field_email"];
+                  $loginMsg = $row['field_department_name'] . " Successfully Login";
                   //header("refresh:1;../../superadmin/superadmin_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -119,7 +129,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   $_SESSION["idlogin"]            = $row["field_user_id"];
                   $_SESSION["userlogin"]          = $row["field_email"];
                   $_SESSION["branchlogin"]        = $row["field_branch"];
-                  $loginMsg = "Supervisor..Successfully Login";
+                  $loginMsg = $row['field_department_name'] . " Successfully Login";
                   //header("refresh:1;../../admin/admin_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -133,7 +143,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   $_SESSION["idlogin"]            = $row["field_user_id"];
                   $_SESSION["userlogin"]          = $row["field_email"];
                   $_SESSION["branchlogin"]        = $row["field_branch"];
-                  $loginMsg = "Back Office..Successfully Login";
+                  $loginMsg = $row['field_department_name'] . " Successfully Login";
                   //header("refresh:1;../../admin/admin_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -147,7 +157,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   $_SESSION["idlogin"]            = $row["field_user_id"];
                   $_SESSION["userlogin"]          = $row["field_email"];
                   $_SESSION["branchlogin"]        = $row["field_branch"];
-                  $loginMsg = "Customer Service..Successfully Login";
+                  $loginMsg = $row['field_department_name'] . " Successfully Login";
                   //header("refresh:1;../../officer/officer_home.php");
                   if ($_SERVER['SERVER_NAME'] == 'localhost') {
                     echo '<META HTTP-EQUIV="Refresh" Content="1; URL=https://localhost/nyimasantam.github.io/admin/dashboard?module=home">';
@@ -220,10 +230,13 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta content="Silakan Login Dengan Aman" name="descriptison">
-  <meta content="Login nyimasantam" name="keywords">
+  <meta content="Login bsp" name="keywords">
 
-  <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="icon">
-  <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="apple-touch-icon">
+  <!-- <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="icon">
+  <link href="https://nyimasantam.my.id/image/iconnyimas.png" rel="apple-touch-icon"> -->
+
+  <link href="image/icon_bspid.png" rel="icon">
+  <link href="image/icon_bspid.png" rel="apple-touch-icon">
 
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
 
@@ -236,23 +249,32 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
 
   <!-- Style -->
   <link rel="stylesheet" href="view/assetlogin/css/style.css">
-  <title>NYIMASANTAM</title>
+  <title>BSP|Login</title>
 </head>
 
 <body>
   <div class="d-lg-flex half">
-    <div class="bg" style="background-image: url('https://nyimasantam.my.id/image/18766459151.jpg');"></div>
+    <!-- //image background login -->
+    <div class="bg" style="background-image: url('image/');"></div>
     <div class="contents">
+
       <div class="container">
         <div class="row align-items-center justify-content-center">
           <div class="col-md-6">
             <div class="form mx-auto">
               <!--    <div class="form-block mx-auto"> -->
 
-              <div class="text-center mb-1">
-                <img src="https://nyimasantam.my.id/image/logonyimas.png" width="300">
-                <h3>Login to <strong>Officer</strong></h3>
-                <!-- <p class="mb-1">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>  -->
+              <div class="text-center mt-1">
+                <img src="image/icon_bspid.png" width="200">
+                <br>
+                <h3> <strong>Officer</strong></h3>
+                <!-- <p class="mb-2">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>  -->
+                <?php
+                if ($_SERVER['SERVER_NAME'] == "localhost") {
+                  echo "<b>Development</b>";
+                }
+                ?>
+
 
                 <?php
                 if (isset($errorMsg)) {
@@ -272,7 +294,10 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                 <?php
                 }
                 ?>
+                <br>
+
               </div>
+
               <form method="post" class="form-horizontal">
                 <div class="form-group first">
                   <!-- <label for="username">Username</label> -->
@@ -288,12 +313,10 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                 <?php
                 if ($_SERVER['SERVER_NAME'] == 'localhost') {
                   echo '<div class="g-recaptcha" data-sitekey="6LfJec4ZAAAAAPYZt2c-p6gu37D6weYdI8Kw1LqA"></div>';
-                } elseif ($_SERVER['SERVER_NAME'] == 'urunanmu.my.id') {
-                  echo '<div class="g-recaptcha" data-sitekey="6Ldi1lsaAAAAALAritGVdd7xOXdf_mglkssD9RjR"></div>';
-                } elseif ($_SERVER['SERVER_NAME'] == 'nyimasantam.com') {
-                  echo '<div class="g-recaptcha" data-sitekey="6Lf6eR0aAAAAAAXiPck77ymXUnqtLYj1dvtlli1B"></div>';
-                } elseif ($_SERVER['SERVER_NAME'] == 'nyimasantam.my.id') {
-                  echo '<div class="g-recaptcha" data-sitekey="6Lc9f84ZAAAAANDLO3VFPiJEsa1trW4PwdE5fX0U"></div>';
+                } elseif ($_SERVER['SERVER_NAME'] == 'bspid.id') {
+                  echo '<div class="g-recaptcha" data-sitekey="6LdRyd4jAAAAAJi4zEcNRpm8xLswXZSEMi8WeaE3"></div>';
+                } elseif ($_SERVER['SERVER_NAME'] == 'admins.bspid.id') {
+                  echo '<div class="g-recaptcha" data-sitekey="6Lf81N4jAAAAAM6ysomXsoMWTlp2WVBdIcJrhiDu"></div>';
                 } elseif ($_SERVER['SERVER_NAME'] == 'musaeri.my.id') {
                   echo '<div class="g-recaptcha" data-sitekey="6LdCXhcbAAAAAKhaHQouGGvtU6u4fJUSx8dpQUGv"></div>';
                 } elseif ($_SERVER['SERVER_NAME'] == 'apps.musaeri.my.id') {
@@ -315,22 +338,16 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                 <input type="submit" name="btn_login" class="btn btn-primary" value="Login">
 
               </form>
-              <br>
-              <br>
-              <br>
-              <br>
-              <br>
-              <br>
-              <br>
-              <br>
-              <br>
+
+              <hr>
+              <!-- Belum Punya Akun ? <a href="">Daftar Ke Bank Sampah terdekat</a> -->
+
+
             </div>
           </div>
         </div>
       </div>
     </div>
-
-
   </div>
 
   <script src='https://www.google.com/recaptcha/api.js'></script>

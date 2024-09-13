@@ -1,10 +1,6 @@
 <?php
 
-// if (!$_SERVER['SERVER_NAME']=='localhost') {
-
-//   header("location: index.php");
-// }
-// ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 date_default_timezone_set('Asia/Jakarta');
 require_once("config/koneksi.php");
 //require_once 'connection.php';
@@ -15,7 +11,8 @@ if (isset($_SESSION["userlogin"])) //admin_login//check condition user login not
 }
 
 $domain = file_get_contents("config/domain.txt");
-//$domain = "musaeri.my.id";
+// $domain = "musaeri.my.id";
+
 
 if (isset($_REQUEST['btn_login'])) //button name is "btn_login" 
 {
@@ -25,6 +22,11 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
   $loglogin = date('Y-m-d h:i:s');
   $ipaddress  = $_SERVER['REMOTE_ADDR'];
   $satu     = "1";
+
+  var_dump($domain);
+
+  echo $username;
+  echo $email;
 
 
   if ($_SERVER['SERVER_NAME'] == 'localhost') {
