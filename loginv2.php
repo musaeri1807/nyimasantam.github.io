@@ -1,6 +1,6 @@
 <?php
 
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("config/koneksi.php");
 //require_once 'connection.php';
@@ -269,6 +269,8 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                 <img src="image/icon_bspid.png" width="200">
                 <br>
                 <h3> <strong>Officer</strong></h3>
+                <?php  echo $_SERVER['SERVER_NAME']; ?>
+                
                 <!-- <p class="mb-2">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>  -->
                 <?php
                 if ($_SERVER['SERVER_NAME'] == "localhost") {
