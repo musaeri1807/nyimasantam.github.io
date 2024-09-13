@@ -1,6 +1,6 @@
 <?php
 
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 date_default_timezone_set('Asia/Jakarta');
 require_once("config/koneksi.php");
 //require_once 'connection.php';
@@ -11,8 +11,6 @@ if (isset($_SESSION["userlogin"])) //admin_login//check condition user login not
 }
 
 $domain = file_get_contents("config/domain.txt");
-// $domain = "musaeri.my.id";
-
 
 if (isset($_REQUEST['btn_login'])) //button name is "btn_login" 
 {
@@ -23,11 +21,6 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
   $ipaddress  = $_SERVER['REMOTE_ADDR'];
   $satu     = "1";
 
-  // var_dump($domain);
-
-  // echo $username;
-  // echo $email;
-
 
   if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $secretKey = "6LfJec4ZAAAAACG1-fmobe88erF72OdXbAFN71jj"; //local   
@@ -35,10 +28,6 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
     $secretKey = "6LdRyd4jAAAAAB3VoMYknt-GQY6XjgWpgkgMx5T5"; //bspid.id
   } elseif ($_SERVER['SERVER_NAME'] == 'admins.bspid.id') {
     $secretKey = "6Lf81N4jAAAAAChrnqHYNvntbS31cR0PlfJPBxFQ"; //admins.bspid.id
-  } elseif ($_SERVER['SERVER_NAME'] == 'musaeri.my.id') {
-    $secretKey = "6LdCXhcbAAAAABj_ExKExLI_0h_1uz7tSCYdDHM-"; //musaeri.my.id
-  } elseif ($_SERVER['SERVER_NAME'] == 'apps.musaeri.my.id') {
-    $secretKey = "6LfkGOsbAAAAAGNct9U_gqaj7-FkyhZ9fmqocSJt"; //apps.musaeri.my.id
   }
 
   $responseKey = $_POST['g-recaptcha-response'];
@@ -49,9 +38,10 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
   if ($responseKey == 0) {
     $errorMsg[] = "Harap Periksa reCAPTCHA";
   }
+  var_dump($response1);
+  die();
 
-  // if ($response->success) {
-
+  if ($response->success) {
     if (empty($username)) {
       $errorMsg[] = "Silakan Memasukan Akun Username Or Email"; //check "username/email" textbox not empty 
     } else if (empty($email)) {
@@ -214,7 +204,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
       //input   
 
     }
-  // } //google c
+  }
   //$loginMsgCapcha = " Login...";
 
 }
@@ -269,8 +259,8 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                 <img src="image/icon_bspid.png" width="200">
                 <br>
                 <h3> <strong>Officer</strong></h3>
-                <?php  echo $_SERVER['SERVER_NAME']; ?>
-                
+                <?php echo $_SERVER['SERVER_NAME']; ?>
+
                 <!-- <p class="mb-2">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>  -->
                 <?php
                 if ($_SERVER['SERVER_NAME'] == "localhost") {
@@ -320,10 +310,6 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
                   echo '<div class="g-recaptcha" data-sitekey="6LdRyd4jAAAAAJi4zEcNRpm8xLswXZSEMi8WeaE3"></div>';
                 } elseif ($_SERVER['SERVER_NAME'] == 'admins.bspid.id') {
                   echo '<div class="g-recaptcha" data-sitekey="6Lf81N4jAAAAAM6ysomXsoMWTlp2WVBdIcJrhiDu"></div>';
-                } elseif ($_SERVER['SERVER_NAME'] == 'musaeri.my.id') {
-                  echo '<div class="g-recaptcha" data-sitekey="6LdCXhcbAAAAAKhaHQouGGvtU6u4fJUSx8dpQUGv"></div>';
-                } elseif ($_SERVER['SERVER_NAME'] == 'apps.musaeri.my.id') {
-                  echo '<div class="g-recaptcha" data-sitekey="6LfkGOsbAAAAAOTf0zgH_fSj2fdFHebJuLx0uDfJ"></div>';
                 }
 
                 ?>
