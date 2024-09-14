@@ -1,6 +1,6 @@
 <?php
 
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 date_default_timezone_set('Asia/Jakarta');
 require_once("config/koneksi.php");
 //require_once 'connection.php';
@@ -38,10 +38,10 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
   if ($responseKey == 0) {
     $errorMsg[] = "Harap Periksa reCAPTCHA";
   }
-  var_dump($response1);
-  die();
+  // var_dump($response1);
+  // die();
 
-  if ($response->success) {
+  // if ($response->success) {
     if (empty($username)) {
       $errorMsg[] = "Silakan Memasukan Akun Username Or Email"; //check "username/email" textbox not empty 
     } else if (empty($email)) {
@@ -204,7 +204,7 @@ if (isset($_REQUEST['btn_login'])) //button name is "btn_login"
       //input   
 
     }
-  }
+  // }
   //$loginMsgCapcha = " Login...";
 
 }
