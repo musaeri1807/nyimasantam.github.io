@@ -444,7 +444,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
               <li><a><input type="text" class="form-control" placeholder="Code Product" id="tambahkan_kode" readonly></a></li>
               <li><a><input type="text" class="form-control" placeholder="Name Product" id="tambahkan_nama" readonly></a></li>
               <li><a><input type="text" name="" class="form-control" placeholder="Price" id="tambahkan_harga" readonly></a></li>
-              <li><a><input type="number" name="" class="form-control" placeholder="Qty" id="tambahkan_jumlah"></a></li>
+              <li><a><input type="number" name="" class="form-control" placeholder="Qty /Kg /liter" id="tambahkan_jumlah"></a></li>
               <li><a><input type="text" name="" class="form-control" placeholder="Total" id="tambahkan_total" readonly></a></li>
             </ul>
           </div>

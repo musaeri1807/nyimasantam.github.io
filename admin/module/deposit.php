@@ -165,13 +165,15 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   JOIN tblemployeeslogin EA ON EA.field_user_id=D.field_approve
   JOIN tblbranch B ON B.field_branch_id=D.field_branch
 
-  WHERE D.field_branch=:idbranch AND D.field_date_deposit=:datenow
+  WHERE D.field_branch=:idbranch AND 
+  -- D.field_date_deposit=:datenow
+  D.field_date_deposit >= DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY)
   ORDER BY D.field_trx_deposit DESC";
 
   $Stmt = $db->prepare($Sql);
   $Stmt->execute(array(
-    ":idbranch" => $branchid,
-    ":datenow" => $date
+    ":idbranch" => $branchid
+    // ":datenow" => $date
   ));
   $result = $Stmt->fetchAll();
 }

@@ -111,12 +111,14 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
     LEFT JOIN tblbranch B ON W.field_branch=B.field_branch_id
     LEFT JOIN tblemployeeslogin E ON W.field_officer_id=E.field_user_id
     LEFT JOIN tblemployeeslogin E2 ON W.field_approve=E2.field_user_id
-  WHERE W.field_date_withdraw=:datenow
+  WHERE 
+  -- W.field_date_withdraw=:datenow
+  W.field_date_withdraw >= DATE_SUB(CURRENT_DATE, INTERVAL 60 DAY)
   ORDER BY W.field_trx_withdraw DESC";
 
   $Stmt = $db->prepare($Sql);
-  // $Stmt->execute();
-  $Stmt->execute(array(":datenow" => $date));
+  $Stmt->execute();
+  // $Stmt->execute(array(":datenow" => $date));
   $result = $Stmt->fetchAll();
 } else {
 
@@ -129,13 +131,15 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
     LEFT JOIN tblemployeeslogin E ON W.field_officer_id=E.field_user_id
     LEFT JOIN tblemployeeslogin E2 ON W.field_approve=E2.field_user_id
 
-  WHERE W.field_branch=:idbranch AND W.field_date_withdraw=:datenow
+  WHERE W.field_branch=:idbranch AND 
+  -- W.field_date_withdraw=:datenow
+  W.field_date_withdraw >= DATE_SUB(CURRENT_DATE, INTERVAL 60 DAY)
   ORDER BY W.field_trx_withdraw DESC";
 
   $Stmt = $db->prepare($Sql);
   $Stmt->execute(array(
-    ":idbranch" => $branchid,
-    ":datenow" => $date
+    ":idbranch" => $branchid
+    // ":datenow" => $date
   ));
   $result = $Stmt->fetchAll();
 }
