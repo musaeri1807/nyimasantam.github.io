@@ -99,9 +99,9 @@ if ($_SESSION['rolelogin']=='ADM') {
 	$Stmt = $db->prepare($Sql);
 	$Stmt->execute();
 	$result = $Stmt->fetchAll();
-}elseif ($_SESSION['rolelogin']=='SPV') {
+}elseif ($_SESSION['rolelogin']=='AMR') {
 	# code...
-	$Sql ="SELECT * FROM tbldepartment WHERE field_department_id !='ADM' AND field_department_id !='MGR' AND field_department_id !='SPV'";
+	$Sql ="SELECT * FROM tbldepartment WHERE field_department_id !='ADM' AND field_department_id !='MGR' AND field_department_id !='AMR'";
 	$Stmt = $db->prepare($Sql);
 	$Stmt->execute();
 	$resultdept = $Stmt->fetchAll();
@@ -130,14 +130,6 @@ if(isset($_REQUEST['btn_insert']))
 	$tokenn		= hash('sha256', md5(date('Y-m-d h:i:s')));
 	$password 	= password_generate(8);
 	
-
-
-	// echo $cabang;
-	// echo "<br>";
-	// echo $kategori;
-	// echo "<br>";
-	// echo $beratsampah;
-	// die();
 
 	if(empty($firstname)){
 		$errorMsg="Silakan Masukkan Nama Depan";
