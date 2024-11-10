@@ -9,7 +9,7 @@ if (!isset($_SESSION['userlogin'])) {
 }
 
 
-echo $_REQUEST['id'];
+// echo $_REQUEST['id'];
 
 $idusers = $_REQUEST['id'];
 
@@ -206,13 +206,13 @@ if (isset($Msg)) {
               <div>
               </div>
               <form class="form-horizontal" method="POST">
-                <!-- <div class="form-group">
-                  <label for="inputName" class="col-sm-2 control-label">Id User</label>
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label"></label>
                   <div class="col-sm-6">
                     <input type="number" class="form-control" value="<?php echo $DataUsers["field_user_id"]; ?>" readonly>
                     <input type="number" class="form-control" value="<?php echo $DataUsers["No_Rekening"]; ?>" readonly>
                   </div>
-                </div> -->
+                </div>
                 <div class="form-group">
                   <label for="inputName" class="col-sm-2 control-label">NIK</label>
                   <div class="col-sm-6">

@@ -9,24 +9,17 @@ if (!isset($_SESSION['userlogin'])) {
 }
 
 if (isset($_REQUEST['btn_insert2'])) {
-  $kodeproduk  = $_REQUEST['txt_kodeproduk'];  //textbox name "txt_firstname"
-  $namaproduk  = $_REQUEST['txt_nama'];  //textbox name "txt_lastname"
-  $hargaproduk = $_REQUEST['txt_harga'];
-  $beratsampah = $_REQUEST['txt_berat'];
-  $datetime    = date('Y-m-d H:i:s');
-  $date      = date('Y-m-d');
-  $kategori  = $_REQUEST['txt_kategori'];
-  $cabang    = $_REQUEST['txt_cabang'];
-  $Keterangan = $_REQUEST['txt_keterangan'];
-  $officer   = $_SESSION['idlogin'];
+  $kodeproduk   = $_REQUEST['txt_kodeproduk'];  //textbox name "txt_firstname"
+  $namaproduk   = $_REQUEST['txt_nama'];  //textbox name "txt_lastname"
+  $hargaproduk  = $_REQUEST['txt_harga'];
+  $beratsampah  = $_REQUEST['txt_berat'];
+  $datetime     = date('Y-m-d H:i:s');
+  $date         = date('Y-m-d');
+  $kategori     = $_REQUEST['txt_kategori'];
+  $cabang       = $_REQUEST['txt_cabang'];
+  $Keterangan   = $_REQUEST['txt_keterangan'];
+  $officer      = $_SESSION['idlogin'];
 
-
-  // echo $cabang;
-  // echo "<br>";
-  // echo $kategori;
-  // echo "<br>";
-  // echo $beratsampah;
-  // die();
 
   if (empty($namaproduk)) {
     $errorMsg = "Silakan Masukkan Nama Produk Sampah";
@@ -88,30 +81,71 @@ if (isset($_REQUEST['btn_insert2'])) {
     }
   }
 } elseif (isset($_REQUEST['btn_update'])) {
-  $idcategory = $_REQUEST['txt_idcategory'];
-  $category = $_REQUEST['txt_category'];
-  $typetrash = $_REQUEST['txt_group_category'];
 
-  if (empty($category)) {
-    $errorMsg = "Silakan Masukkan Category";
-  } elseif ($typetrash == "Pilih") {
-    $errorMsg = "Silakan Masukkan Type";
+  $idp          = $_REQUEST['txt_id'];
+  $kodeproduk   = $_REQUEST['txt_kodeproduk'];
+  $namaproduk   = $_REQUEST['txt_nama'];
+  $hargaproduk  = $_REQUEST['txt_harga'];
+  $beratsampah  = $_REQUEST['txt_berat'];
+  $datetime     = date('Y-m-d H:i:s');
+  $date         = date('Y-m-d');
+  $kategori     = $_REQUEST['txt_kategori'];
+  $cabang       = $_REQUEST['txt_cabang'];
+  $Keterangan   = $_REQUEST['txt_keterangan'];
+  $officer      = $_SESSION['idlogin'];
+
+  // Validasi input
+  if (empty($namaproduk)) {
+    $errorMsg = "Silakan Masukkan Nama Produk Sampah";
+  } else if (empty($hargaproduk)) {
+    $errorMsg = "Silakan Masukkan Harga Sampah";
+  } else if (!is_numeric($hargaproduk)) {
+    $errorMsg = "Silakan Masukkan Harga yang Valid";
+  } else if ($beratsampah == "Pilih") {
+    $errorMsg = "Silakan Pilih Jenis Berat Sampah";
+  } else if ($kategori == "Pilih") {
+    $errorMsg = "Silakan Pilih Kategori Sampah";
+  } else if ($cabang == "Pilih") {
+    $errorMsg = "Silakan Pilih Kantor Cabang";
+  } else if (empty($Keterangan)) {
+    $errorMsg = "Silakan Masukan Keterangan Sampah";
   } else {
     try {
       if (!isset($errorMsg)) {
-        $update_stmt = $db->prepare('UPDATE tblcategory SET field_name_category=:category,field_type_product=:typetrash WHERE field_category_id=:idcategory'); //sql insert query					
-        $update_stmt->bindParam(':idcategory', $idcategory);
-        $update_stmt->bindParam(':category', $category);
-        $update_stmt->bindParam(':typetrash', $typetrash);
+        $update_stmt = $db->prepare('UPDATE tblproduct 
+                                        SET 
+                                        field_product_code  = :kodeproduk,
+                                        field_product_name  = :namaproduk,
+                                        field_unit          = :beratsampah,
+                                        field_date_price    = :udatetime,
+                                        field_date          = :udatetime,
+                                        field_category      = :kategori,
+                                        field_branch        = :cabang,
+                                        field_price         = :hargaproduk,
+                                        field_note          = :Keterangan,
+                                        field_officer_id    = :petugas                                        
+                                        WHERE field_product_id = :id');
 
+        // Bind parameter sesuai dengan field pada tabel
+        $update_stmt->bindParam(':id', $idp  );
+        $update_stmt->bindParam(':kodeproduk', $kodeproduk);
+        $update_stmt->bindParam(':namaproduk', $namaproduk);
+        $update_stmt->bindParam(':hargaproduk', $hargaproduk);
+        $update_stmt->bindParam(':beratsampah', $beratsampah);
+        $update_stmt->bindParam(':udatetime', $datetime);
+        $update_stmt->bindParam(':kategori', $kategori);
+        $update_stmt->bindParam(':cabang', $cabang);
+        $update_stmt->bindParam(':Keterangan', $Keterangan);
+        $update_stmt->bindParam(':petugas', $officer);
 
+        // Eksekusi perintah
         if ($update_stmt->execute()) {
-          $Msg = "Successfully"; //execute query success message
-          echo '<META HTTP-EQUIV="Refresh" Content="1">';
+          $Msg = "Update berhasil!";
+          echo '<META HTTP-EQUIV="Refresh" Content="5">';
         }
       }
     } catch (PDOException $e) {
-      echo $e->getMessage();
+      echo "Error: " . $e->getMessage();
     }
   }
 } elseif (isset($_REQUEST['btn_aprovel'])) {
@@ -225,10 +259,11 @@ if (isset($_REQUEST['id'])) {
 
 if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   // $Sql = "SELECT * FROM tblproduct";
-  $Sql = "SELECT P.*,E.field_name_officer,C.field_name_category,B.field_branch_name AS Cabang,E2.field_name_officer AS Aproval 
+  $Sql = "SELECT P.*,E.field_name_officer,C.field_name_category,BD.organisasi AS Cabang,E2.field_name_officer AS Aproval 
   FROM tblproduct P 
   LEFT JOIN tblcategory C ON P.field_category=C.field_category_id 
   LEFT JOIN tblbranch B ON P.field_branch=B.field_branch_id
+  LEFT JOIN tblbranchdetail BD ON B.field_id=BD.id_branch
   LEFT JOIN tblemployeeslogin E ON P.field_officer_id=E.field_user_id 
   LEFT JOIN tblemployeeslogin E2 ON P.field_approve=E2.field_user_id
   ORDER BY P.field_product_id DESC";
@@ -236,10 +271,11 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   $Stmt->execute();
   $PS = $Stmt->fetchAll();
 } else {
-  $Sql = "SELECT P.*,E.field_name_officer,C.field_name_category,B.field_branch_name AS Cabang,E2.field_name_officer AS Aproval 
+  $Sql = "SELECT P.*,E.field_name_officer,C.field_name_category,BD.organisasi AS Cabang,E2.field_name_officer AS Aproval 
   FROM tblproduct P 
   LEFT JOIN tblcategory C ON P.field_category=C.field_category_id 
   LEFT JOIN tblbranch B ON P.field_branch=B.field_branch_id
+  LEFT JOIN tblbranchdetail BD ON B.field_id=BD.id_branch
   LEFT JOIN tblemployeeslogin E ON P.field_officer_id=E.field_user_id 
   LEFT JOIN tblemployeeslogin E2 ON P.field_approve=E2.field_user_id 
   WHERE P.field_branch=:idbranch 
@@ -276,12 +312,27 @@ $Stmt_kategori->execute();
 $resultKategori = $Stmt_kategori->fetchAll();
 
 if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
-  $Sql_cabang = "SELECT * FROM tblbranch";
+  $Sql_cabang = "SELECT 
+                B.field_branch_id AS field_branch_id,
+                BD.organisasi AS bank_sampah,
+                B.Is_Active AS status,
+                B.field_branch_name AS name_old
+                FROM tblbranch B LEFT JOIN tblbranchdetail BD ON B.field_id=BD.id
+                WHERE B.Is_Active='Y' 
+                ORDER BY  field_id DESC";
   $Stmt_cabang = $db->prepare($Sql_cabang);
   $Stmt_cabang->execute();
   $KC = $Stmt_cabang->fetchAll();
 } else {
-  $Sql_cabang = "SELECT * FROM tblbranch WHERE field_branch_id=:idbranch";
+  $Sql_cabang = "SELECT 
+                B.field_branch_id AS field_branch_id,
+                BD.organisasi AS bank_sampah,
+                B.Is_Active AS status,
+                B.field_branch_name AS name_old
+                FROM tblbranch B LEFT JOIN tblbranchdetail BD ON B.field_id=BD.id
+                WHERE B.Is_Active='Y' 
+                AND field_branch_id=:idbranch;
+                ORDER BY  field_id DESC";
   $Stmt_cabang = $db->prepare($Sql_cabang);
   $Stmt_cabang->execute(array(":idbranch" => $branchid));
   $KC = $Stmt_cabang->fetchAll();
@@ -320,12 +371,12 @@ if (isset($Msg)) {
       <div class="box box-primary">
         <div class="box-header">
           <i class="fa fa-edit"></i>
-          <h3 class="box-title">Product Price</h3>
+          <h3 class="box-title">Harga Sampah</h3>
 
           <?php
 
           if ($rows['add'] == 'Y') {
-            echo '<a data-toggle="modal" data-target="#modal-default-addproduct" class="btn btn-success  pull-right"><i class="fa fa-plus"></i>&nbsp Add &nbsp</a>';
+            echo '<a data-toggle="modal" data-target="#modal-default-addproduct" class="btn btn-success  pull-right"><i class="fa fa-plus"></i>&nbsp Tambah &nbsp</a>';
           }
           ?>
           <!-- if ($rows['add'] == 'Y') {
@@ -408,7 +459,8 @@ if (isset($Msg)) {
                       <select class="form-control" type="text" name="txt_cabang">
                         <!-- <option>ksd</option> -->
                         <?php foreach ($KC as $branch) { ?>
-                          <option value="<?php echo $branch['field_branch_id']; ?>"><?php echo $branch['field_branch_name'] . "-";echo $branch['field_branch_id']; ?>
+                          <option value="<?php echo $branch['field_branch_id']; ?>"><?php echo $branch['bank_sampah'] . "-";
+                                                                                    echo $branch['field_branch_id']; ?>
                           </option>
                         <?php } ?>
                       </select>
@@ -433,9 +485,9 @@ if (isset($Msg)) {
               <tr>
                 <th>#</th>
                 <th>#</th>
-                <th>Name Product</th>
-                <th>Amount Price</th>
-                <th>Branch</th>
+                <th>Nama Sampah</th>
+                <th>Harga</th>
+                <th>Bank Sampah</th>
                 <th>Status</th>
                 <th>Submitter</th>
                 <th>Action</th>
@@ -540,7 +592,7 @@ if (isset($Msg)) {
                             </div>
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-danger " data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger " data-dismiss="modal">Keluar</button>
                             <input type="submit" name="btn_aprovel" class="btn btn-success " value="OK">
                           </div>
                         </form>
@@ -560,7 +612,7 @@ if (isset($Msg)) {
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span></button>
                         <center>
-                          <h4 class="modal-title">Update Data <?php echo $S["field_product_id"] ?></h4>
+                          <h4 class="modal-title">Update Datad <?php echo $S["field_product_id"]; ?></h4>
                         </center>
                       </div>
                       <div class="modal-body">
@@ -571,6 +623,7 @@ if (isset($Msg)) {
                               <div class="form-group">
                                 <label class="col-sm-3 control-label">Kode</label>
                                 <div class="col-sm-3">
+                                  <input type="text" name="txt_id" class="form-control" value="<?php echo $S["field_product_id"]; ?>" readonly />
                                   <input type="text" name="txt_kodeproduk" class="form-control" value="<?php echo $kodeProduk; ?>" readonly />
                                 </div>
                               </div>
@@ -579,7 +632,7 @@ if (isset($Msg)) {
                             <div class="box-header">
 
                               <div class="form-group">
-                                <label class="col-sm-3 control-label">Name Sampah</label>
+                                <label class="col-sm-3 control-label">Nama Sampah</label>
                                 <div class="col-sm-6">
                                   <input type="text" name="txt_nama" class="form-control" value="<?php echo $S["field_product_name"]; ?>" />
                                 </div>
@@ -593,7 +646,7 @@ if (isset($Msg)) {
                                 <label class="col-sm-3 control-label">Harga</label>
                                 <div class="row">
                                   <div class="col-sm-4">
-                                    <input type="text" name="txt_harga" class="form-control" value="<?php echo $S["field_price"]; ?>"/>
+                                    <input type="text" name="txt_harga" class="form-control" value="<?php echo $S["field_price"]; ?>" />
                                   </div>
                                   <div class="col-sm-3">
                                     <select class="form-control" name="txt_berat">
@@ -639,14 +692,14 @@ if (isset($Msg)) {
                             <div class="box-header">
 
                               <div class="form-group">
-                                <label class="col-sm-3 control-label">Kantor Cabang</label>
+                                <label class="col-sm-3 control-label">Bank Sampah</label>
                                 <div class="col-sm-6">
                                   <select class="form-control" type="text" name="txt_cabang">
-                                    <option value="<?php echo $S["field_branch"]; ?>"><?php echo $S["Cabang"] . "-";
-                                                                                      echo $S["field_branch"]; ?></option>
+                                    <option value="<?php echo $S["field_branch"]; ?>">
+                                      <?php echo $S["Cabang"] . "-" . $S["field_branch"]; ?></option>
                                     <?php foreach ($KC as $branch) { ?>
-                                      <option value="<?php echo $branch['field_branch_id']; ?>"><?php echo $branch['field_branch_name'] . "-";
-                                                                                                echo $branch['field_branch_id']; ?></option>
+                                      <option value="<?php echo $branch['field_branch_id']; ?>">
+                                        <?php echo $branch['bank_sampah'] . "-" . $branch['field_branch_id']; ?></option>
                                     <?php } ?>
                                   </select>
                                 </div>

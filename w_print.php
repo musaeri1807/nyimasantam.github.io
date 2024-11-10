@@ -10,12 +10,13 @@ $id = $_GET['w'];
 // $id='1274';
 
 //withdraw
-$sql = "SELECT I.*,E.field_name_officer,E2.field_name_officer AS Approval,B.field_branch_name,
+$sql = "SELECT I.*,E.field_name_officer,E2.field_name_officer AS Approval,BD.organisasi AS field_branch_name,
 (SELECT G.field_sell FROM tblgoldprice G WHERE G.field_date_gold=I.field_date_withdraw ORDER BY field_gold_id DESC LIMIT 1) AS PriceGold,
 (SELECT U.field_nama FROM tblnasabah N JOIN tbluserlogin U ON N.id_UserLogin=U.field_user_id WHERE N.No_Rekening=I.field_rekening_withdraw ) AS NAMA_NASABAH
 FROM tblwithdraw I 
 
   LEFT JOIN tblbranch B ON I.field_branch=B.field_branch_id
+  LEFT JOIN tblbranchdetail BD ON B.field_id=BD.id
   LEFT JOIN tblemployeeslogin E ON I.field_officer_id=E.field_user_id
   LEFT JOIN tblemployeeslogin E2 ON I.field_approve=E2.field_user_id
 
@@ -162,7 +163,7 @@ foreach ($result as $row) {
 
 
   $pdf->Cell(13, 6, $row['field_withdraw_id'], 0, 0, 'C');
-  $pdf->Cell(80, 6, $row['field_product'] .'-'.$row['field_berat'], 0, 0);
+  $pdf->Cell(80, 6, $row['field_product'] . '-' . $row['field_berat'], 0, 0);
   $pdf->Cell(32, 6, $row['field_quantity'], 0, 0, 'C');
   $pdf->Cell(31, 6, $row['field_berat'], 0, 0, 'L');
   // $pdf->Cell(20 ,6,$row['field_deposit_id'],1,0,'R');
@@ -192,4 +193,5 @@ $pdf->Cell(31, 6, 'Gold', 0, 0, 'L');
 $pdf->Cell(32, 6, $rows['field_withdraw_gold'], 0, 1, 'L');
 
 //$pdf->Output('D',$rows['field_rekening_deposit'].'.pdf');
-$pdf->Output();
+$pdf->Output('D', $rows['field_rekening_withdraw'] . '_Penarikan' . '.pdf');
+// $pdf->Output();

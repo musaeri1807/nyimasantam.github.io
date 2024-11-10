@@ -140,11 +140,19 @@ if (isset($_REQUEST['btn_insert'])) { //Done
     }
   }
 } elseif (isset($_REQUEST['btn_update'])) {
-  $Nama    = strip_tags($_REQUEST['txt_firstname']);
-  $nama     = ucwords($Nama);
-  $email    = strip_tags($_REQUEST['txt_email']);
-  $angka    = strip_tags($_REQUEST['txt_angka']);
-  $cabang    = $_REQUEST['txt_cabang'];
+
+  $Nama         = strip_tags($_REQUEST['txt_firstname']);
+  $nama         = ucwords($Nama);
+  $email        = strip_tags($_REQUEST['txt_email']);
+  $angka        = strip_tags($_REQUEST['txt_angka']);
+  $cabang       = $_REQUEST['txt_cabang'];
+
+  echo  $cabang ;
+  var_dump($cabang );
+  die();
+
+
+
 
 
   if (empty($nama)) {
@@ -171,6 +179,10 @@ if (isset($_REQUEST['btn_insert'])) { //Done
         ':only'    => $angka
       )); //execute query 
       $caridata = $select_stmt->fetch(PDO::FETCH_ASSOC);
+      
+
+      // var_dump($caridata);
+      // die();
 
       if ($caridata["field_email"] == $email) {
         $errorMsg = "Maaf Email Sudah Ada";  //check condition email already exists 
@@ -190,7 +202,6 @@ if (isset($_REQUEST['btn_insert'])) { //Done
 
 
         ))) {
-
           $Msg = "Insert Successfully";
           echo '<META HTTP-EQUIV="Refresh" Content="1">';
         }
@@ -199,6 +210,8 @@ if (isset($_REQUEST['btn_insert'])) { //Done
       echo $e->getMessage();
     }
   }
+
+  
 } elseif (isset($_REQUEST['btn_aproval'])) { //account done
 
   $idaccount = $_REQUEST['txt_account'];
@@ -393,7 +406,7 @@ if ($_SESSION['rolelogin'] == 'ADM' or $_SESSION['rolelogin'] == 'MGR') {
   $resultbranch = $Stmt->fetchAll();
   // } elseif ($_SESSION['rolelogin'] == 'SPV' or $_SESSION['rolelogin'] == 'BCO' or $_SESSION['rolelogin'] == 'CMS') {
 } else {
-  $Sql = "SELECT * FROM tblbranch WHERE field_branch_id=:idbranch";
+  $Sql = "SELECT * FROM tblbranch  WHERE field_branch_id=:idbranch";
   $Stmt = $db->prepare($Sql);
   $Stmt->execute(array(":idbranch" => $branchid));
   $resultbranch = $Stmt->fetchAll();

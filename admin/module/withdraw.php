@@ -174,12 +174,12 @@ if (isset($Msg)) {
       <div class="box box-primary">
         <div class="box-header">
           <i class="fa fa-edit"></i>
-          <h3 class="box-title">Withdraw Nasabah</h3>
+          <h3 class="box-title">Penarikan Nasabah</h3>
           <!-- <button type="submit" class="btn btn-success pull-right">Add Transaction</button> -->
           <?php
           if ($rows['add'] == 'Y') {
-            echo '<a href="?module=buyback" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Add Buyback</a>';
-            echo '<a href="?module=withdrawsfisik" class="btn btn-warning  pull-right"><i class="fa fa-plus"></i> Add Cetak Emas</a>';
+            echo '<a href="?module=buyback" class="btn btn-success  pull-right"><i class="fa fa-plus"></i>Buyback</a>';
+            echo '<a href="?module=withdrawsfisik" class="btn btn-warning  pull-right"><i class="fa fa-plus"></i> Cetak Emas</a>';
           }
           ?>
 

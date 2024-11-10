@@ -208,12 +208,12 @@ if (isset($Msg)) {
       <div class="box box-primary">
         <div class="box-header">
           <i class="fa fa-edit"></i>
-          <h3 class="box-title">Deposit Nasabah</h3>
+          <h3 class="box-title">Setoran Nasabah</h3>
           <!-- <button type="submit" class="btn btn-success pull-right">Add Transaction</button> -->
           <?php
           if ($rows['add'] == 'Y') {
-            echo '<a href="?module=adddeposit" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Add Sampah</a>';
-            echo '<a href="?module=purchase" class="btn btn-warning  pull-right"><i class="fa fa-plus"></i> Add Pembelian</a>';
+            echo '<a href="?module=adddeposit" class="btn btn-success  pull-right"><i class="fa fa-plus"></i> Setoran Sampah</a>';
+            echo '<a href="?module=purchase" class="btn btn-warning  pull-right"><i class="fa fa-plus"></i> Pembelian</a>';
           }
           ?>
 

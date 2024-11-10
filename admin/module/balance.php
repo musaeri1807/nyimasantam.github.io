@@ -23,13 +23,13 @@ $cabang = $rows['field_branch'];
 
 if ($_SESSION["rolelogin"] == 'ADM' or $_SESSION["rolelogin"] == 'MGR') {
 
-  $Sql = "SELECT DISTINCT(field_rekening),(SELECT field_total_saldo FROM tbltrxmutasisaldo aa 
-  WHERE aa.field_rekening = bb.field_rekening AND aa.field_status='S'
-  ORDER BY field_id_saldo DESC LIMIT 1) 
-  AS TotalSaldo,us.field_nama,us.field_member_id,B.field_branch_name
+  $Sql = "SELECT DISTINCT(field_rekening),
+(SELECT field_total_saldo 	FROM tbltrxmutasisaldo aa 	WHERE aa.field_rekening = bb.field_rekening AND aa.field_status='S' ORDER BY field_id_saldo DESC LIMIT 1) 
+  AS TotalSaldo,us.field_nama,us.field_member_id,BD.organisasi AS field_branch_name
   FROM tbltrxmutasisaldo bb 
   JOIN tbluserlogin us ON bb.field_member_id = us.field_member_id
   JOIN tblbranch B ON us.field_branch=B.field_branch_id
+  JOIN tblbranchdetail BD ON B.field_id=BD.id
   -- WHERE B.field_branch_id=:cabang
   ORDER BY bb.field_id_saldo DESC";
   $Stmt = $db->prepare($Sql);
@@ -38,13 +38,13 @@ if ($_SESSION["rolelogin"] == 'ADM' or $_SESSION["rolelogin"] == 'MGR') {
   $Saldo = $Stmt->fetchAll();
 } else {
 
-  $Sql = "SELECT DISTINCT(field_rekening),(SELECT field_total_saldo FROM tbltrxmutasisaldo aa 
-                                                                    WHERE aa.field_rekening = bb.field_rekening AND aa.field_status='S'
-                                                                    ORDER BY field_id_saldo DESC LIMIT 1) 
-              AS TotalSaldo,us.field_nama,us.field_member_id,B.field_branch_name
-              FROM tbltrxmutasisaldo bb 
-              JOIN tbluserlogin us ON bb.field_member_id = us.field_member_id
-              JOIN tblbranch B ON us.field_branch=B.field_branch_id
+  $Sql = "SELECT DISTINCT(field_rekening),
+(SELECT field_total_saldo 	FROM tbltrxmutasisaldo aa 	WHERE aa.field_rekening = bb.field_rekening AND aa.field_status='S' ORDER BY field_id_saldo DESC LIMIT 1) 
+  AS TotalSaldo,us.field_nama,us.field_member_id,BD.organisasi AS field_branch_name
+  FROM tbltrxmutasisaldo bb 
+  JOIN tbluserlogin us ON bb.field_member_id = us.field_member_id
+  JOIN tblbranch B ON us.field_branch=B.field_branch_id
+  JOIN tblbranchdetail BD ON B.field_id=BD.id
               WHERE B.field_branch_id=:cabang
               ORDER BY bb.field_id_saldo DESC";
   $Stmt = $db->prepare($Sql);
@@ -83,7 +83,7 @@ $no = 1;
                 <th>Nama Nasabah</th>
                 <th>Account</th>
                 <th>Saldo</th>
-                <th>Cabang</th>
+                <th>Cabang bsp</th>
                 <th>Action</th>
               </tr>
             </thead>

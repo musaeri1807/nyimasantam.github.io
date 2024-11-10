@@ -27,10 +27,11 @@ $tgl_sampai  = date('Y-m-d');
 $no = 1;
 
 
-$sql = "SELECT * FROM tbltrxmutasisaldo M JOIN tbluserlogin U ON M.field_member_id=U.field_member_id 
-                                           JOIN tblbranch B ON U.field_branch=B.field_branch_id 
-                                           WHERE M.field_member_id=:idmember  
-                                           ORDER BY field_id_saldo DESC";
+$sql = "SELECT M.*,U.field_user_id,U.field_member_id,U.field_branch,U.field_nama,BD.organisasi AS field_branch_name FROM tbltrxmutasisaldo M 
+LEFT JOIN tbluserlogin U ON M.field_member_id=U.field_member_id 
+LEFT JOIN tblbranch B ON U.field_branch=B.field_branch_id 
+LEFT JOIN tblbranchdetail BD ON B.field_id=BD.id
+WHERE M.field_member_id=:idmember ORDER BY field_id_saldo DESC";
 
 $stmt = $db->prepare($sql);
 $stmt->execute(array(':idmember' => $member_id));
@@ -153,11 +154,11 @@ $pdf->Cell(23, 7, 'Status', 1, 0, 'C');
 foreach ($result as $row) {
   $Types = $row["field_type_saldo"];
   if ($Types == "200") {
-    $Types = 'D';
+    $Types = 'Debit';
   } else if ($Types == "100") {
-    $Types = 'C';
+    $Types = 'Credit';
   } else if ($Types == "300") {
-    $Types = 'BB';
+    $Types = 'Balance';
   }
 
   $Status = $row['field_status'];
@@ -211,5 +212,5 @@ $pdf->SetFont('Times', '', 11);
 $pdf->Cell(167, 7, $rows['field_total_saldo'] . " g", 1, 0, 'R');
 $pdf->Cell(23, 7, '', 0, 0, 'C');
 
-$pdf->Output('D',$rows['field_rekening'].'_Mutasi'.'.pdf');
+$pdf->Output('D', $rows['field_rekening'] . '_Mutasi' . '.pdf');
 // $pdf->Output();
